@@ -1,8 +1,9 @@
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import type { Metadata } from 'next';
+import { logout } from './actions';
 import './globals.css';
 import { Providers } from './providers';
-import TopNavbar from './ui/top-navbar';
+import ConditionalNavbar from './ui/conditional-navbar';
 
 export const metadata: Metadata = {
   title: 'Sprytno Web Preview',
@@ -19,7 +20,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <InitColorSchemeScript attribute="class" />
-          <TopNavbar />
+          <ConditionalNavbar onLogout={logout} />
           {children}
         </Providers>
       </body>

@@ -7,11 +7,15 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Slide from '@mui/material/Slide';
+import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { ReactElement, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
+import { MdLogout } from 'react-icons/md';
 import SprytnoLogo from './sprytno-logo';
 
 const drawerWidth = 240;
@@ -26,9 +30,23 @@ function HideOnScroll({ children }: { children: ReactElement<unknown> }) {
   );
 }
 
-export default function TopNavbar() {
+const LogoutIcon = styled(MdLogout)({
+  marginRight: '12px',
+});
+
+export default function TopNavbar({ onLogout }: { onLogout: () => void }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const pages = ['Home', 'My Tasks', 'Notifications'];
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleDrawerToggle = () => {
     setDrawerOpen((prevState) => !prevState);
@@ -111,7 +129,9 @@ export default function TopNavbar() {
                 ))}
               </Box>
               <Box sx={{ flexGrow: 0 }}>
-                <Avatar alt="user" src="https://i.pravatar.cc/64?img=66" />
+                <IconButton onClick={handleClick}>
+                  <Avatar alt="user" src="https://i.pravatar.cc/64?img=66" />
+                </IconButton>
               </Box>
             </Toolbar>
           </Container>
@@ -135,6 +155,21 @@ export default function TopNavbar() {
       >
         {drawer}
       </Drawer>
+
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <MenuItem onClick={onLogout}>
+          <LogoutIcon />
+          Logout
+        </MenuItem>
+      </Menu>
     </>
   );
 }

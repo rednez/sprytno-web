@@ -1,8 +1,8 @@
 'use client';
 
+import { Task } from '@/interfaces/task';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Task } from './interfaces/task';
 import TaskCard from './ui/task-card';
 import TasksFilters from './ui/tasks-filters';
 

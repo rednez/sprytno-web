@@ -1,4 +1,4 @@
-import { Task } from '@/app/interfaces/task';
+import { Task } from '@/interfaces/task';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';

@@ -1,4 +1,4 @@
-import { TaskType } from '@/app/interfaces/task';
+import { TaskType } from '@/interfaces/task';
 import Chip from '@mui/material/Chip';
 import { lightGreen, orange } from '@mui/material/colors';
 import { alpha } from '@mui/material/styles';
