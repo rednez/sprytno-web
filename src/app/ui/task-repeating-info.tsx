@@ -1,26 +1,18 @@
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { FaRepeat } from 'react-icons/fa6';
 
-const RepeatIcon = styled(FaRepeat)(({ theme }) => [
-  {
-    fontSize: 12,
-    color: theme.vars?.palette.text.secondary,
-  },
-]);
-
-const DayDecorator = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.vars?.palette.action.selected,
-  padding: '2px 4px',
-  display: 'flex',
-  borderRadius: '6px',
-}));
-
 const Day = ({ children }: { children: React.ReactNode }) => (
-  <DayDecorator>
+  <Box
+    sx={(theme) => ({
+      backgroundColor: theme.vars?.palette.action.selected,
+      padding: '2px 4px',
+      display: 'flex',
+      borderRadius: '6px',
+    })}
+  >
     <Typography variant="caption">{children}</Typography>
-  </DayDecorator>
+  </Box>
 );
 
 export function TaskRepeatingInfo({
@@ -30,7 +22,15 @@ export function TaskRepeatingInfo({
 }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <RepeatIcon />
+      <Box
+        sx={(theme) => ({
+          fontSize: 12,
+          color: theme.vars?.palette.text.secondary,
+        })}
+      >
+        <FaRepeat />
+      </Box>
+
       {repeatedDays.length ? (
         <Box sx={{ display: 'flex', gap: '4px' }}>
           {repeatedDays.map((day) => (

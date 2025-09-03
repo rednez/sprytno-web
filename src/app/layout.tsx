@@ -4,9 +4,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { ThemeProvider } from '@mui/material/styles';
 import type { Metadata } from 'next';
-import { logout } from './actions';
 import './globals.css';
-import ConditionalNavbar from './ui/conditional-navbar';
+import Navbar from './ui/navbar';
 
 export const metadata: Metadata = {
   title: 'Sprytno Web Preview',
@@ -25,7 +24,7 @@ export default function RootLayout({
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <ConditionalNavbar onLogout={logout} />
+            <Navbar />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
