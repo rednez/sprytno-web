@@ -1,8 +1,11 @@
+import theme from '@/theme';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import CssBaseline from '@mui/material/CssBaseline';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { ThemeProvider } from '@mui/material/styles';
 import type { Metadata } from 'next';
 import { logout } from './actions';
 import './globals.css';
-import { Providers } from './providers';
 import ConditionalNavbar from './ui/conditional-navbar';
 
 export const metadata: Metadata = {
@@ -18,11 +21,14 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body>
-        <Providers>
-          <InitColorSchemeScript attribute="class" />
-          <ConditionalNavbar onLogout={logout} />
-          {children}
-        </Providers>
+        <InitColorSchemeScript attribute="class" />
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ConditionalNavbar onLogout={logout} />
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
