@@ -1,11 +1,7 @@
 import Navbar from '@/app/ui/navbar';
-import theme from '@/theme';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import CssBaseline from '@mui/material/CssBaseline';
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { ThemeProvider } from '@mui/material/styles';
 import type { Metadata } from 'next';
 import './globals.css';
+import ThemeProviders from './theme-providers';
 
 export const metadata: Metadata = {
   title: 'Sprytno Web Preview',
@@ -20,14 +16,10 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body>
-        <InitColorSchemeScript attribute="class" />
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Navbar />
-            {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <ThemeProviders>
+          <Navbar />
+          {children}
+        </ThemeProviders>
       </body>
     </html>
   );
