@@ -1,3 +1,4 @@
+import Navbar from '@/app/ui/navbar';
 import theme from '@/theme';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -5,7 +6,6 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { ThemeProvider } from '@mui/material/styles';
 import type { Metadata } from 'next';
 import './globals.css';
-import Navbar from './ui/navbar';
 
 export const metadata: Metadata = {
   title: 'Sprytno Web Preview',

@@ -8,6 +8,7 @@ export default function Notifications() {
       <div></div>
       <div></div>
       <h1>Notifications</h1>
+      <h1>Notifications</h1>
     </div>
   );
 }

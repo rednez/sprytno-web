@@ -40,7 +40,7 @@ export default function NavbarAvatarMenu({
   };
 
   return (
-    <>
+    <Box sx={{ flexGrow: 0 }}>
       <IconButton onClick={handleClick}>
         <Avatar alt="user" src={avatarUrl} />
       </IconButton>
@@ -66,6 +66,6 @@ export default function NavbarAvatarMenu({
           Logout
         </MenuItem>
       </Menu>
-    </>
+    </Box>
   );
 }

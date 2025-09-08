@@ -1,17 +1,15 @@
 import { createClient } from '@/utils/supabase/server';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import Link from 'next/link';
-import { logout } from '../actions';
+import { logout } from '../../actions';
+import SprytnoLogo from '../sprytno-logo';
 import NavbarAvatarMenu from './navbar-avatar-menu';
 import NavbarHamburgerMenu from './navbar-hamburger-menu';
-import SprytnoLogo from './sprytno-logo';
+import NavbarMenu from './navbar-menu';
 
 const pages = [
-  { name: 'Home', href: '/' },
+  { name: 'Overview', href: '/overview' },
   { name: 'My Tasks', href: '/my-tasks' },
   { name: 'Notifications', href: '/notifications' },
 ];
@@ -45,39 +43,14 @@ export default async function Navbar() {
 
             <SprytnoLogo />
 
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: {
-                  xs: 'none',
-                  sm: 'flex',
-                },
-                justifyContent: 'center',
-                gap: 1,
-              }}
-            >
-              {pages.map((page) => (
-                <Link key={page.name} href={page.href}>
-                  <Button
-                    sx={{
-                      borderRadius: 4,
-                      fontSize: '1rem',
-                      textTransform: 'none',
-                    }}
-                  >
-                    {page.name}
-                  </Button>
-                </Link>
-              ))}
-            </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <NavbarAvatarMenu
-                fullName={fullName}
-                avatarUrl={avatarUrl}
-                email={email}
-                onLogout={logout}
-              />
-            </Box>
+            <NavbarMenu pages={pages} />
+
+            <NavbarAvatarMenu
+              fullName={fullName}
+              avatarUrl={avatarUrl}
+              email={email}
+              onLogout={logout}
+            />
           </Toolbar>
         </Container>
       </AppBar>
