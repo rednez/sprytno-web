@@ -5,7 +5,6 @@ export interface Task {
   title: string;
   description: string;
   type: TaskType;
-  isRepeated: boolean;
   repeatedDays: string[];
   distanceMeters: number;
 }

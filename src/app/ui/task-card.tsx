@@ -15,7 +15,6 @@ export default function TaskCard({
   description,
   type,
   distanceMeters,
-  isRepeated,
   repeatedDays,
 }: Task) {
   return (
@@ -46,7 +45,7 @@ export default function TaskCard({
           <Divider orientation="vertical" flexItem />
           <TaskDistance meters={distanceMeters} />
 
-          {isRepeated && (
+          {!!repeatedDays.length && (
             <>
               <Divider orientation="vertical" flexItem />
               <TaskRepeatingInfo repeatedDays={repeatedDays} />

@@ -1,6 +1,7 @@
 import Navbar from '@/app/ui/navbar';
 import type { Metadata } from 'next';
 import './globals.css';
+import Providers from './providers';
 import ThemeProviders from './theme-providers';
 
 export const metadata: Metadata = {
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body>
-        <ThemeProviders>
-          <Navbar />
-          {children}
-        </ThemeProviders>
+        <Providers>
+          <ThemeProviders>
+            <Navbar />
+            {children}
+          </ThemeProviders>
+        </Providers>
       </body>
     </html>
   );
