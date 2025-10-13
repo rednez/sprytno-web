@@ -1,6 +1,6 @@
 'use client';
 
-import SprytnoLogo from '@/ui/sprytno-logo';
+import SprytnoLogo from '@/components/sprytno-logo';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';

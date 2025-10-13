@@ -1,14 +1,14 @@
 'use client';
 
-import TasksFilters from '@/ui/tasks-filters';
+import TasksFilters from '@/components/tasks-filters';
 import { getCurrentCoords } from '@/utils';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import EmptyState from './empty-state';
-import TasksList from './tasks-list';
+import EmptyState from './components/empty-state';
+import TasksList from './components/tasks-list';
 
 export default function Home() {
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(

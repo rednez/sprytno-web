@@ -1,4 +1,4 @@
-import Navbar from '@/ui/navbar';
+import Navbar from '@/components/navbar';
 import type { Metadata } from 'next';
 import { logout } from './actions';
 import './globals.css';
