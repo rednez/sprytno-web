@@ -1,13 +1,13 @@
 'use client';
 
-import TaskCard from '@/app/ui/task-card';
+import useTasks from '@/api/tasks';
+import TaskCard from '@/ui/task-card';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import useTasks from '../api/tasks';
-import EmptyState from './empty-state';
 import Typography from '@mui/material/Typography';
+import EmptyState from './empty-state';
 
 export default function TasksList({
   lat,

@@ -1,5 +1,6 @@
-import Navbar from '@/app/ui/navbar';
+import Navbar from '@/ui/navbar';
 import type { Metadata } from 'next';
+import { logout } from './actions';
 import './globals.css';
 import Providers from './providers';
 import ThemeProviders from './theme-providers';
@@ -19,7 +20,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <ThemeProviders>
-            <Navbar />
+            <Navbar logout={logout} />
             {children}
           </ThemeProviders>
         </Providers>

@@ -1,7 +1,7 @@
 'use client';
 
-import TasksFilters from '@/app/ui/tasks-filters';
-import { getCurrentCoords } from '@/app/utils';
+import TasksFilters from '@/ui/tasks-filters';
+import { getCurrentCoords } from '@/utils';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';

@@ -2,7 +2,6 @@ import { createClient } from '@/utils/supabase/server';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import { logout } from '../../actions';
 import SprytnoLogo from '../sprytno-logo';
 import NavbarAvatarMenu from './navbar-avatar-menu';
 import NavbarHamburgerMenu from './navbar-hamburger-menu';
@@ -14,7 +13,11 @@ const pages = [
   { name: 'Notifications', href: '/notifications' },
 ];
 
-export default async function Navbar() {
+export default async function Navbar({
+  logout,
+}: {
+  logout: () => Promise<void>;
+}) {
   const supabase = await createClient();
 
   const {
