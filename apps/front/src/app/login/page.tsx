@@ -1,6 +1,7 @@
 'use client';
 
-import SprytnoLogo from '@/components/sprytno-logo';
+import { login } from '@/actions/auth';
+import SprytnoLogo from '@/components/ui/sprytno-logo';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -8,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useTransition } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { login } from './actions';
 
 const GoogleIcon = styled(FcGoogle)({
   marginRight: '12px',

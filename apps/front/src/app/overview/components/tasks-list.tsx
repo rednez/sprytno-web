@@ -1,7 +1,7 @@
 'use client';
 
-import useTasks from '@/api/tasks';
-import TaskCard from '@/components/task-card';
+import TaskCard from '@/components/ui/task-card';
+import useTasks from '@/hooks/tasks';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';

@@ -1,9 +1,9 @@
-import Navbar from '@/components/navbar';
+import Navbar from '@/components/layout/navbar';
+import { logout } from '@/actions/auth';
+import Providers from '@/providers/providers';
+import ThemeProviders from '@/providers/theme-providers';
+import '@/styles/globals.css';
 import type { Metadata } from 'next';
-import { logout } from './actions';
-import './globals.css';
-import Providers from './providers';
-import ThemeProviders from './theme-providers';
 
 export const metadata: Metadata = {
   title: 'Sprytno Web Preview',

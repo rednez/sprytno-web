@@ -1,8 +1,8 @@
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/utils/supabase/server';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import SprytnoLogo from '../sprytno-logo';
+import SprytnoLogo from '../../ui/sprytno-logo';
 import NavbarAvatarMenu from './navbar-avatar-menu';
 import NavbarHamburgerMenu from './navbar-hamburger-menu';
 import NavbarMenu from './navbar-menu';

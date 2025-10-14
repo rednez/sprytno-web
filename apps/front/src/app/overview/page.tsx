@@ -1,6 +1,6 @@
 'use client';
 
-import TasksFilters from '@/components/tasks-filters';
+import TasksFilters from '@/components/ui/tasks-filters';
 import { getCurrentCoords } from '@/utils';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
