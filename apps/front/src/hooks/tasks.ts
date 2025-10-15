@@ -1,5 +1,6 @@
 'use client';
 
+import { Task } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
@@ -30,16 +31,7 @@ export default function useTasks({
 
       const result = await data.json();
 
-      return result as Array<{
-        id: number;
-        user_id: string;
-        type: 'offer' | 'request';
-        title: string;
-        description: string;
-        repeated_days: string[] | null;
-        is_me: boolean;
-        distance_meters: number;
-      }>;
+      return result as Task[];
     },
   });
 }
