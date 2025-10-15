@@ -1,6 +1,5 @@
 'use client';
 
-import { createClient } from '@/lib/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
@@ -15,28 +14,23 @@ export default function useTasks({
   type: 'offers' | 'requests' | 'all';
   distance: number;
 }) {
-  const debouncedDistance = useDebounce(distance, 500);
+  const debounce = useDebounce(distance, 500);
 
   return useQuery({
-    queryKey: ['tasks', lat, lng, type, debouncedDistance],
+    queryKey: ['tasks', lat, lng, type, debounce],
     queryFn: async () => {
-      const supabase = createClient();
+      const queryString = new URLSearchParams({
+        lat: String(lat),
+        lng: String(lng),
+        type,
+        distance: String(distance),
+      }).toString();
 
-      let rpcQuery = supabase.rpc('get_tasks', {
-        user_lat: lat,
-        user_lng: lng,
-        distance_meters: distance,
-      });
+      const data = await fetch(`/api/tasks?${queryString}`);
 
-      if (type === 'offers') {
-        rpcQuery = rpcQuery.eq('type', 'offer');
-      } else if (type === 'requests') {
-        rpcQuery = rpcQuery.eq('type', 'request');
-      }
+      const result = await data.json();
 
-      const { data: tasks } = await rpcQuery;
-
-      return tasks as {
+      return result as Array<{
         id: number;
         user_id: string;
         type: 'offer' | 'request';
@@ -45,7 +39,7 @@ export default function useTasks({
         repeated_days: string[] | null;
         is_me: boolean;
         distance_meters: number;
-      }[];
+      }>;
     },
   });
 }

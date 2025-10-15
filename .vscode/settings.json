@@ -4,5 +4,6 @@
       "mode": "auto"
     }
   ],
-  "npm.exclude": "**/apps/**"
+  "npm.exclude": "**/apps/**",
+  "cSpell.words": ["uidotdev", "usehooks"]
 }
