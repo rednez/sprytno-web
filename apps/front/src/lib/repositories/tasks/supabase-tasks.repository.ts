@@ -20,7 +20,7 @@ export class SupabaseTasksRepository implements TasksRepository {
     type: 'offers' | 'requests' | 'all';
     distance: number;
   }): Promise<Task[]> {
-    let rpcQuery = this.supabase.rpc('get_tasks', {
+    let rpcQuery = this.supabase.rpc('get_nearby_tasks', {
       user_lat: lat,
       user_lng: lng,
       distance_meters: distance,
