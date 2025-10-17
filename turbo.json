@@ -16,16 +16,6 @@
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "front#dev": {
-      "with": ["supabase"],
-      "cache": false,
-      "persistent": false
-    },
-    "supabase": {
-      "with": ["supabase"],
-      "cache": false,
-      "persistent": true
     }
   }
 }
