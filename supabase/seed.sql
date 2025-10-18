@@ -16,6 +16,13 @@ values
     '{"mon", "wed"}', 
     gis.st_point(13.81585427398764, 50.63616250792455)
   ),
+  ((select id from auth.users where email = 'user1@mail.com'), 
+    'offer', 
+    'Task in Kyiv', 
+    'Description for Task in Kyiv. Some very nice place to visit! It is my home.', 
+    '{"mon", "wed"}', 
+    gis.st_point(30.474982804368395, 50.44926640060052)
+  ),
   ((select id from auth.users where email = 'user2@mail.com'), 
     'request', 
     'Task 2', 
