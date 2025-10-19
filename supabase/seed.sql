@@ -37,3 +37,51 @@ values
     '{"fri"}',
     gis.st_point(13.771680747502426, 50.551336965923156)
   );
+
+insert into friends 
+  (user_id, friend_id) 
+values 
+  (
+    (select id from auth.users where email = 'user1@mail.com'), 
+    (select id from auth.users where email = 'user2@mail.com')
+  ),
+  (
+    (select id from auth.users where email = 'user1@mail.com'), 
+    (select id from auth.users where email = 'user3@mail.com')
+  );
+
+insert into users_public_details
+  (user_id, nickname) 
+values 
+  (
+    (select id from auth.users where email = 'user1@mail.com'), 
+    'user1-kiki'
+  ),
+  (
+    (select id from auth.users where email = 'user2@mail.com'), 
+    'user2-boba'
+  ),
+  (
+    (select id from auth.users where email = 'user3@mail.com'), 
+    'user3-lala'
+  );
+
+insert into users_private_details
+  (user_id, email, phone) 
+values 
+  (
+    (select id from auth.users where email = 'user1@mail.com'), 
+    'user1-secret@mail.com',
+    '+380671111111'
+  ),
+  (
+    (select id from auth.users where email = 'user2@mail.com'), 
+    'user2-secret@mail.com',
+    '+380672222222'
+  ),
+  (
+    (select id from auth.users where email = 'user3@mail.com'), 
+    'user3-secret@mail.com',
+    '+380673333333'
+  );
+  

@@ -53,6 +53,9 @@ enabled = true
 schema_paths = [
   "./schemas/extensions.sql",
   "./schemas/common-functions.sql",
+  "./schemas/friends.sql",
+  "./schemas/users_private_details.sql",
+  "./schemas/users_public_details.sql",
   "./schemas/*.sql",
 ]
 
