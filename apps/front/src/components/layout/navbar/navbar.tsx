@@ -7,11 +7,7 @@ import NavbarAvatarMenu from './navbar-avatar-menu';
 import NavbarHamburgerMenu from './navbar-hamburger-menu';
 import NavbarMenu from './navbar-menu';
 
-const pages = [
-  { name: 'Overview', href: '/overview' },
-  { name: 'My Tasks', href: '/my-tasks' },
-  { name: 'Notifications', href: '/notifications' },
-];
+const pages = [{ name: 'Tasks', href: '/tasks' }];
 
 export default async function Navbar({
   logout,

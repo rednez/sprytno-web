@@ -3,28 +3,21 @@
 import EmptyState from '@/components/ui/empty-state';
 import TasksFilters from '@/components/ui/tasks-filters';
 import useCoords from '@/hooks/coords';
-import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import TasksList from './components/tasks-list';
+import TasksList from '../components/tasks-list';
+import { Container } from '@mui/material';
 
-export default function Home() {
+export default function NearbyTasks() {
   const { coords, getLocation, isProgress, isError } = useCoords();
   const [taskType, setTaskType] = useState<'all' | 'offers' | 'requests'>(
     'all',
   );
   const [distance, setDistance] = useState<number>(500);
 
-  const loader = () => (
-    <Box textAlign="center" sx={{ mt: 4 }}>
-      <CircularProgress />
-    </Box>
-  );
-
-  const loadedCoords = () =>
+  const nearbyTasks = () =>
     coords && !isError ? (
       <TasksList
         lat={coords.lat}
@@ -50,14 +43,14 @@ export default function Home() {
   );
 
   return (
-    <Container sx={{ mt: 10, mb: 2 }}>
+    <Container sx={{ mt: 3, mb: 2 }}>
       <TasksFilters
         distance={distance}
         onChangeDistance={setDistance}
         onChangeTaskType={setTaskType}
       />
 
-      {isProgress ? null : loadedCoords()}
+      {isProgress ? null : nearbyTasks()}
     </Container>
   );
 }
