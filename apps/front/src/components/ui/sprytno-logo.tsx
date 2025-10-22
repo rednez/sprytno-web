@@ -1,6 +1,6 @@
 'use client';
 
-import { styled } from '@mui/material/styles';
+import styled from '@emotion/styled';
 
 const Sprytno = styled('span')({
   fontFamily: 'Oswald',

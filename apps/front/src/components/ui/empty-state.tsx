@@ -1,29 +1,17 @@
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-
 export default function EmptyState({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Box
-        sx={[
-          (theme) => ({
-            borderRadius: 2,
-            backgroundColor: theme.palette.grey[100],
-            width: 'fit-content',
-            padding: theme.spacing(2, 4),
-          }),
-          (theme) =>
-            theme.applyStyles('dark', {
-              backgroundColor: theme.palette.grey[900],
-            }),
-        ]}
+    <div className="flex justify-center">
+      <div
+        className="border rounded-lg bg-orange-100 border-orange-200 
+                dark:bg-orange-900 dark:border-orange-700 dark:opacity-80 
+                px-5 py-3"
       >
         {children}
-      </Box>
-    </Container>
+      </div>
+    </div>
   );
 }

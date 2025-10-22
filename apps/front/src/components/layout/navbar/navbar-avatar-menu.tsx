@@ -1,14 +1,16 @@
 'use client';
 
 import styled from '@emotion/styled';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownSection,
+  DropdownTrigger,
+  User,
+} from '@heroui/react';
 import { MdLogout } from 'react-icons/md';
 
 const LogoutIcon = styled(MdLogout)({
@@ -26,46 +28,60 @@ export default function NavbarAvatarMenu({
   avatarUrl: string;
   onLogout: () => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    setOpen(false);
-  };
-
   return (
-    <Box sx={{ flexGrow: 0 }}>
-      <IconButton onClick={handleClick}>
-        <Avatar alt="user" src={avatarUrl} />
-      </IconButton>
+    <Dropdown>
+      <DropdownTrigger>
+        <Button
+          isIconOnly
+          disableRipple
+          radius="full"
+        >
+          <Avatar
+            alt="user"
+            src={avatarUrl}
+          />
+        </Button>
+      </DropdownTrigger>
 
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      <DropdownMenu
+        aria-label="profile-menu"
+        disabledKeys={['profile']}
       >
-        <Box sx={{ p: 2 }}>
-          <Typography>{fullName}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {email}
-          </Typography>
-        </Box>
-        <Divider />
-        <MenuItem onClick={onLogout}>
-          <LogoutIcon />
-          Logout
-        </MenuItem>
-      </Menu>
-    </Box>
+        <DropdownSection
+          showDivider
+          aria-label="Profile"
+        >
+          <DropdownItem
+            key="profile"
+            isReadOnly
+            className="text-base opacity-100"
+            textValue="userProfile"
+          >
+            <User
+              avatarProps={{
+                size: 'sm',
+                src: avatarUrl,
+              }}
+              classNames={{
+                name: 'text-default-600',
+                description: 'text-default-500',
+              }}
+              name={fullName}
+              description={email}
+            />
+          </DropdownItem>
+        </DropdownSection>
+
+        <DropdownSection aria-label="Logout">
+          <DropdownItem
+            key="logout"
+            endContent={<LogoutIcon className="text-large" />}
+            onPress={onLogout}
+          >
+            Log Out
+          </DropdownItem>
+        </DropdownSection>
+      </DropdownMenu>
+    </Dropdown>
   );
 }

@@ -3,10 +3,7 @@
 import EmptyState from '@/components/ui/empty-state';
 import TaskCard from '@/components/ui/task-card';
 import useTasks from '@/hooks/tasks';
-import { Box, CircularProgress } from '@mui/material';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Spinner } from '@heroui/react';
 
 export default function TasksList({
   lat,
@@ -23,7 +20,7 @@ export default function TasksList({
 
   const loadedData = () =>
     data?.length ? (
-      <Grid container spacing={2}>
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
         {data
           .map((i) => ({
             id: i.id,
@@ -34,28 +31,27 @@ export default function TasksList({
             distanceMeters: i.distanceMeters,
           }))
           .map((task) => (
-            <Grid key={task.id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <TaskCard {...task} />
-            </Grid>
+            <TaskCard
+              key={task.id}
+              {...task}
+            />
           ))}
-      </Grid>
+      </div>
     ) : (
       emptyState()
     );
 
   const emptyState = () => (
     <EmptyState>
-      <Typography variant="body1" align="center">
-        No tasks found
-      </Typography>
+      <div className="text-base">No tasks found</div>
     </EmptyState>
   );
 
   const loader = () => (
-    <Box textAlign="center" sx={{ mt: 4 }}>
-      <CircularProgress />
-    </Box>
+    <div className="text-center mt-4">
+      <Spinner />
+    </div>
   );
 
-  return <Container>{isPending ? loader() : loadedData()}</Container>;
+  return isPending ? loader() : loadedData();
 }

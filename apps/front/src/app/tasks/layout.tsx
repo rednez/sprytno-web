@@ -1,38 +1,41 @@
 'use client';
 
-import { Tab, Tabs } from '@mui/material';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Link from 'next/link';
-import { SyntheticEvent, useState } from 'react';
+import { Tab, Tabs } from '@heroui/react';
+import { usePathname } from 'next/navigation';
 
 export default function TasksLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const pathname = usePathname();
 
   return (
-    <Container sx={{ mt: 10 }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <div>
+      <div className="flex justify-center">
         <Tabs
-          value={value}
-          onChange={handleChange}
           aria-label="Tasks tabs"
-          centered
+          selectedKey={pathname}
         >
-          <Tab LinkComponent={Link} href="/tasks/nearby" label="Nearby" />
-          <Tab LinkComponent={Link} href="/tasks/my" label="Created by me" />
-          <Tab LinkComponent={Link} href="/tasks/picked" label="Picked tasks" />
+          <Tab
+            href="/tasks/nearby"
+            key="/tasks/nearby"
+            title="Nearby"
+          />
+          <Tab
+            href="/tasks/my"
+            key="/tasks/my"
+            title="Created by me"
+          />
+          <Tab
+            href="/tasks/picked"
+            key="/tasks/picked"
+            title="Picked tasks"
+          />
         </Tabs>
-      </Box>
+      </div>
 
       {children}
-    </Container>
+    </div>
   );
 }

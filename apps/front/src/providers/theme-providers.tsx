@@ -1,23 +1,19 @@
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import CssBaseline from '@mui/material/CssBaseline';
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
+'use client';
+
+import { HeroUIProvider } from '@heroui/react';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { useRouter } from 'next/navigation';
 
 export default function ThemeProviders({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const router = useRouter();
+
   return (
-    <>
-      <InitColorSchemeScript attribute="class" />
-      <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
-      </AppRouterCacheProvider>
-    </>
+    <HeroUIProvider navigate={router.push}>
+      <NextThemesProvider attribute="class">{children}</NextThemesProvider>
+    </HeroUIProvider>
   );
 }

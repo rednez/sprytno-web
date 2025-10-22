@@ -1,58 +1,121 @@
-import { createClient } from '@/lib/utils/supabase/server';
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
+'use client';
+
+import {
+  Navbar as HeroNavbar,
+  Link,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from '@heroui/react';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import SprytnoLogo from '../../ui/sprytno-logo';
 import NavbarAvatarMenu from './navbar-avatar-menu';
-import NavbarHamburgerMenu from './navbar-hamburger-menu';
-import NavbarMenu from './navbar-menu';
 
-const pages = [{ name: 'Tasks', href: '/tasks' }];
+const pages = [
+  { name: 'Tasks', href: '/tasks' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Teams', href: '/teams' },
+];
 
-export default async function Navbar({
+export default function Navbar({
+  email,
+  fullName,
+  avatarUrl,
   logout,
 }: {
+  email: string;
+  fullName: string;
+  avatarUrl: string;
   logout: () => Promise<void>;
 }) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return null;
-  }
-
-  const email = user.user_metadata['email'] as string;
-  const fullName = user.user_metadata['full_name'] as string;
-  const avatarUrl = user.user_metadata['avatar_url'] as string;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
-    <>
-      <AppBar
-        component="nav"
-        color="default"
-        elevation={0}
-        sx={{ backgroundColor: 'white' }}
+    <HeroNavbar
+      onMenuOpenChange={setIsMenuOpen}
+      classNames={{
+        item: [
+          'data-[active=true]:bg-gray-100',
+          'data-[active=true]:dark:bg-gray-800',
+          'data-[active=true]:p-1',
+          'data-[active=true]:rounded-lg',
+          'data-[active=true]:font-normal',
+        ],
+        menuItem: [
+          'data-[active=true]:bg-gray-100',
+          'data-[active=true]:dark:bg-gray-800',
+          'data-[active=true]:p-1',
+          'data-[active=true]:rounded-lg',
+          'data-[active=true]:font-normal',
+        ],
+      }}
+    >
+      <NavbarContent>
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          className="sm:hidden"
+        />
+        <NavbarBrand className="hidden sm:block">
+          <SprytnoLogo />
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent className="sm:hidden">
+        <NavbarBrand>
+          <SprytnoLogo />
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent
+        className="hidden sm:flex gap-4"
+        justify="center"
       >
-        <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-            <NavbarHamburgerMenu pages={pages.map((page) => page.name)} />
+        {pages.map((item) => (
+          <NavbarItem
+            key={item.href}
+            isActive={pathname.includes(item.href)}
+          >
+            <Link
+              href={item.href}
+              className="text-gray-700 dark:text-gray-400"
+            >
+              {item.name}
+            </Link>
+          </NavbarItem>
+        ))}
+      </NavbarContent>
 
-            <SprytnoLogo />
+      <NavbarContent justify="end">
+        <NavbarItem>
+          <NavbarAvatarMenu
+            fullName={fullName}
+            avatarUrl={avatarUrl}
+            email={email}
+            onLogout={logout}
+          />
+        </NavbarItem>
+      </NavbarContent>
 
-            <NavbarMenu pages={pages} />
-
-            <NavbarAvatarMenu
-              fullName={fullName}
-              avatarUrl={avatarUrl}
-              email={email}
-              onLogout={logout}
-            />
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </>
+      <NavbarMenu>
+        {pages.map((item) => (
+          <NavbarMenuItem
+            key={item.href}
+            isActive={pathname.includes(item.href)}
+          >
+            <Link
+              href={item.href}
+              className="text-gray-700 dark:text-gray-400"
+            >
+              {item.name}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
+    </HeroNavbar>
   );
 }

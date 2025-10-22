@@ -3,12 +3,9 @@
 import EmptyState from '@/components/ui/empty-state';
 import TasksFilters from '@/components/ui/tasks-filters';
 import useCoords from '@/hooks/coords';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Button } from '@heroui/react';
 import { useState } from 'react';
 import TasksList from '../components/tasks-list';
-import { Container } from '@mui/material';
 
 export default function NearbyTasks() {
   const { coords, getLocation, isProgress, isError } = useCoords();
@@ -31,19 +28,17 @@ export default function NearbyTasks() {
 
   const emptyState = () => (
     <EmptyState>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Typography variant="body1" align="center">
+      <div className="flex flex-col gap-2">
+        <div className="text-base">
           You should allow location access to see tasks around you
-        </Typography>
-        <Button variant="contained" onClick={getLocation}>
-          Enable location
-        </Button>
-      </Box>
+        </div>
+        <Button onPress={getLocation}>Enable location</Button>
+      </div>
     </EmptyState>
   );
 
   return (
-    <Container sx={{ mt: 3, mb: 2 }}>
+    <div className="mt-3 mb-2">
       <TasksFilters
         distance={distance}
         onChangeDistance={setDistance}
@@ -51,6 +46,6 @@ export default function NearbyTasks() {
       />
 
       {isProgress ? null : nearbyTasks()}
-    </Container>
+    </div>
   );
 }

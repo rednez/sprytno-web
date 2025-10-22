@@ -2,22 +2,13 @@
 
 import { login } from '@/actions/auth';
 import SprytnoLogo from '@/components/ui/sprytno-logo';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+import styled from '@emotion/styled';
+import { Button } from '@heroui/react';
 import { useTransition } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 const GoogleIcon = styled(FcGoogle)({
-  marginRight: '12px',
-  fontSize: '20px',
-});
-
-const GoogleButton = styled(Button)({
-  textTransform: 'none',
-  borderRadius: 8,
+  fontSize: '22px',
 });
 
 export default function LoginPage() {
@@ -30,38 +21,20 @@ export default function LoginPage() {
   };
 
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        height: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+    <div className="flex flex-col w-full h-screen items-center justify-center">
+      <SprytnoLogo />
+
+      <div className="mt-4 mb-1 text-xl text-gray-500">Signin to the App</div>
+
+      <Button
+        size="lg"
+        variant="bordered"
+        color="primary"
+        onPress={handleLogin}
       >
-        <SprytnoLogo />
-
-        <Typography marginTop={4} marginBottom={1} variant="h5">
-          Signin to the App
-        </Typography>
-
-        <GoogleButton
-          variant="outlined"
-          loading={isPending}
-          size="large"
-          onClick={handleLogin}
-        >
-          <GoogleIcon />
-          {isPending ? 'Signing in...' : 'Signin with Google'}
-        </GoogleButton>
-      </Box>
-    </Container>
+        <GoogleIcon />
+        {isPending ? 'Signing in...' : 'Signin with Google'}
+      </Button>
+    </div>
   );
 }
