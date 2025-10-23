@@ -13,20 +13,16 @@ create table public.users_private_details (
 
 ALTER TABLE users_private_details ENABLE ROW LEVEL SECURITY;
 
-create policy "Enable users to view their own data only"
-  on "public"."users_private_details"
-  as PERMISSIVE
-  for SELECT
-  to authenticated
-  using (( SELECT auth.uid() AS uid) = user_id);
-
-create policy "Enable friends to view data"
-  on "public"."users_private_details"
-  as PERMISSIVE
+  create policy "Enable owners and those friends to view private details"
+  on public.users_private_details
+  as permissive
   for SELECT
   to authenticated
   using (
-    (EXISTS ( SELECT 1
-      FROM friends f
-    WHERE (f.friend_id = auth.uid())))
+    user_id = (SELECT auth.uid())
+    OR EXISTS (
+      select 1
+      from friends f
+      where f.friend_id = (SELECT auth.uid())
+    )
   );
