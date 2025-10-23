@@ -3,7 +3,7 @@
 export default function PickedTasks() {
   return (
     <div>
-      <p>Picked</p>
+      <p>Favorites tasks</p>
     </div>
   );
 }

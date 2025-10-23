@@ -18,19 +18,19 @@ export default function TasksLayout({
           selectedKey={pathname}
         >
           <Tab
-            href="/tasks/nearby"
-            key="/tasks/nearby"
-            title="Nearby"
+            href="/tasks/explore"
+            key="/tasks/explore"
+            title="Explore"
           />
           <Tab
-            href="/tasks/my"
-            key="/tasks/my"
-            title="Created by me"
+            href="/tasks/my-tasks"
+            key="/tasks/my-tasks"
+            title="My Tasks"
           />
           <Tab
-            href="/tasks/picked"
-            key="/tasks/picked"
-            title="Picked tasks"
+            href="/tasks/favorites"
+            key="/tasks/favorites"
+            title="Favorites"
           />
         </Tabs>
       </div>
