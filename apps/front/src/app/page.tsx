@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
 export default async function Home() {
-  redirect('/tasks/explore');
+  redirect('/explore');
 }

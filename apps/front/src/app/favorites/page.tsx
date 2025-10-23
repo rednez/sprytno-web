@@ -1,6 +1,6 @@
 'use client';
 
-export default function PickedTasks() {
+export default function FavoritesTasks() {
   return (
     <div>
       <p>Favorites tasks</p>

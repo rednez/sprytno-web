@@ -16,9 +16,9 @@ import SprytnoLogo from '../../ui/sprytno-logo';
 import NavbarAvatarMenu from './navbar-avatar-menu';
 
 const pages = [
-  { name: 'Tasks', href: '/tasks' },
-  { name: 'Projects', href: '/projects' },
-  { name: 'Teams', href: '/teams' },
+  { name: 'Explore', href: '/explore' },
+  { name: 'My Tasks', href: '/my-tasks' },
+  { name: 'Favorites', href: '/favorites' },
 ];
 
 export default function Navbar({

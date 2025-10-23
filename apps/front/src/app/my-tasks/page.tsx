@@ -3,7 +3,7 @@
 export default function MyTasks() {
   return (
     <div>
-      <p>My tasks</p>
+      <p>My Tasks</p>
     </div>
   );
 }

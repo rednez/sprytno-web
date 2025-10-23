@@ -1,18 +1,21 @@
 'use client';
 
+import { TasksList } from '@/components/features/tasks';
 import EmptyState from '@/components/ui/empty-state';
 import TasksFilters from '@/components/ui/tasks-filters';
 import useCoords from '@/hooks/coords';
 import { Button } from '@heroui/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import TasksList from '../components/tasks-list';
 
-export default function NearbyTasks() {
+export default function ExploreTasks() {
   const { coords, getLocation, isProgress, isError } = useCoords();
   const [taskType, setTaskType] = useState<'all' | 'offers' | 'requests'>(
     'all',
   );
   const [distance, setDistance] = useState<number>(500);
+
+  const router = useRouter();
 
   const nearbyTasks = () =>
     coords && !isError ? (
@@ -21,6 +24,7 @@ export default function NearbyTasks() {
         lng={coords.lng}
         type={taskType}
         distance={distance}
+        onTaskPress={(id) => router.push(`explore/${id}`)}
       />
     ) : (
       emptyState()

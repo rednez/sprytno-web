@@ -7,14 +7,21 @@ import TaskRepeatingInfo from './task-repeating-info';
 import TaskTypeChip from './task-type-chip';
 
 export default function TaskCard({
+  id,
   title,
   description,
   type,
   distanceMeters,
   repeatedDays,
-}: Task) {
+  onPress,
+}: Task & { onPress: (taskId: number) => void }) {
   return (
-    <Card shadow="sm">
+    <Card
+      shadow="sm"
+      isPressable
+      disableRipple
+      onPress={() => onPress(id)}
+    >
       <CardBody>
         <div className="flex flex-col gap-1">
           <div className="text-md font-medium">{title}</div>

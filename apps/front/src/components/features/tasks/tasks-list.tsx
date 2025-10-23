@@ -5,16 +5,18 @@ import TaskCard from '@/components/ui/task-card';
 import useTasks from '@/hooks/tasks';
 import { Spinner } from '@heroui/react';
 
-export default function TasksList({
+export function TasksList({
   lat,
   lng,
   type,
   distance,
+  onTaskPress,
 }: {
   lat: number;
   lng: number;
   type: 'offers' | 'requests' | 'all';
   distance: number;
+  onTaskPress: (taskId: number) => void;
 }) {
   const { data, isPending } = useTasks({ lat, lng, type, distance });
 
@@ -32,6 +34,7 @@ export default function TasksList({
           }))
           .map((task) => (
             <TaskCard
+              onPress={onTaskPress}
               key={task.id}
               {...task}
             />
