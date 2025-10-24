@@ -8,8 +8,3 @@ export interface Task {
   repeatedDays: string[];
   distanceMeters: number;
 }
-
-export interface MyTask extends Task {
-  // TODO
-  email: string;
-}

@@ -1,5 +1,5 @@
 import { TaskType } from '@/types/task';
-import { Chip } from '@heroui/react';
+import { Chip } from '@heroui/chip';
 
 export default function TaskTypeChip({ type }: { type: TaskType }) {
   return (

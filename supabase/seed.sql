@@ -51,19 +51,22 @@ values
   );
 
 insert into users_public_details
-  (user_id, nickname) 
+  (user_id, nickname, avatar_url) 
 values 
   (
     (select id from auth.users where email = 'user1@mail.com'), 
-    'user1-kiki'
+    'user1-kiki',
+    'https://i.pravatar.cc/400?img=49'
   ),
   (
     (select id from auth.users where email = 'user2@mail.com'), 
-    'user2-boba'
+    'user2-boba',
+    'https://i.pravatar.cc/400?img=69'
   ),
   (
     (select id from auth.users where email = 'user3@mail.com'), 
-    'user3-lala'
+    'user3-lala',
+    null
   );
 
 insert into users_private_details

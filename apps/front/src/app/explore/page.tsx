@@ -1,6 +1,6 @@
 'use client';
 
-import { TasksList } from '@/components/features/tasks';
+import { TasksList } from '@/components/features/tasks/tasks-list';
 import EmptyState from '@/components/ui/empty-state';
 import TasksFilters from '@/components/ui/tasks-filters';
 import useCoords from '@/hooks/coords';
@@ -17,6 +17,19 @@ export default function ExploreTasks() {
 
   const router = useRouter();
 
+  const handleTaskPress = (id: number) => {
+    if (!coords) {
+      return;
+    }
+
+    const params = new URLSearchParams({
+      currentLat: String(coords.lat),
+      currentLng: String(coords.lng),
+    });
+
+    router.push(`explore/${id}?${params.toString()}`);
+  };
+
   const nearbyTasks = () =>
     coords && !isError ? (
       <TasksList
@@ -24,7 +37,7 @@ export default function ExploreTasks() {
         lng={coords.lng}
         type={taskType}
         distance={distance}
-        onTaskPress={(id) => router.push(`explore/${id}`)}
+        onTaskPress={handleTaskPress}
       />
     ) : (
       emptyState()

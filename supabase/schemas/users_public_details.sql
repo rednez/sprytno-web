@@ -3,6 +3,7 @@ create table public.users_public_details (
   created_at timestamp with time zone not null default now(),
   user_id uuid not null default auth.uid (),
   nickname text not null,
+  avatar_url text null,
   constraint users_public_details_pkey primary key (id),
   constraint users_public_details_nickname_key unique (nickname),
   constraint users_public_details_user_id_key unique (user_id),

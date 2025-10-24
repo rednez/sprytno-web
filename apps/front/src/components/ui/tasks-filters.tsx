@@ -33,6 +33,7 @@ export default function TasksFilters({
         label="Distance, meters"
         size="sm"
         className="w-40"
+        maxLength={8}
         onChange={handleChangeDistance}
       />
 

@@ -1,5 +1,5 @@
 import { TasksParser } from '@/lib/parsers/tasks';
-import { MyTask, Task } from '@/types';
+import { Task, TaskDetails } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { TasksRepository } from './tasks.repository.interface';
 
@@ -37,15 +37,37 @@ export class SupabaseTasksRepository implements TasksRepository {
     return tasks;
   }
 
-  getPublicTaskById(taskId: number): Promise<Task> {
-    throw new Error('Method not implemented.');
+  async getPublicTaskDetailsById(params: {
+    taskId: number;
+    currentLat: number;
+    currentLng: number;
+  }): Promise<TaskDetails> {
+    // TODO: add caching
+    await new Promise((res) => setTimeout(res, 1000));
+
+    const { data, error } = await this.supabase.rpc('get_task_details', {
+      task_id: params.taskId,
+      current_lat: params.currentLat,
+      current_lng: params.currentLng,
+    });
+
+    if (error) {
+      throw new Error(`Supabase: ${error.message}`);
+    }
+
+    if (!data.length) {
+      throw new Error('Supabase: no data');
+    }
+
+    const task = this.tasksParser.parsePublicTaskDetails(data[0]);
+    return task;
   }
 
-  getMyTasks(): Promise<MyTask[]> {
-    throw new Error('Method not implemented.');
-  }
+  // getMyTasks(): Promise<MyTask[]> {
+  //   throw new Error('Method not implemented.');
+  // }
 
-  getMyTaskById(taskId: number): Promise<MyTask> {
-    throw new Error('Method not implemented.');
-  }
+  // getMyTaskById(taskId: number): Promise<MyTask> {
+  //   throw new Error('Method not implemented.');
+  // }
 }

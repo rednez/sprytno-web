@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import { stringToNumber } from '../validation-schemas';
 
-const ParamsSchema = z.object({
+const NearbyTasksParamsSchema = z.object({
   lat: stringToNumber,
   lng: stringToNumber,
   type: z.enum(['offers', 'requests', 'all']),
@@ -10,7 +10,7 @@ const ParamsSchema = z.object({
 
 export class TasksValidator {
   static validateNearbyTasksParams(params: URLSearchParams) {
-    return ParamsSchema.parse({
+    return NearbyTasksParamsSchema.parse({
       lat: params.get('lat'),
       lng: params.get('lng'),
       type: params.get('type'),

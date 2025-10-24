@@ -1,8 +1,8 @@
-import { Task } from '@/types';
+import { Task, TaskDetails } from '@/types';
 import * as z from 'zod';
 import { TasksParser } from './tasks.parser.interface';
 
-const TaskSchema = z.object({
+const ServerTaskSchema = z.object({
   id: z.number(),
   user_id: z.uuid(),
   type: z.enum(['offer', 'request']),
@@ -13,9 +13,16 @@ const TaskSchema = z.object({
   distance_meters: z.number(),
 });
 
+const ServerTaskDetailsSchema = ServerTaskSchema.extend({
+  user_nickname: z.string(),
+  user_avatar_url: z.url().nullable(),
+  lat: z.number(),
+  lng: z.number(),
+});
+
 export class ZodTasksParser implements TasksParser {
   parseTask(row: unknown): Task {
-    const data = TaskSchema.parse(row);
+    const data = ServerTaskSchema.parse(row);
     return {
       id: data.id,
       title: data.title,
@@ -28,5 +35,27 @@ export class ZodTasksParser implements TasksParser {
 
   parseTasks(row: unknown): Task[] {
     return Array.isArray(row) ? row.map(this.parseTask) : [];
+  }
+
+  parsePublicTaskDetails(row: unknown): TaskDetails {
+    const data = ServerTaskDetailsSchema.parse(row);
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      type: data.type,
+      repeatedDays: data.repeated_days ?? [],
+      distanceMeters: data.distance_meters,
+      user: {
+        id: data.user_id,
+        publicDetails: {
+          nickname: data.user_nickname,
+          avatarUrl: data.user_avatar_url,
+        },
+        privateDetails: null,
+      },
+      lat: data.lat,
+      lng: data.lng,
+    };
   }
 }

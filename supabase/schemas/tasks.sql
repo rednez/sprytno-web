@@ -56,7 +56,7 @@ from
         location,
         gis.ST_SetSRID(gis.ST_MakePoint(user_lng, user_lat), 4326)::gis.geography,
         distance_meters
-    )
+    ) AND user_id <> (SELECT auth.uid())
   order by location operator(gis.<->) gis.st_point(user_lng, user_lat)::gis.geography;
 $$;
 
@@ -68,6 +68,7 @@ create or replace function get_task_details (
   id public.tasks.id%type,
   user_id public.tasks.user_id%type,
   user_nickname public.users_public_details.nickname%type,
+  user_avatar_url public.users_public_details.avatar_url%type,
   type public.tasks.type%type,
   title public.tasks.title%type,
   description public.tasks.description%type,
@@ -84,6 +85,7 @@ select
   t.id, 
   t.user_id,
   public_details.nickname,
+  public_details.avatar_url,
   t.type, 
   t.title, 
   t.description, 
