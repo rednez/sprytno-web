@@ -42,9 +42,6 @@ export class SupabaseTasksRepository implements TasksRepository {
     currentLat: number;
     currentLng: number;
   }): Promise<TaskDetails> {
-    // TODO: add caching
-    await new Promise((res) => setTimeout(res, 1000));
-
     const { data, error } = await this.supabase.rpc('get_task_details', {
       task_id: params.taskId,
       current_lat: params.currentLat,

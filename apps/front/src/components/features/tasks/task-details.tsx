@@ -23,7 +23,6 @@ export default async function TaskDetails(params: {
   const supabase = await createClient();
   const tasksParser = new ZodTasksParser();
   const repository = new SupabaseTasksRepository(supabase, tasksParser);
-
   const taskId = await params.taskId;
   const { lat: currentLat, lng: currentLng } = await params.currentCoords;
   const parsedParams = ParamsSchema.parse({ taskId, currentLat, currentLng });

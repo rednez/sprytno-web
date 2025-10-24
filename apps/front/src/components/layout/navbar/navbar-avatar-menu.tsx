@@ -1,32 +1,27 @@
 'use client';
 
-import styled from '@emotion/styled';
+import { Avatar } from '@heroui/avatar';
+import { Button } from '@heroui/button';
 import {
-  Avatar,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
-  User,
-} from '@heroui/react';
-import { MdLogout } from 'react-icons/md';
-
-const LogoutIcon = styled(MdLogout)({
-  marginRight: '12px',
-});
+} from '@heroui/dropdown';
+import { User } from '@heroui/user';
+import { MdLogout as LogoutIcon } from 'react-icons/md';
 
 export default function NavbarAvatarMenu({
-  onLogout,
-  fullName,
+  name,
   email,
   avatarUrl,
+  logout,
 }: {
-  fullName: string;
+  name: string;
   email: string;
   avatarUrl: string;
-  onLogout: () => void;
+  logout: () => void;
 }) {
   return (
     <Dropdown>
@@ -66,7 +61,7 @@ export default function NavbarAvatarMenu({
                 name: 'text-default-600',
                 description: 'text-default-500',
               }}
-              name={fullName}
+              name={name}
               description={email}
             />
           </DropdownItem>
@@ -76,7 +71,7 @@ export default function NavbarAvatarMenu({
           <DropdownItem
             key="logout"
             endContent={<LogoutIcon className="text-large" />}
-            onPress={onLogout}
+            onPress={logout}
           >
             Log Out
           </DropdownItem>

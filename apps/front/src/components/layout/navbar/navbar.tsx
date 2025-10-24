@@ -1,19 +1,15 @@
-'use client';
-
 import {
   Navbar as HeroNavbar,
-  Link,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
-  NavbarMenuItem,
   NavbarMenuToggle,
-} from '@heroui/react';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+} from '@heroui/navbar';
 import SprytnoLogo from '../../ui/sprytno-logo';
-import NavbarAvatarMenu from './navbar-avatar-menu';
+import NavbarAvatarMenuContainer from './navbar-avatar-menu-container';
+import NavbarLinks from './navbar-top-links';
+import { Suspense } from 'react';
 
 const pages = [
   { name: 'Explore', href: '/explore' },
@@ -21,23 +17,9 @@ const pages = [
   { name: 'Favorites', href: '/favorites' },
 ];
 
-export default function Navbar({
-  email,
-  fullName,
-  avatarUrl,
-  logout,
-}: {
-  email: string;
-  fullName: string;
-  avatarUrl: string;
-  logout: () => Promise<void>;
-}) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
-
+export default function Navbar() {
   return (
     <HeroNavbar
-      onMenuOpenChange={setIsMenuOpen}
       classNames={{
         item: [
           'data-[active=true]:bg-gray-100',
@@ -56,10 +38,7 @@ export default function Navbar({
       }}
     >
       <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className="sm:hidden"
-        />
+        <NavbarMenuToggle className="sm:hidden" />
         <NavbarBrand className="hidden sm:block">
           <SprytnoLogo />
         </NavbarBrand>
@@ -75,46 +54,19 @@ export default function Navbar({
         className="hidden sm:flex gap-4"
         justify="center"
       >
-        {pages.map((item) => (
-          <NavbarItem
-            key={item.href}
-            isActive={pathname.includes(item.href)}
-          >
-            <Link
-              href={item.href}
-              className="text-gray-700 dark:text-gray-400"
-            >
-              {item.name}
-            </Link>
-          </NavbarItem>
-        ))}
+        <NavbarLinks pages={pages} />
       </NavbarContent>
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <NavbarAvatarMenu
-            fullName={fullName}
-            avatarUrl={avatarUrl}
-            email={email}
-            onLogout={logout}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <NavbarAvatarMenuContainer />
+          </Suspense>
         </NavbarItem>
       </NavbarContent>
 
       <NavbarMenu>
-        {pages.map((item) => (
-          <NavbarMenuItem
-            key={item.href}
-            isActive={pathname.includes(item.href)}
-          >
-            <Link
-              href={item.href}
-              className="text-gray-700 dark:text-gray-400"
-            >
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        <NavbarLinks pages={pages} />
       </NavbarMenu>
     </HeroNavbar>
   );

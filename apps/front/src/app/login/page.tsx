@@ -2,14 +2,9 @@
 
 import { login } from '@/actions/auth';
 import SprytnoLogo from '@/components/ui/sprytno-logo';
-import styled from '@emotion/styled';
 import { Button } from '@heroui/react';
 import { useTransition } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-
-const GoogleIcon = styled(FcGoogle)({
-  fontSize: '22px',
-});
+import { FcGoogle as GoogleIcon } from 'react-icons/fc';
 
 export default function LoginPage() {
   const [isPending, startTransition] = useTransition();
@@ -32,7 +27,7 @@ export default function LoginPage() {
         color="primary"
         onPress={handleLogin}
       >
-        <GoogleIcon />
+        <GoogleIcon className="text-xl" />
         {isPending ? 'Signing in...' : 'Signin with Google'}
       </Button>
     </div>
