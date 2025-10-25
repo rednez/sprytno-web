@@ -1,4 +1,4 @@
-import { Task, TaskDetails } from '@/types';
+import { MyTask, RepositoryResult, Task, TaskDetails } from '@/types';
 
 export interface TasksRepository {
   getNearbyTasks(params: {
@@ -6,15 +6,13 @@ export interface TasksRepository {
     lng: number;
     type: 'offers' | 'requests' | 'all';
     distance: number;
-  }): Promise<Task[]>;
+  }): Promise<RepositoryResult<Task[]>>;
 
   getPublicTaskDetails(params: {
     taskId: number;
     currentLat: number;
     currentLng: number;
-  }): Promise<TaskDetails>;
+  }): Promise<RepositoryResult<TaskDetails>>;
 
-  // getMyTasks(): Promise<MyTask[]>;
-
-  // getMyTaskById(taskId: number): Promise<MyTask>;
+  getMyTasks(): Promise<RepositoryResult<MyTask[]>>;
 }

@@ -1,6 +1,7 @@
 import { TasksParser } from '@/lib/parsers/tasks';
-import { Task, TaskDetails } from '@/types';
+import { MyTask, RepositoryResult, Task, TaskDetails } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { Result } from '../result';
 import { TasksRepository } from './tasks.repository.interface';
 
 export class SupabaseTasksRepository implements TasksRepository {
@@ -19,7 +20,7 @@ export class SupabaseTasksRepository implements TasksRepository {
     lng: number;
     type: 'offers' | 'requests' | 'all';
     distance: number;
-  }): Promise<Task[]> {
+  }): Promise<RepositoryResult<Task[]>> {
     let rpcQuery = this.supabase.rpc('get_nearby_tasks', {
       user_lat: lat,
       user_lng: lng,
@@ -32,16 +33,25 @@ export class SupabaseTasksRepository implements TasksRepository {
       rpcQuery = rpcQuery.eq('type', 'request');
     }
 
-    const { data } = await rpcQuery;
-    const tasks = this.tasksParser.parseTasks(data);
-    return tasks;
+    const { data, error } = await rpcQuery;
+
+    if (error) {
+      return Result.error(`Supabase: ${error.message}`);
+    }
+
+    try {
+      const parsedData = this.tasksParser.parsePublicTasks(data);
+      return Result.ok(parsedData);
+    } catch (error) {
+      return Result.fromError(error);
+    }
   }
 
   async getPublicTaskDetails(params: {
     taskId: number;
     currentLat: number;
     currentLng: number;
-  }): Promise<TaskDetails> {
+  }): Promise<RepositoryResult<TaskDetails>> {
     const { data, error } = await this.supabase.rpc('get_task_details', {
       task_id: params.taskId,
       current_lat: params.currentLat,
@@ -49,22 +59,31 @@ export class SupabaseTasksRepository implements TasksRepository {
     });
 
     if (error) {
-      throw new Error(`Supabase: ${error.message}`);
+      return Result.error(`Supabase: ${error.message}`);
     }
-
     if (!data.length) {
-      throw new Error('Supabase: no data');
+      return Result.error('Supabase: no data');
     }
 
-    const task = this.tasksParser.parsePublicTaskDetails(data[0]);
-    return task;
+    try {
+      const parsedData = this.tasksParser.parsePublicTaskDetails(data[0]);
+      return Result.ok(parsedData);
+    } catch (error) {
+      return Result.fromError(error);
+    }
   }
 
-  // getMyTasks(): Promise<MyTask[]> {
-  //   throw new Error('Method not implemented.');
-  // }
+  async getMyTasks(): Promise<RepositoryResult<MyTask[]>> {
+    const { data, error } = await this.supabase.from('my_tasks').select('*');
+    if (error) {
+      return Result.error(`Supabase: ${error.message}`);
+    }
 
-  // getMyTaskById(taskId: number): Promise<MyTask> {
-  //   throw new Error('Method not implemented.');
-  // }
+    try {
+      const parsedData = this.tasksParser.parseMyTasks(data);
+      return Result.ok(parsedData);
+    } catch (error) {
+      return Result.fromError(error);
+    }
+  }
 }

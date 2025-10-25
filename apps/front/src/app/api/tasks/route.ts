@@ -14,8 +14,13 @@ export async function GET(request: NextRequest) {
     const params = TasksValidator.validateNearbyTasksParams(
       request.nextUrl.searchParams,
     );
-    const tasks = await repository.getNearbyTasks(params);
-    return Response.json(tasks);
+    const result = await repository.getNearbyTasks(params);
+
+    if (!result.ok) {
+      return Response.json({ error: result.error }, { status: 400 });
+    }
+
+    return Response.json(result.data);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return Response.json({ error: error.issues }, { status: 400 });

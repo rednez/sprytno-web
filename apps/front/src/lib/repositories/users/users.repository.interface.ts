@@ -1,5 +1,5 @@
-import { Task, TaskDetails, User } from '@/types';
+import { RepositoryResult, User } from '@/types';
 
 export interface UsersRepository {
-  getMe(): Promise<User>;
+  getMe(): Promise<RepositoryResult<User>>;
 }

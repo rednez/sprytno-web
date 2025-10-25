@@ -1,7 +1,6 @@
-'use client';
-
-import { Task } from '@/types';
-import { Card, CardBody, Divider } from '@heroui/react';
+import { TaskType } from '@/types';
+import { Card, CardBody } from '@heroui/card';
+import { Divider } from '@heroui/divider';
 import TaskDistance from './task-distance';
 import TaskRepeatingInfo from './task-repeating-info';
 import TaskTypeChip from './task-type-chip';
@@ -14,7 +13,15 @@ export default function TaskCard({
   distanceMeters,
   repeatedDays,
   onPress,
-}: Task & { onPress: (taskId: number) => void }) {
+}: {
+  id: number;
+  title: string;
+  description: string | null;
+  type: TaskType;
+  repeatedDays: string[];
+  distanceMeters?: number;
+  onPress: (taskId: number) => void;
+}) {
   return (
     <Card
       shadow="sm"
@@ -29,11 +36,16 @@ export default function TaskCard({
         </div>
         <div className="flex gap-1 mt-2 items-center">
           <TaskTypeChip type={type} />
-          <Divider
-            orientation="vertical"
-            className="h-4"
-          />
-          <TaskDistance meters={distanceMeters} />
+
+          {distanceMeters && (
+            <>
+              <Divider
+                orientation="vertical"
+                className="h-4"
+              />
+              <TaskDistance meters={distanceMeters} />
+            </>
+          )}
 
           {!!repeatedDays.length && (
             <>

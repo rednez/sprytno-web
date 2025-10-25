@@ -1,3 +1,5 @@
+export * from './my_task';
+export * from './repositories';
 export * from './task';
 export * from './task-details';
 export * from './user';

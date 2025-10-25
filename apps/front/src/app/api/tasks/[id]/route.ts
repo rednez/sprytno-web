@@ -2,7 +2,7 @@ import { ZodTasksParser } from '@/lib/parsers/tasks';
 import { SupabaseTasksRepository } from '@/lib/repositories/tasks';
 import { createClient } from '@/lib/utils/supabase/server';
 import { TasksValidator } from '@/lib/validators';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import * as z from 'zod';
 
 export async function GET(
@@ -18,11 +18,16 @@ export async function GET(
     const params = TasksValidator.validatePublicTasksDetailsParams(
       request.nextUrl.searchParams,
     );
-    const tasks = await repository.getPublicTaskDetails({
+    const result = await repository.getPublicTaskDetails({
       taskId: parseInt(id),
       ...params,
     });
-    return Response.json(tasks);
+
+    if (!result.ok) {
+      return Response.json({ error: result.error }, { status: 400 });
+    }
+
+    return Response.json(result.data);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return Response.json({ error: error.issues }, { status: 400 });

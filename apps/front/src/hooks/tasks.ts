@@ -1,6 +1,6 @@
 'use client';
 
-import { Task, TaskDetails } from '@/types';
+import { MyTask, Task, TaskDetails } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
@@ -59,6 +59,20 @@ export function usePublicTaskDetails({
       }
       const data = await response.json();
       return data as TaskDetails;
+    },
+  });
+}
+
+export function useMyTasks() {
+  return useQuery({
+    queryKey: ['myTasks'],
+    queryFn: async () => {
+      const response = await fetch('/api/my-tasks');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data as MyTask[];
     },
   });
 }

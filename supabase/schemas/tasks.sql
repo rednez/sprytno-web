@@ -104,3 +104,13 @@ LEFT JOIN public.users_public_details public_details
   ON public_details.user_id = t.user_id
 WHERE t.id = task_id
 $$;
+
+create or replace view my_tasks as
+  select 
+    id, 
+    title, 
+    description, 
+    type, 
+    repeated_days
+  from tasks
+  where tasks.user_id = (select auth.uid());

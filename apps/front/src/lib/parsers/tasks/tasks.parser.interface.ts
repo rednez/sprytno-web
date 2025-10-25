@@ -1,7 +1,7 @@
-import { Task, TaskDetails } from '@/types';
+import { MyTask, Task, TaskDetails } from '@/types';
 
 export interface TasksParser {
-  parseTask(row: unknown): Task;
-  parseTasks(row: unknown): Task[];
+  parsePublicTasks(row: unknown): Task[];
+  parseMyTasks(row: unknown): MyTask[];
   parsePublicTaskDetails(row: unknown): TaskDetails;
 }

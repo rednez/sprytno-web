@@ -6,13 +6,17 @@ import NavbarAvatarMenu from './navbar-avatar-menu';
 export default async function NavbarAvatarMenuContainer() {
   const supabase = await createClient();
   const repository = new SupabaseUsersRepository(supabase);
-  const user = await repository.getMe();
+  const { data, ok } = await repository.getMe();
+
+  if (!ok) {
+    return <div>Err!</div>;
+  }
 
   return (
     <NavbarAvatarMenu
-      name={user.privateDetails?.fullName || ''}
-      email={user.privateDetails?.email || ''}
-      avatarUrl={user.publicDetails.avatarUrl || ''}
+      name={data.privateDetails?.fullName || ''}
+      email={data.privateDetails?.email || ''}
+      avatarUrl={data.publicDetails.avatarUrl || ''}
       logout={logout}
     />
   );
