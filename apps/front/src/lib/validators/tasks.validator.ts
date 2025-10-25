@@ -8,6 +8,11 @@ const NearbyTasksParamsSchema = z.object({
   distance: stringToNumber,
 });
 
+const PublicTasksDetailsParamsSchema = z.object({
+  currentLat: stringToNumber,
+  currentLng: stringToNumber,
+});
+
 export class TasksValidator {
   static validateNearbyTasksParams(params: URLSearchParams) {
     return NearbyTasksParamsSchema.parse({
@@ -15,6 +20,13 @@ export class TasksValidator {
       lng: params.get('lng'),
       type: params.get('type'),
       distance: params.get('distance'),
+    });
+  }
+
+  static validatePublicTasksDetailsParams(params: URLSearchParams) {
+    return PublicTasksDetailsParamsSchema.parse({
+      currentLat: params.get('currentLat'),
+      currentLng: params.get('currentLng'),
     });
   }
 }

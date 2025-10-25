@@ -9,6 +9,7 @@ export async function login() {
   const { data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
+      // TODO: Use environment variable
       redirectTo: 'http://localhost:3000/auth/callback',
     },
   });

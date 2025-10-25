@@ -1,10 +1,10 @@
 'use client';
 
-import { Task } from '@/types';
+import { Task, TaskDetails } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
-export default function useTasks({
+export function useTasks({
   lat,
   lng,
   type,
@@ -27,11 +27,38 @@ export default function useTasks({
         distance: String(distance),
       }).toString();
 
-      const data = await fetch(`/api/tasks?${queryString}`);
+      const response = await fetch(`/api/tasks?${queryString}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data as Task[];
+    },
+  });
+}
 
-      const result = await data.json();
-
-      return result as Task[];
+export function usePublicTaskDetails({
+  taskId,
+  currentLat,
+  currentLng,
+}: {
+  taskId: number;
+  currentLat: number;
+  currentLng: number;
+}) {
+  return useQuery({
+    queryKey: ['publicTaskDetails', taskId, currentLat, currentLng],
+    queryFn: async () => {
+      const queryString = new URLSearchParams({
+        currentLat: String(currentLat),
+        currentLng: String(currentLng),
+      }).toString();
+      const response = await fetch(`/api/tasks/${taskId}?${queryString}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data as TaskDetails;
     },
   });
 }

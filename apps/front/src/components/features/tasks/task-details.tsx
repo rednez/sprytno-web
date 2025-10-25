@@ -1,92 +1,75 @@
+'use client';
+
+import EmptyState from '@/components/ui/empty-state';
+import { TaskDetailsSkeleton } from '@/components/ui/task-details-skeleton';
 import TaskDistance from '@/components/ui/task-distance';
 import TaskRepeatingInfo from '@/components/ui/task-repeating-info';
 import TaskTypeChip from '@/components/ui/task-type-chip';
-import { ZodTasksParser } from '@/lib/parsers/tasks';
-import { SupabaseTasksRepository } from '@/lib/repositories/tasks';
-import { createClient } from '@/lib/utils/supabase/server';
-import { stringToNumber } from '@/lib/validation-schemas';
+import { usePublicTaskDetails } from '@/hooks/tasks';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { User } from '@heroui/user';
-import * as z from 'zod';
+import { use } from 'react';
 
-const ParamsSchema = z.object({
-  taskId: stringToNumber,
-  currentLat: stringToNumber,
-  currentLng: stringToNumber,
-});
-
-export default async function TaskDetails(params: {
+export default function TaskDetails(params: {
   taskId: Promise<string>;
   currentCoords: Promise<{ lat: string; lng: string }>;
 }) {
-  const supabase = await createClient();
-  const tasksParser = new ZodTasksParser();
-  const repository = new SupabaseTasksRepository(supabase, tasksParser);
-  const taskId = await params.taskId;
-  const { lat: currentLat, lng: currentLng } = await params.currentCoords;
-  const parsedParams = ParamsSchema.parse({ taskId, currentLat, currentLng });
-  const task = await repository.getPublicTaskDetailsById(parsedParams);
+  const taskId = use(params.taskId);
+  const currentCoords = use(params.currentCoords);
+  const { data, isPending, isError, error } = usePublicTaskDetails({
+    taskId: parseInt(taskId),
+    currentLat: parseFloat(currentCoords.lat),
+    currentLng: parseFloat(currentCoords.lng),
+  });
+
+  if (isPending) {
+    return <TaskDetailsSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <EmptyState>
+        <div>Failed Network request</div>
+      </EmptyState>
+    );
+  }
 
   return (
     <Card className="mt-6 max-w-xl mx-auto">
       <CardHeader>
         <User
-          name={task.user.publicDetails.nickname}
+          name={data.user.publicDetails.nickname}
           avatarProps={{
-            src: task.user.publicDetails.avatarUrl || '',
-            name: task.user.publicDetails.nickname,
+            src: data.user.publicDetails.avatarUrl || '',
+            name: data.user.publicDetails.nickname,
           }}
         />
       </CardHeader>
 
       <CardBody>
-        <h4 className="text-lg font-medium">{task.title}</h4>
-        <p className="mt-1 text-base">{task.description}</p>
+        <h4 className="text-lg font-medium">{data.title}</h4>
+        <p className="mt-1 text-base">{data.description}</p>
       </CardBody>
 
       <CardFooter className="gap-1">
-        <TaskTypeChip type={task.type} />
+        <TaskTypeChip type={data.type} />
         <Divider
           orientation="vertical"
           className="h-4"
         />
-        <TaskDistance meters={task.distanceMeters} />
+        <TaskDistance meters={data.distanceMeters} />
 
-        {!!task.repeatedDays.length && (
+        {!!data.repeatedDays.length && (
           <>
             <Divider
               orientation="vertical"
               className="h-4"
             />
-            <TaskRepeatingInfo repeatedDays={task.repeatedDays} />
+            <TaskRepeatingInfo repeatedDays={data.repeatedDays} />
           </>
         )}
       </CardFooter>
     </Card>
   );
-
-  // catch (error) {
-  //     if (error instanceof z.ZodError) {
-  //       return (
-  //         <div>
-  //           <div>Failed query params parsing</div>
-  //           <pre>{JSON.stringify(error.issues, null, 2)}</pre>
-  //         </div>
-  //       );
-  //     } else {
-  //       return (
-  //         <pre>
-  //           {JSON.stringify(
-  //             {
-  //               error:
-  //                 error instanceof Error ? error.message : 'Unexpected error',
-  //             },
-  //             null,
-  //             2,
-  //           )}
-  //         </pre>
-  //       );
-  //     }
-  //   }
 }

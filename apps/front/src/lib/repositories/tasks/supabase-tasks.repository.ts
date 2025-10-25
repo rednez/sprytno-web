@@ -37,7 +37,7 @@ export class SupabaseTasksRepository implements TasksRepository {
     return tasks;
   }
 
-  async getPublicTaskDetailsById(params: {
+  async getPublicTaskDetails(params: {
     taskId: number;
     currentLat: number;
     currentLng: number;

@@ -54,12 +54,14 @@ export default function Navbar() {
         className="hidden sm:flex gap-4"
         justify="center"
       >
-        <NavbarLinks pages={pages} />
+        <Suspense fallback={<div>...</div>}>
+          <NavbarLinks pages={pages} />
+        </Suspense>
       </NavbarContent>
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>...</div>}>
             <NavbarAvatarMenuContainer />
           </Suspense>
         </NavbarItem>

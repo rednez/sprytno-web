@@ -8,7 +8,7 @@ export interface TasksRepository {
     distance: number;
   }): Promise<Task[]>;
 
-  getPublicTaskDetailsById(params: {
+  getPublicTaskDetails(params: {
     taskId: number;
     currentLat: number;
     currentLng: number;

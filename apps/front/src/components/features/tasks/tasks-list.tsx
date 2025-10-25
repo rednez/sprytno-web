@@ -2,7 +2,7 @@
 
 import EmptyState from '@/components/ui/empty-state';
 import TaskCard from '@/components/ui/task-card';
-import useTasks from '@/hooks/tasks';
+import { useTasks } from '@/hooks/tasks';
 import { Spinner } from '@heroui/react';
 
 export function TasksList({
