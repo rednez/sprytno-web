@@ -1,8 +1,4 @@
-export default function EmptyState({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function EmptyState({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex justify-center">
       <div

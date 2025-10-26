@@ -1,4 +1,4 @@
-import { MyTasksList } from '@/components/features/tasks/my-tasks-list';
+import { MyTasksList } from '@/components/features/tasks';
 
 export default function MyTasks() {
   return (

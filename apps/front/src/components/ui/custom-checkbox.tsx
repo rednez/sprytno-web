@@ -1,10 +1,8 @@
-import {
-  CheckboxProps,
-  Chip,
-  VisuallyHidden,
-  tv,
-  useCheckbox,
-} from '@heroui/react';
+'use client';
+
+import { CheckboxProps, useCheckbox } from '@heroui/checkbox';
+import { Chip } from '@heroui/chip';
+import { VisuallyHidden, tv } from '@heroui/react';
 
 const CheckIcon = (props: any) => {
   return (

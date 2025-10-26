@@ -1,5 +1,5 @@
-import MyTaskDetails from '@/components/features/tasks/my-task-details';
-import { TaskDetailsSkeleton } from '@/components/ui/task-details-skeleton';
+import { MyTaskDetails } from '@/components/features/tasks';
+import { TaskDetailsSkeleton } from '@/components/ui';
 import { Suspense } from 'react';
 
 export default async function MyTaskDetailsPage({

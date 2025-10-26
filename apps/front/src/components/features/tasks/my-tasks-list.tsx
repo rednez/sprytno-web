@@ -1,8 +1,6 @@
 'use client';
 
-import EmptyState from '@/components/ui/empty-state';
-import TaskCard from '@/components/ui/task-card';
-import { TaskDetailsSkeleton } from '@/components/ui/task-details-skeleton';
+import { EmptyState, TaskCard, TaskDetailsSkeleton } from '@/components/ui';
 import { useMyTasks } from '@/hooks/tasks';
 import { useRouter } from 'next/navigation';
 

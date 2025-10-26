@@ -1,11 +1,11 @@
 import { TaskType } from '@/types';
 import { Card, CardBody } from '@heroui/card';
 import { Divider } from '@heroui/divider';
-import TaskDistance from './task-distance';
+import { TaskDistance } from './task-distance';
 import TaskRepeatingInfo from './task-repeating-info';
-import TaskTypeChip from './task-type-chip';
+import { TaskTypeChip } from './task-type-chip';
 
-export default function TaskCard({
+export function TaskCard({
   id,
   title,
   description,

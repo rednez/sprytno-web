@@ -1,4 +1,4 @@
-export default function SprytnoLogo() {
+export function SprytnoLogo() {
   return (
     <div className="flex items-center gap-1">
       <h3 className="text-2xl font-[Oswald]">sprytno</h3>

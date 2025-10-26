@@ -1,7 +1,6 @@
 'use client';
 
-import EmptyState from '@/components/ui/empty-state';
-import TaskCard from '@/components/ui/task-card';
+import { EmptyState, TaskCard } from '@/components/ui';
 import { useTasks } from '@/hooks/tasks';
 import { Spinner } from '@heroui/react';
 

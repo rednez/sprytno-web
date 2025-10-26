@@ -1,7 +1,7 @@
 'use client';
 
 import { login } from '@/actions/auth';
-import SprytnoLogo from '@/components/ui/sprytno-logo';
+import { SprytnoLogo } from '@/components/ui';
 import { Button } from '@heroui/react';
 import { useTransition } from 'react';
 import { FcGoogle as GoogleIcon } from 'react-icons/fc';

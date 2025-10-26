@@ -1,7 +1,7 @@
 import { TaskType } from '@/types/task';
 import { Chip } from '@heroui/chip';
 
-export default function TaskTypeChip({ type }: { type: TaskType }) {
+export function TaskTypeChip({ type }: { type: TaskType }) {
   return (
     <Chip
       variant="flat"

@@ -1,17 +1,19 @@
 'use client';
 
-import EmptyState from '@/components/ui/empty-state';
-import { TaskDetailsSkeleton } from '@/components/ui/task-details-skeleton';
-import TaskDistance from '@/components/ui/task-distance';
-import TaskRepeatingInfo from '@/components/ui/task-repeating-info';
-import TaskTypeChip from '@/components/ui/task-type-chip';
+import {
+  EmptyState,
+  TaskDetailsSkeleton,
+  TaskDistance,
+  TaskRepeatingInfo,
+  TaskTypeChip,
+} from '@/components/ui';
 import { usePublicTaskDetails } from '@/hooks/tasks';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { User } from '@heroui/user';
 import { use } from 'react';
 
-export default function TaskDetails(params: {
+export function TaskDetails(params: {
   taskId: Promise<string>;
   currentCoords: Promise<{ lat: string; lng: string }>;
 }) {

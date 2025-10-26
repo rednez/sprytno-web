@@ -1,8 +1,7 @@
 'use client';
 
-import { TasksList } from '@/components/features/tasks/tasks-list';
-import EmptyState from '@/components/ui/empty-state';
-import TasksFilters from '@/components/ui/tasks-filters';
+import { TasksList } from '@/components/features/tasks';
+import { EmptyState, TasksFilters } from '@/components/ui';
 import useCoords from '@/hooks/coords';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';

@@ -1,16 +1,18 @@
 'use client';
 
-import EmptyState from '@/components/ui/empty-state';
-import { TaskDetailsSkeleton } from '@/components/ui/task-details-skeleton';
-import TaskRepeatingInfo from '@/components/ui/task-repeating-info';
-import TaskTypeChip from '@/components/ui/task-type-chip';
+import {
+  EmptyState,
+  TaskDetailsSkeleton,
+  TaskRepeatingInfo,
+  TaskTypeChip,
+} from '@/components/ui';
 import { useMyTaskDetails } from '@/hooks/tasks';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { User } from '@heroui/user';
 import { use } from 'react';
 
-export default function MyTaskDetails(params: { taskId: Promise<number> }) {
+export function MyTaskDetails(params: { taskId: Promise<number> }) {
   const taskId = use(params.taskId);
   const { data, isPending, isError, error } = useMyTaskDetails(taskId);
 

@@ -1,10 +1,11 @@
 'use client';
 
-import { CheckboxGroup, Input } from '@heroui/react';
+import { CheckboxGroup } from '@heroui/checkbox';
+import { Input } from '@heroui/input';
 import { NumericFormat } from 'react-number-format';
 import { CustomCheckbox } from './custom-checkbox';
 
-export default function TasksFilters({
+export function TasksFilters({
   distance,
   onChangeTaskType,
   onChangeDistance,
