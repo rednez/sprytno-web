@@ -10,17 +10,18 @@ import {
   DropdownTrigger,
 } from '@heroui/dropdown';
 import { User } from '@heroui/user';
-import { MdLogout as LogoutIcon } from 'react-icons/md';
+import { MdLogout } from 'react-icons/md';
+import { TbUserEdit } from 'react-icons/tb';
 
 export default function ClientUserMenu({
-  name,
+  nickname,
   email,
   avatarUrl,
   logout,
 }: {
-  name: string;
+  nickname: string | null;
   email: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
   logout: () => void;
 }) {
   return (
@@ -32,8 +33,9 @@ export default function ClientUserMenu({
           radius="full"
         >
           <Avatar
-            alt="user"
-            src={avatarUrl}
+            name={nickname || email}
+            src={avatarUrl || ''}
+            showFallback
           />
         </Button>
       </DropdownTrigger>
@@ -55,22 +57,32 @@ export default function ClientUserMenu({
             <User
               avatarProps={{
                 size: 'sm',
-                src: avatarUrl,
+                src: avatarUrl || '',
+                showFallback: true,
+                name: nickname || email,
               }}
               classNames={{
                 name: 'text-default-600',
                 description: 'text-default-500',
               }}
-              name={name}
+              name={nickname}
               description={email}
             />
           </DropdownItem>
         </DropdownSection>
 
-        <DropdownSection aria-label="Logout">
+        <DropdownSection aria-label="Actions">
+          <DropdownItem
+            key="completeProfile"
+            endContent={<TbUserEdit className="text-large" />}
+            className="text-orange-500"
+          >
+            Complete Profile
+          </DropdownItem>
+
           <DropdownItem
             key="logout"
-            endContent={<LogoutIcon className="text-large" />}
+            endContent={<MdLogout className="text-large" />}
             onPress={logout}
           >
             Log Out

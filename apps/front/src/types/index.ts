@@ -1,3 +1,4 @@
+export * from './me';
 export * from './my-task';
 export * from './my-task-details';
 export * from './repositories';

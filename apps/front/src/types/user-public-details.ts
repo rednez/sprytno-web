@@ -1,4 +1,4 @@
 export interface UserPublicDetails {
-  nickname: string;
+  nickname: string | null;
   avatarUrl: string | null;
 }

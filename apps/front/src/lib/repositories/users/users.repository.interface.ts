@@ -1,5 +1,5 @@
-import { RepositoryResult, User } from '@/types';
+import { Me, RepositoryResult } from '@/types';
 
 export interface UsersRepository {
-  getMe(): Promise<RepositoryResult<User>>;
+  getMe(): Promise<RepositoryResult<Me>>;
 }

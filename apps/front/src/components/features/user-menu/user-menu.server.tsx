@@ -9,14 +9,14 @@ export async function ServerUserMenu() {
   const { data, ok } = await repository.getMe();
 
   if (!ok) {
-    return <div>Err!</div>;
+    return <div>Err</div>;
   }
 
   return (
     <ClientUserMenu
-      name={data.privateDetails?.fullName || ''}
-      email={data.privateDetails?.email || ''}
-      avatarUrl={data.publicDetails.avatarUrl || ''}
+      nickname={data.publicDetails.nickname}
+      email={data.privateDetails?.email}
+      avatarUrl={data.publicDetails.avatarUrl}
       logout={logout}
     />
   );

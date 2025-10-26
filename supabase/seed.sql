@@ -115,37 +115,7 @@ values
     'https://i.pravatar.cc/150?img=9'
   );
 
-insert into users_private_details
-  (user_id, email, phone) 
-values 
-  (
-    (select id from auth.users where email = 'user1@mail.com'), 
-    'user1-secret@mail.com',
-    '+380671111111'
-  ),
-  (
-    (select id from auth.users where email = 'user2@mail.com'), 
-    'user2-secret@mail.com',
-    '+380672222222'
-  ),
-  (
-    (select id from auth.users where email = 'user3@mail.com'), 
-    'user3-secret@mail.com',
-    '+380673333333'
-  ),
-  (
-    (select id from auth.users where email = 'user4@mail.com'), 
-    'user4-secret@mail.com',
-    '+380674333344'
-  ),
-  (
-    (select id from auth.users where email = 'user5@mail.com'), 
-    'user5-secret@gmail.com',
-    '+380675333355'
-  ),
-  (
-    (select id from auth.users where email = 'user6@mail.com'), 
-    'user6-secret@yahoo.com',
-    '+380976333366'
-  );
+UPDATE users_private_details SET phone = '+380671235454' WHERE email = 'user1@mail.com';
+UPDATE users_private_details SET phone = '+380989875645' WHERE email = 'user2@mail.com';
+UPDATE users_private_details SET phone = '+380502413567' WHERE email = 'user5@mail.com';
   
