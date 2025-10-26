@@ -1,4 +1,10 @@
-import { MyTask, RepositoryResult, Task, TaskDetails } from '@/types';
+import {
+  MyTask,
+  MyTaskDetails,
+  RepositoryResult,
+  Task,
+  TaskDetails,
+} from '@/types';
 
 export interface TasksRepository {
   getNearbyTasks(params: {
@@ -15,4 +21,6 @@ export interface TasksRepository {
   }): Promise<RepositoryResult<TaskDetails>>;
 
   getMyTasks(): Promise<RepositoryResult<MyTask[]>>;
+
+  getMyTaskDetails(taskId: number): Promise<RepositoryResult<MyTaskDetails>>;
 }

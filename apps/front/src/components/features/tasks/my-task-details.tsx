@@ -2,26 +2,17 @@
 
 import EmptyState from '@/components/ui/empty-state';
 import { TaskDetailsSkeleton } from '@/components/ui/task-details-skeleton';
-import TaskDistance from '@/components/ui/task-distance';
 import TaskRepeatingInfo from '@/components/ui/task-repeating-info';
 import TaskTypeChip from '@/components/ui/task-type-chip';
-import { usePublicTaskDetails } from '@/hooks/tasks';
+import { useMyTaskDetails } from '@/hooks/tasks';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { User } from '@heroui/user';
 import { use } from 'react';
 
-export default function TaskDetails(params: {
-  taskId: Promise<string>;
-  currentCoords: Promise<{ lat: string; lng: string }>;
-}) {
+export default function MyTaskDetails(params: { taskId: Promise<number> }) {
   const taskId = use(params.taskId);
-  const currentCoords = use(params.currentCoords);
-  const { data, isPending, isError, error } = usePublicTaskDetails({
-    taskId: parseInt(taskId),
-    currentLat: parseFloat(currentCoords.lat),
-    currentLng: parseFloat(currentCoords.lng),
-  });
+  const { data, isPending, isError, error } = useMyTaskDetails(taskId);
 
   if (isPending) {
     return <TaskDetailsSkeleton />;
@@ -30,7 +21,10 @@ export default function TaskDetails(params: {
   if (isError) {
     return (
       <EmptyState>
-        <div>Failed Network request {error.message}</div>
+        <div>
+          <p>Failed Network request: </p>
+          <p>{error.message}</p>
+        </div>
       </EmptyState>
     );
   }
@@ -58,7 +52,6 @@ export default function TaskDetails(params: {
           orientation="vertical"
           className="h-4"
         />
-        <TaskDistance meters={data.distanceMeters} />
 
         {!!data.repeatedDays.length && (
           <>

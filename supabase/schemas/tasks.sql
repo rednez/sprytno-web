@@ -61,7 +61,7 @@ from
 $$;
 
 create or replace function get_task_details (
-  task_id integer,
+  task_id bigint,
   current_lat double precision DEFAULT NULL,
   current_lng double precision DEFAULT NULL
 ) returns table (
@@ -97,8 +97,40 @@ select
     ELSE 
       NULL 
   END AS distance_meters,
-  gis.st_y(t.location::gis.geometry) AS lat,
-  gis.st_y(t.location::gis.geometry) as lat
+  gis.st_y(t.location::gis.geometry) as lat,
+  gis.st_y(t.location::gis.geometry) as lng
+FROM public.tasks t
+LEFT JOIN public.users_public_details public_details
+  ON public_details.user_id = t.user_id
+WHERE t.id = task_id
+$$;
+
+create or replace function get_my_task_details (task_id bigint) returns table (
+  id public.tasks.id%type,
+  user_id public.tasks.user_id%type,
+  user_nickname public.users_public_details.nickname%type,
+  user_avatar_url public.users_public_details.avatar_url%type,
+  type public.tasks.type%type,
+  title public.tasks.title%type,
+  description public.tasks.description%type,
+  repeated_days public.tasks.repeated_days%type,
+  lat double precision,
+  lng double precision
+)
+language sql
+set search_path = '' 
+as $$
+select
+  t.id, 
+  t.user_id,
+  public_details.nickname,
+  public_details.avatar_url,
+  t.type, 
+  t.title, 
+  t.description, 
+  t.repeated_days, 
+  gis.st_y(t.location::gis.geometry) as lat,
+  gis.st_y(t.location::gis.geometry) as lng
 FROM public.tasks t
 LEFT JOIN public.users_public_details public_details
   ON public_details.user_id = t.user_id

@@ -1,6 +1,6 @@
 'use client';
 
-import { MyTask, Task, TaskDetails } from '@/types';
+import { MyTask, MyTaskDetails, Task, TaskDetails } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
@@ -29,7 +29,7 @@ export function useTasks({
 
       const response = await fetch(`/api/tasks?${queryString}`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(await response.text());
       }
       const data = await response.json();
       return data as Task[];
@@ -55,7 +55,7 @@ export function usePublicTaskDetails({
       }).toString();
       const response = await fetch(`/api/tasks/${taskId}?${queryString}`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(await response.text());
       }
       const data = await response.json();
       return data as TaskDetails;
@@ -69,10 +69,26 @@ export function useMyTasks() {
     queryFn: async () => {
       const response = await fetch('/api/my-tasks');
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(await response.text());
       }
       const data = await response.json();
       return data as MyTask[];
+    },
+  });
+}
+
+export function useMyTaskDetails(taskId: number) {
+  return useQuery({
+    queryKey: ['myTaskDetails', taskId],
+    queryFn: async () => {
+      const response = await fetch(`/api/my-tasks/${taskId}`);
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      const data = await response.json();
+      return data as MyTaskDetails;
     },
   });
 }

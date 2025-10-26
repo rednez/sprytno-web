@@ -1,5 +1,11 @@
 import { TasksParser } from '@/lib/parsers/tasks';
-import { MyTask, RepositoryResult, Task, TaskDetails } from '@/types';
+import {
+  MyTask,
+  MyTaskDetails,
+  RepositoryResult,
+  Task,
+  TaskDetails,
+} from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Result } from '../result';
 import { TasksRepository } from './tasks.repository.interface';
@@ -81,6 +87,28 @@ export class SupabaseTasksRepository implements TasksRepository {
 
     try {
       const parsedData = this.tasksParser.parseMyTasks(data);
+      return Result.ok(parsedData);
+    } catch (error) {
+      return Result.fromError(error);
+    }
+  }
+
+  async getMyTaskDetails(
+    taskId: number,
+  ): Promise<RepositoryResult<MyTaskDetails>> {
+    const { data, error } = await this.supabase.rpc('get_my_task_details', {
+      task_id: taskId,
+    });
+
+    if (error) {
+      return Result.error(`Supabase: ${error.message}`);
+    }
+    if (!data.length) {
+      return Result.error('Supabase: no data');
+    }
+
+    try {
+      const parsedData = this.tasksParser.parseMyTaskDetails(data[0]);
       return Result.ok(parsedData);
     } catch (error) {
       return Result.fromError(error);

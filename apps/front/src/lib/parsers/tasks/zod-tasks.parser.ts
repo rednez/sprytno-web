@@ -1,4 +1,4 @@
-import { MyTask, Task, TaskDetails } from '@/types';
+import { MyTask, MyTaskDetails, Task, TaskDetails } from '@/types';
 import * as z from 'zod';
 import { TasksParser } from './tasks.parser.interface';
 
@@ -26,6 +26,14 @@ const ServerMyTaskSchema = z.object({
   title: z.string(),
   description: z.string().nullable(),
   repeated_days: z.array(z.string()).nullable(),
+});
+
+const ServerMyTaskDetailsSchema = ServerMyTaskSchema.extend({
+  user_id: z.uuid(),
+  user_nickname: z.string(),
+  user_avatar_url: z.url().nullable(),
+  lat: z.number(),
+  lng: z.number(),
 });
 
 export class ZodTasksParser implements TasksParser {
@@ -57,6 +65,27 @@ export class ZodTasksParser implements TasksParser {
 
   parseMyTasks(row: unknown): MyTask[] {
     return Array.isArray(row) ? row.map(this.parseMyTask) : [];
+  }
+
+  parseMyTaskDetails(row: unknown): MyTaskDetails {
+    const data = ServerMyTaskDetailsSchema.parse(row);
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      type: data.type,
+      repeatedDays: data.repeated_days ?? [],
+      user: {
+        id: data.user_id,
+        publicDetails: {
+          nickname: data.user_nickname,
+          avatarUrl: data.user_avatar_url,
+        },
+        privateDetails: null,
+      },
+      lat: data.lat,
+      lng: data.lng,
+    };
   }
 
   private parsePublicTask(row: unknown): Task {
