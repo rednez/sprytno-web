@@ -1,9 +1,9 @@
 import { logout } from '@/actions/auth';
 import { SupabaseUsersRepository } from '@/lib/repositories/users';
 import { createClient } from '@/lib/utils/supabase/server';
-import NavbarAvatarMenu from './navbar-avatar-menu';
+import ClientUserMenu from './user-menu.client';
 
-export default async function NavbarAvatarMenuContainer() {
+export async function ServerUserMenu() {
   const supabase = await createClient();
   const repository = new SupabaseUsersRepository(supabase);
   const { data, ok } = await repository.getMe();
@@ -13,7 +13,7 @@ export default async function NavbarAvatarMenuContainer() {
   }
 
   return (
-    <NavbarAvatarMenu
+    <ClientUserMenu
       name={data.privateDetails?.fullName || ''}
       email={data.privateDetails?.email || ''}
       avatarUrl={data.publicDetails.avatarUrl || ''}

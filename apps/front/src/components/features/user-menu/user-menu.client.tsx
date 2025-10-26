@@ -12,7 +12,7 @@ import {
 import { User } from '@heroui/user';
 import { MdLogout as LogoutIcon } from 'react-icons/md';
 
-export default function NavbarAvatarMenu({
+export default function ClientUserMenu({
   name,
   email,
   avatarUrl,

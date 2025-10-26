@@ -1,8 +1,10 @@
 export { CustomCheckbox } from './custom-checkbox';
 export { EmptyState } from './empty-state';
+export { TaskCardSkeleton } from './skeletons/task-card-skeleton';
+export { TaskDetailsSkeleton } from './skeletons/task-details-skeleton';
+export { UserAvatarSkeleton } from './skeletons/user-avatar-skeleton';
 export { SprytnoLogo } from './sprytno-logo';
 export { TaskCard } from './task-card';
-export { TaskDetailsSkeleton } from './task-details-skeleton';
 export { TaskDistance } from './task-distance';
 export { TaskRepeatingInfo } from './task-repeating-info';
 export { TaskTypeChip } from './task-type-chip';

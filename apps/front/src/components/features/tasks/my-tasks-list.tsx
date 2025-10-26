@@ -1,6 +1,6 @@
 'use client';
 
-import { EmptyState, TaskCard, TaskDetailsSkeleton } from '@/components/ui';
+import { EmptyState, TaskCard, TaskCardSkeleton } from '@/components/ui';
 import { useMyTasks } from '@/hooks/tasks';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +13,7 @@ export function MyTasksList() {
   }
 
   if (isPending) {
-    return <TaskDetailsSkeleton />;
+    return <TaskCardSkeleton />;
   }
 
   if (isError) {

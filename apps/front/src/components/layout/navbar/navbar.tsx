@@ -1,3 +1,5 @@
+import { UserMenu } from '@/components/features/user-menu';
+import { SprytnoLogo, UserAvatarSkeleton } from '@/components/ui';
 import {
   Navbar as HeroNavbar,
   NavbarBrand,
@@ -6,10 +8,8 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
 } from '@heroui/navbar';
-import SprytnoLogo from '../../ui/sprytno-logo';
-import NavbarAvatarMenuContainer from './navbar-avatar-menu-container';
-import NavbarLinks from './navbar-top-links';
 import { Suspense } from 'react';
+import NavbarLinks from './navbar-top-links';
 
 const pages = [
   { name: 'Explore', href: '/explore' },
@@ -17,7 +17,7 @@ const pages = [
   { name: 'Favorites', href: '/favorites' },
 ];
 
-export default function Navbar() {
+export function Navbar() {
   return (
     <HeroNavbar
       classNames={{
@@ -61,8 +61,8 @@ export default function Navbar() {
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Suspense fallback={<div>...</div>}>
-            <NavbarAvatarMenuContainer />
+          <Suspense fallback={<UserAvatarSkeleton />}>
+            <UserMenu />
           </Suspense>
         </NavbarItem>
       </NavbarContent>
