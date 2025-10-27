@@ -1,11 +1,9 @@
 import { logout } from '@/actions/auth';
-import { SupabaseUsersRepository } from '@/lib/repositories/users';
-import { createClient } from '@/lib/utils/supabase/server';
+import { createUsersRepository } from '@/lib/repositories/users';
 import ClientUserMenu from './user-menu.client';
 
 export async function ServerUserMenu() {
-  const supabase = await createClient();
-  const repository = new SupabaseUsersRepository(supabase);
+  const repository = await createUsersRepository();
   const { data, ok } = await repository.getMe();
 
   if (!ok) {

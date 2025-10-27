@@ -1,2 +1,2 @@
-export * from './supabase-tasks.repository';
+export * from './factory';
 export * from './tasks.repository.interface';

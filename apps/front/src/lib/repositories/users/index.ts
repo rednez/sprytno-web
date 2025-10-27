@@ -1,2 +1,2 @@
-export * from './supabase-users.repository';
+export * from './factory';
 export * from './users.repository.interface';
