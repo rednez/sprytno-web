@@ -1,5 +1,6 @@
 'use client';
 
+import { createTasksRepository } from '@/lib/repositories/tasks/factory.client';
 import { MyTask, MyTaskDetails, Task, TaskDetails } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
@@ -67,11 +68,11 @@ export function useMyTasks() {
   return useQuery({
     queryKey: ['myTasks'],
     queryFn: async () => {
-      const response = await fetch('/api/my-tasks');
-      if (!response.ok) {
-        throw new Error(await response.text());
+      const repository = createTasksRepository();
+      const { data, ok, error } = await repository.getMyTasks();
+      if (!ok) {
+        throw new Error(error);
       }
-      const data = await response.json();
       return data as MyTask[];
     },
   });
@@ -82,11 +83,9 @@ export function useMyTaskDetails(taskId: number) {
     queryKey: ['myTaskDetails', taskId],
     queryFn: async () => {
       const response = await fetch(`/api/my-tasks/${taskId}`);
-
       if (!response.ok) {
         throw new Error(await response.text());
       }
-
       const data = await response.json();
       return data as MyTaskDetails;
     },

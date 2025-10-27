@@ -1,5 +1,5 @@
 import { UserMenu } from '@/components/features/user-menu';
-import { SprytnoLogo, UserAvatarSkeleton } from '@/components/ui';
+import { SprytnoLogo } from '@/components/ui';
 import {
   Navbar as HeroNavbar,
   NavbarBrand,
@@ -61,9 +61,7 @@ export function Navbar() {
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Suspense fallback={<UserAvatarSkeleton />}>
-            <UserMenu />
-          </Suspense>
+          <UserMenu />
         </NavbarItem>
       </NavbarContent>
 

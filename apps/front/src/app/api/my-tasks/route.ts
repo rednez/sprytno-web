@@ -1,4 +1,4 @@
-import { createTasksRepository } from '@/lib/repositories/tasks';
+import { createTasksRepository } from '@/lib/repositories/tasks/factory.server';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {

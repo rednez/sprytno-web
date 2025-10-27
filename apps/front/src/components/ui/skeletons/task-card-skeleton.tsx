@@ -6,7 +6,7 @@ export function TaskCardSkeleton() {
     <Card
       shadow="sm"
       disableRipple
-      className="sm:max-w-sm"
+      className="sm:max-w-sm min-h-32"
     >
       <CardBody className="flex flex-col gap-1">
         <Skeleton className="h-5 w-3/5 rounded-lg" />

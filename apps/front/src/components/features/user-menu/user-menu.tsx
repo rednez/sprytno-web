@@ -1,5 +1,8 @@
 'use client';
 
+import { logout } from '@/actions/auth';
+import { UserAvatarSkeleton } from '@/components/ui';
+import { useMe } from '@/hooks/users';
 import { Avatar } from '@heroui/avatar';
 import { Button } from '@heroui/button';
 import {
@@ -13,17 +16,26 @@ import { User } from '@heroui/user';
 import { MdLogout } from 'react-icons/md';
 import { TbUserEdit } from 'react-icons/tb';
 
-export default function ClientUserMenu({
-  nickname,
-  email,
-  avatarUrl,
-  logout,
-}: {
-  nickname: string | null;
-  email: string;
-  avatarUrl: string | null;
-  logout: () => void;
-}) {
+export function UserMenu() {
+  const { data, isPending, isError } = useMe();
+
+  if (isPending) {
+    return <UserAvatarSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <Avatar
+        color="danger"
+        name="N A"
+      />
+    );
+  }
+
+  const nickname = data?.publicDetails.nickname;
+  const avatarUrl = data?.publicDetails.avatarUrl;
+  const email = data?.privateDetails?.email;
+
   return (
     <Dropdown>
       <DropdownTrigger>

@@ -1,5 +1,5 @@
 import { TaskType } from '@/types';
-import { Card, CardBody } from '@heroui/card';
+import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { TaskDistance } from './task-distance';
 import TaskRepeatingInfo from './task-repeating-info';
@@ -27,37 +27,36 @@ export function TaskCard({
       shadow="sm"
       isPressable
       disableRipple
+      className="min-h-32"
       onPress={() => onPress(id)}
     >
       <CardBody>
-        <div className="flex flex-col gap-1">
-          <div className="text-md font-medium">{title}</div>
-          <div className="text-sm">{description}</div>
-        </div>
-        <div className="flex gap-1 mt-2 items-center">
-          <TaskTypeChip type={type} />
-
-          {distanceMeters && (
-            <>
-              <Divider
-                orientation="vertical"
-                className="h-4"
-              />
-              <TaskDistance meters={distanceMeters} />
-            </>
-          )}
-
-          {!!repeatedDays.length && (
-            <>
-              <Divider
-                orientation="vertical"
-                className="h-4"
-              />
-              <TaskRepeatingInfo repeatedDays={repeatedDays} />
-            </>
-          )}
-        </div>
+        <div className="text-md font-medium line-clamp-1">{title}</div>
+        <div className="text-sm line-clamp-1 mt-2">{description}</div>
       </CardBody>
+      <CardFooter>
+        <TaskTypeChip type={type} />
+
+        {distanceMeters && (
+          <>
+            <Divider
+              orientation="vertical"
+              className="h-4"
+            />
+            <TaskDistance meters={distanceMeters} />
+          </>
+        )}
+
+        {!!repeatedDays.length && (
+          <>
+            <Divider
+              orientation="vertical"
+              className="h-4"
+            />
+            <TaskRepeatingInfo repeatedDays={repeatedDays} />
+          </>
+        )}
+      </CardFooter>
     </Card>
   );
 }

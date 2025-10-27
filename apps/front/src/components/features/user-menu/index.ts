@@ -1,1 +1,1 @@
-export { ServerUserMenu as UserMenu } from './user-menu.server';
+export { UserMenu } from './user-menu';
