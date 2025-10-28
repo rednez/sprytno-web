@@ -1,4 +1,4 @@
-import { createTasksRepository } from '@/lib/repositories/tasks/factory.server';
+import { createTasksRepository } from '@/lib/repositories/tasks';
 import { TasksValidator } from '@/lib/validators';
 import { NextRequest } from 'next/server';
 import * as z from 'zod';

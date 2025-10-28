@@ -44,7 +44,7 @@ export function TaskDetails(params: {
           name={data.user.publicDetails.nickname}
           avatarProps={{
             src: data.user.publicDetails.avatarUrl || '',
-            name: data.user.publicDetails.nickname,
+            name: data.user.publicDetails.nickname || undefined,
           }}
         />
       </CardHeader>

@@ -26,7 +26,7 @@ export class SupabaseUsersRepository implements UsersRepository {
 
     return Result.ok({
       id,
-      isProfileCompleted: nickname && avatarUrl,
+      isProfileCompleted: !!nickname && !!avatarUrl,
       publicDetails: {
         avatarUrl,
         nickname,

@@ -1,13 +1,12 @@
-import { createTasksRepository } from '@/lib/repositories/tasks/factory.server';
-import { NextRequest } from 'next/server';
+import { createTasksRepository } from '@/lib/repositories/tasks';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const repository = await createTasksRepository();
-  const result = await repository.getMyTasks();
+  const { data, ok, error } = await repository.getMyTasks();
 
-  if (!result.ok) {
-    return Response.json({ error: result.error }, { status: 400 });
+  if (!ok) {
+    return Response.json({ error }, { status: 400 });
   }
 
-  return Response.json(result.data);
+  return Response.json(data);
 }

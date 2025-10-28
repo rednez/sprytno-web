@@ -1,4 +1,4 @@
-import { createTasksRepository } from '@/lib/repositories/tasks/factory.server';
+import { createTasksRepository } from '@/lib/repositories/tasks';
 
 export async function GET(
   _: Request,

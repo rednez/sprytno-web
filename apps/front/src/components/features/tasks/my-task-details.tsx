@@ -38,7 +38,7 @@ export function MyTaskDetails(params: { taskId: Promise<number> }) {
           name={data.user.publicDetails.nickname}
           avatarProps={{
             src: data.user.publicDetails.avatarUrl || '',
-            name: data.user.publicDetails.nickname,
+            name: data.user.publicDetails.nickname || undefined,
           }}
         />
       </CardHeader>
