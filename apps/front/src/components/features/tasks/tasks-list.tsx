@@ -1,8 +1,8 @@
 'use client';
 
-import { EmptyState, TaskCard } from '@/components/ui';
+import { TaskCard } from '@/components/ui';
 import { useTasks } from '@/hooks/tasks';
-import { Spinner } from '@heroui/react';
+import { Alert, Spinner } from '@heroui/react';
 
 export function TasksList({
   lat,
@@ -40,14 +40,11 @@ export function TasksList({
           ))}
       </div>
     ) : (
-      emptyState()
+      <Alert
+        title="No tasks found"
+        variant="faded"
+      />
     );
-
-  const emptyState = () => (
-    <EmptyState>
-      <div className="text-base">No tasks found</div>
-    </EmptyState>
-  );
 
   const loader = () => (
     <div className="text-center mt-4">

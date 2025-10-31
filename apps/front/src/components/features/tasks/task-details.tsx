@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  EmptyState,
   TaskDetailsSkeleton,
   TaskDistance,
   TaskRepeatingInfo,
@@ -10,6 +9,7 @@ import {
 import { usePublicTaskDetails } from '@/hooks/tasks';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
+import { Alert } from '@heroui/react';
 import { User } from '@heroui/user';
 import { use } from 'react';
 
@@ -31,9 +31,11 @@ export function TaskDetails(params: {
 
   if (isError) {
     return (
-      <EmptyState>
-        <div>Failed Network request {error.message}</div>
-      </EmptyState>
+      <Alert
+        title="Failed Network request"
+        description={'error.message'}
+        color="danger"
+      />
     );
   }
 

@@ -1,9 +1,10 @@
 'use client';
 
-import { EmptyState, TaskCardSkeleton } from '@/components/ui';
+import { TaskCardSkeleton } from '@/components/ui';
 import { useMyTasks } from '@/hooks/tasks';
 import { useMe } from '@/hooks/users';
 import { Button } from '@heroui/button';
+import { Alert } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 
 export function MyTasksList() {
@@ -27,39 +28,38 @@ export function MyTasksList() {
 
   if (isTasksError) {
     return (
-      <EmptyState>
-        <p>Error loading my tasks</p>
-        <p>{tasksError.message}</p>
-      </EmptyState>
+      <Alert
+        title="Error loading my tasks"
+        description={tasksError.message}
+        color="danger"
+      />
     );
   }
 
   if (!tasks.length) {
-    return (
-      <EmptyState>
-        <p className="mb-4">You have no tasks yet.</p>
-        {me?.isProfileCompleted ? (
+    return me?.isProfileCompleted ? (
+      <Alert
+        title="You have no tasks yet"
+        description="To create one click the button"
+        variant="faded"
+        endContent={<Button variant="flat">Create task</Button>}
+      />
+    ) : (
+      <Alert
+        color="warning"
+        title="You have no tasks yet"
+        description="To create a new task you should complete your profile"
+        variant="faded"
+        endContent={
           <Button
-            color="primary"
-            variant="solid"
+            color="warning"
+            variant="flat"
+            onPress={redirectToProfile}
           >
-            Create task
+            Complete profile
           </Button>
-        ) : (
-          <>
-            <p className="mb-4">
-              To create a new task you should complete your profile
-            </p>
-            <Button
-              color="warning"
-              variant="solid"
-              onPress={redirectToProfile}
-            >
-              Complete profile
-            </Button>
-          </>
-        )}
-      </EmptyState>
+        }
+      />
     );
   }
 

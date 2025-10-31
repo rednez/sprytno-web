@@ -1,6 +1,5 @@
 export { AvatarSelector } from './avatar-selector';
 export { CustomCheckbox } from './custom-checkbox';
-export { EmptyState } from './empty-state';
 export { TaskCardSkeleton } from './skeletons/task-card-skeleton';
 export { TaskDetailsSkeleton } from './skeletons/task-details-skeleton';
 export { UserAvatarSkeleton } from './skeletons/user-avatar-skeleton';

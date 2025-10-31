@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  EmptyState,
   TaskDetailsSkeleton,
   TaskRepeatingInfo,
   TaskTypeChip,
@@ -9,6 +8,7 @@ import {
 import { useMyTaskDetails } from '@/hooks/tasks';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
+import { Alert } from '@heroui/react';
 import { User } from '@heroui/user';
 import { use } from 'react';
 
@@ -22,12 +22,11 @@ export function MyTaskDetails(params: { taskId: Promise<number> }) {
 
   if (isError) {
     return (
-      <EmptyState>
-        <div>
-          <p>Failed Network request: </p>
-          <p>{error.message}</p>
-        </div>
-      </EmptyState>
+      <Alert
+        title="Failed request"
+        description={error.message}
+        color="danger"
+      />
     );
   }
 

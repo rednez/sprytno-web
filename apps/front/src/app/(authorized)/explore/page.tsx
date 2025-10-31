@@ -1,8 +1,9 @@
 'use client';
 
 import { TasksList } from '@/components/features/tasks';
-import { EmptyState, TasksFilters } from '@/components/ui';
+import { TasksFilters } from '@/components/ui';
 import useCoords from '@/hooks/coords';
+import { Alert } from '@heroui/alert';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -43,14 +44,21 @@ export default function ExploreTasks() {
     );
 
   const emptyState = () => (
-    <EmptyState>
-      <div className="flex flex-col gap-2">
-        <div className="text-base">
-          You should allow location access to see tasks around you
-        </div>
-        <Button onPress={getLocation}>Enable location</Button>
-      </div>
-    </EmptyState>
+    <Alert
+      title="Enable Location"
+      description="You should allow location access to see tasks around you"
+      variant="faded"
+      color="warning"
+      endContent={
+        <Button
+          variant="flat"
+          color="warning"
+          onPress={getLocation}
+        >
+          Enable
+        </Button>
+      }
+    />
   );
 
   return (
