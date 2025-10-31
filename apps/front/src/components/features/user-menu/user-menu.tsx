@@ -13,11 +13,17 @@ import {
   DropdownTrigger,
 } from '@heroui/dropdown';
 import { User } from '@heroui/user';
+import { useRouter } from 'next/navigation';
 import { MdLogout } from 'react-icons/md';
 import { TbUserEdit } from 'react-icons/tb';
 
 export function UserMenu() {
   const { data, isPending, isError } = useMe();
+  const router = useRouter();
+
+  function redirectToProfile() {
+    router.push('/complete-profile');
+  }
 
   if (isPending) {
     return <UserAvatarSkeleton />;
@@ -84,13 +90,16 @@ export function UserMenu() {
         </DropdownSection>
 
         <DropdownSection aria-label="Actions">
-          <DropdownItem
-            key="completeProfile"
-            endContent={<TbUserEdit className="text-large" />}
-            className="text-orange-500"
-          >
-            Complete Profile
-          </DropdownItem>
+          {!data.isProfileCompleted ? (
+            <DropdownItem
+              key="completeProfile"
+              endContent={<TbUserEdit className="text-large" />}
+              className="text-orange-500"
+              onPress={redirectToProfile}
+            >
+              Complete Profile
+            </DropdownItem>
+          ) : null}
 
           <DropdownItem
             key="logout"

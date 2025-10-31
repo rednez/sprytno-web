@@ -4,6 +4,7 @@ import { EmptyState, TaskCardSkeleton } from '@/components/ui';
 import { useMyTasks } from '@/hooks/tasks';
 import { useMe } from '@/hooks/users';
 import { Button } from '@heroui/button';
+import { useRouter } from 'next/navigation';
 
 export function MyTasksList() {
   const { data: me } = useMe();
@@ -13,6 +14,12 @@ export function MyTasksList() {
     isError: isTasksError,
     error: tasksError,
   } = useMyTasks();
+
+  const router = useRouter();
+
+  function redirectToProfile() {
+    router.push('/complete-profile');
+  }
 
   if (tasksLoading) {
     return <TaskCardSkeleton />;
@@ -46,6 +53,7 @@ export function MyTasksList() {
             <Button
               color="warning"
               variant="solid"
+              onPress={redirectToProfile}
             >
               Complete profile
             </Button>

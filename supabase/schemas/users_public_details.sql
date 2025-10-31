@@ -18,3 +18,13 @@ create policy "Enable read access for authenticated users"
   for SELECT
   to authenticated
   using (true);
+
+
+create policy "Enable insert for users based on user_id"
+on "public"."users_public_details"
+as PERMISSIVE
+for INSERT
+to public
+with check (
+  (select auth.uid()) = user_id
+);
