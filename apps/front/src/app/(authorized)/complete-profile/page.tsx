@@ -3,6 +3,7 @@
 import { completeProfile } from '@/actions/users';
 import { AvatarSelector } from '@/components/ui';
 import { useMe } from '@/hooks/users';
+import { nicknameRegexp } from '@/utils/regexps';
 import {
   addToast,
   Button,
@@ -74,13 +75,13 @@ export default function Profile() {
             label="Nickname"
             labelPlacement="outside"
             name="nickname"
-            placeholder="Enter your nickname"
-            description="The nickname will be visible for all users"
+            placeholder="Enter your public nickname"
+            description="The nickname can consists from 4-40 letters, numbers, spaces and _ - @ * ( ) ^ ~ & $ # ! '"
             type="text"
             size="lg"
             validate={(value) => {
-              if (value.length < 5) {
-                return 'Nickname must be at least 5 characters long';
+              if (!nicknameRegexp.test(value)) {
+                return `Nickname don't match the pattern: 4-40 letters, numbers, spaces and _ - @ * ( ) ^ ~ & $ # ! '`;
               }
               return null;
             }}
