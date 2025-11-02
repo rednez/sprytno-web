@@ -3,6 +3,7 @@
 import {
   TaskDetailsSkeleton,
   TaskDistance,
+  TaskMap,
   TaskRepeatingInfo,
   TaskTypeChip,
 } from '@/components/ui';
@@ -16,10 +17,12 @@ import { use } from 'react';
 export function TaskDetails(params: {
   taskId: Promise<string>;
   currentCoords: Promise<{ lat: string; lng: string }>;
+  googleMapsApiKey: string;
+  googleMapsMapId: string;
 }) {
   const taskId = use(params.taskId);
   const currentCoords = use(params.currentCoords);
-  const { data, isPending, isError, error } = usePublicTaskDetails({
+  const { data, isPending, isError } = usePublicTaskDetails({
     taskId: parseInt(taskId),
     currentLat: parseFloat(currentCoords.lat),
     currentLng: parseFloat(currentCoords.lng),
@@ -54,9 +57,17 @@ export function TaskDetails(params: {
       <CardBody>
         <h4 className="text-lg font-medium">{data.title}</h4>
         <p className="mt-1 text-base">{data.description}</p>
+
+        <div className="w-full h-80 rounded-2xl overflow-hidden mt-4">
+          <TaskMap
+            apiKey={params.googleMapsApiKey}
+            googleMapsMapId={params.googleMapsMapId}
+            initPosition={{ lat: data.lat, lng: data.lng }}
+          />
+        </div>
       </CardBody>
 
-      <CardFooter className="gap-1">
+      <CardFooter className="gap-2">
         <TaskTypeChip type={data.type} />
         <Divider
           orientation="vertical"
@@ -70,7 +81,10 @@ export function TaskDetails(params: {
               orientation="vertical"
               className="h-4"
             />
-            <TaskRepeatingInfo repeatedDays={data.repeatedDays} />
+            <TaskRepeatingInfo
+              repeatedDays={data.repeatedDays}
+              isFull
+            />
           </>
         )}
       </CardFooter>

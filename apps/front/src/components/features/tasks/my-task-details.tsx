@@ -2,17 +2,21 @@
 
 import {
   TaskDetailsSkeleton,
+  TaskMap,
   TaskRepeatingInfo,
   TaskTypeChip,
 } from '@/components/ui';
 import { useMyTaskDetails } from '@/hooks/tasks';
-import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
+import { Card, CardBody, CardFooter } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { Alert } from '@heroui/react';
-import { User } from '@heroui/user';
 import { use } from 'react';
 
-export function MyTaskDetails(params: { taskId: Promise<number> }) {
+export function MyTaskDetails(params: {
+  taskId: Promise<number>;
+  googleMapsApiKey: string;
+  googleMapsMapId: string;
+}) {
   const taskId = use(params.taskId);
   const { data, isPending, isError, error } = useMyTaskDetails(taskId);
 
@@ -32,27 +36,21 @@ export function MyTaskDetails(params: { taskId: Promise<number> }) {
 
   return (
     <Card className="mt-6 max-w-xl mx-auto">
-      <CardHeader>
-        <User
-          name={data.user.publicDetails.nickname}
-          avatarProps={{
-            src: data.user.publicDetails.avatarUrl || '',
-            name: data.user.publicDetails.nickname || undefined,
-          }}
-        />
-      </CardHeader>
-
       <CardBody>
         <h4 className="text-lg font-medium">{data.title}</h4>
         <p className="mt-1 text-base">{data.description}</p>
+
+        <div className="w-full h-80 rounded-2xl overflow-hidden mt-4">
+          <TaskMap
+            apiKey={params.googleMapsApiKey}
+            googleMapsMapId={params.googleMapsMapId}
+            initPosition={{ lat: data.lat, lng: data.lng }}
+          />
+        </div>
       </CardBody>
 
-      <CardFooter className="gap-1">
+      <CardFooter className="gap-2">
         <TaskTypeChip type={data.type} />
-        <Divider
-          orientation="vertical"
-          className="h-4"
-        />
 
         {!!data.repeatedDays.length && (
           <>
@@ -60,7 +58,10 @@ export function MyTaskDetails(params: { taskId: Promise<number> }) {
               orientation="vertical"
               className="h-4"
             />
-            <TaskRepeatingInfo repeatedDays={data.repeatedDays} />
+            <TaskRepeatingInfo
+              repeatedDays={data.repeatedDays}
+              isFull
+            />
           </>
         )}
       </CardFooter>

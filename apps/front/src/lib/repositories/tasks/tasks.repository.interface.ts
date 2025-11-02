@@ -3,7 +3,9 @@ import {
   MyTaskDetails,
   RepositoryResult,
   Task,
+  TaskDay,
   TaskDetails,
+  TaskType,
 } from '@/types';
 
 export interface TasksRepository {
@@ -23,4 +25,13 @@ export interface TasksRepository {
   getMyTasks(): Promise<RepositoryResult<MyTask[]>>;
 
   getMyTaskDetails(taskId: number): Promise<RepositoryResult<MyTaskDetails>>;
+
+  createTask(params: {
+    title: string;
+    description?: string;
+    type: TaskType;
+    repeatedDays: TaskDay[];
+    lat: number;
+    lng: number;
+  }): Promise<RepositoryResult<null>>;
 }

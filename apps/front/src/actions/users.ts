@@ -1,30 +1,13 @@
 'use server';
 
-import { createClient } from '@/lib/utils/supabase/server';
+import { createUsersRepository } from '@/lib/repositories/users';
 
-export async function completeProfile({
-  nickname,
-  avatarUrl,
-}: {
+export async function completeProfile(params: {
   nickname: string;
   avatarUrl: string;
 }) {
-  const supabase = await createClient();
+  const repository = await createUsersRepository();
+  const { error } = await repository.completeProfile(params);
 
-  const { error } = await supabase
-    .from('users_public_details')
-    .insert({ nickname: nickname, avatar_url: avatarUrl })
-    .select();
-
-  if (error) {
-    if (error.code === '23505') {
-      return {
-        errors: { nickname: 'The nickname is already taken', other: null },
-      };
-    } else {
-      return { errors: { other: error.message, nickname: null } };
-    }
-  }
-
-  return { errors: null };
+  return error ? { errors: error.toObject() } : { errors: null };
 }

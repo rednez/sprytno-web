@@ -21,7 +21,7 @@ export default function Profile() {
   const [nickname, setNickname] = useState<string>('');
   const [avatarUrl, setAvatarUrl] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false);
-  const [errors, setErrors] = useState({});
+  const [formErrors, setFormErrors] = useState({});
 
   const { refetch } = useMe();
   const router = useRouter();
@@ -33,12 +33,12 @@ export default function Profile() {
     if (!!nickname && !!avatarUrl) {
       const { errors } = await completeProfile({ nickname, avatarUrl });
       if (errors) {
-        setErrors(errors);
+        setFormErrors(errors);
 
-        if (errors.other) {
+        if (!errors.nickname) {
           addToast({
             title: 'Failed operation',
-            description: errors.other,
+            description: errors.message,
             color: 'warning',
           });
         }
@@ -66,7 +66,7 @@ export default function Profile() {
       <CardBody>
         <Form
           className="flex flex-col"
-          validationErrors={errors}
+          validationErrors={formErrors}
           onSubmit={onSubmit}
         >
           <Input
@@ -79,6 +79,7 @@ export default function Profile() {
             description="The nickname can consists from 4-40 letters, numbers, spaces and _ - @ * ( ) ^ ~ & $ # ! '"
             type="text"
             size="lg"
+            maxLength={40}
             validate={(value) => {
               if (!nicknameRegexp.test(value)) {
                 return `Nickname don't match the pattern: 4-40 letters, numbers, spaces and _ - @ * ( ) ^ ~ & $ # ! '`;

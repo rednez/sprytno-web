@@ -16,7 +16,7 @@ values
     'offer', 
     'Task 1', 
     'Description for Task 1', 
-    '{"son", "mon", "tue", "wed", "thu", "fri", "sat"}', 
+    '{"sun", "mon", "tue", "wed", "thu", "fri", "sat"}', 
     gis.st_point(13.81585427398764, 50.63616250792455)
   ),
   ((select id from auth.users where email = 'user1@mail.com'), 

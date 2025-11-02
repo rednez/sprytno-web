@@ -1,6 +1,6 @@
 'use client';
 
-import { TaskCardSkeleton } from '@/components/ui';
+import { TaskCard, TaskCardSkeleton } from '@/components/ui';
 import { useMyTasks } from '@/hooks/tasks';
 import { useMe } from '@/hooks/users';
 import { Button } from '@heroui/button';
@@ -18,8 +18,16 @@ export function MyTasksList() {
 
   const router = useRouter();
 
-  function redirectToProfile() {
+  function toCompleteProfile() {
     router.push('/complete-profile');
+  }
+
+  function toCreateMyTask() {
+    router.push('/my-tasks/create');
+  }
+
+  function toTaskDetails(id: number) {
+    router.push(`/my-tasks/${id}`);
   }
 
   if (tasksLoading) {
@@ -42,7 +50,14 @@ export function MyTasksList() {
         title="You have no tasks yet"
         description="To create one click the button"
         variant="faded"
-        endContent={<Button variant="flat">Create task</Button>}
+        endContent={
+          <Button
+            variant="flat"
+            onPress={toCreateMyTask}
+          >
+            Create task
+          </Button>
+        }
       />
     ) : (
       <Alert
@@ -54,7 +69,7 @@ export function MyTasksList() {
           <Button
             color="warning"
             variant="flat"
-            onPress={redirectToProfile}
+            onPress={toCompleteProfile}
           >
             Complete profile
           </Button>
@@ -65,11 +80,12 @@ export function MyTasksList() {
 
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-      {tasks.map((task) => (
-        <div>
-          <p>title {task.title}</p>
-          <p>email {me?.privateDetails.email}</p>
-        </div>
+      {tasks.map(({ id, title, description, repeatedDays, type }) => (
+        <TaskCard
+          key={id}
+          {...{ id, title, description, repeatedDays, type }}
+          onPress={toTaskDetails}
+        />
       ))}
     </div>
   );

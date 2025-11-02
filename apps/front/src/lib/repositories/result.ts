@@ -1,5 +1,5 @@
 import { RepositoryResult } from '@/types';
-import * as z from 'zod';
+import { ResultError } from './result-error';
 
 export class Result {
   static ok<T>(data: T): RepositoryResult<T> {
@@ -10,21 +10,19 @@ export class Result {
     };
   }
 
-  static error<T>(message: string): RepositoryResult<T> {
+  static error<T>(message: string, type?: string): RepositoryResult<T> {
     return {
       ok: false,
-      error: message,
+      error: new ResultError(message, type),
       data: null,
     };
   }
 
   static fromError<T>(error: unknown): RepositoryResult<T> {
-    if (error instanceof z.ZodError) {
-      return Result.error(`Parser: ${JSON.stringify(error.issues)}`);
-    } else {
-      return Result.error(
-        error instanceof Error ? error.message : 'Unexpected error',
-      );
-    }
+    return {
+      ok: false,
+      error: ResultError.fromError(error),
+      data: null,
+    };
   }
 }

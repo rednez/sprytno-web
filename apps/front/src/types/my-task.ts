@@ -1,9 +1,9 @@
-import { TaskType } from './task';
+import { TaskDay, TaskType } from './task';
 
 export interface MyTask {
   id: number;
   title: string;
   description: string | null;
   type: TaskType;
-  repeatedDays: string[];
+  repeatedDays: TaskDay[];
 }

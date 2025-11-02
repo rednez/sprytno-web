@@ -4,7 +4,9 @@ import {
   MyTaskDetails,
   RepositoryResult,
   Task,
+  TaskDay,
   TaskDetails,
+  TaskType,
 } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Result } from '../result';
@@ -42,7 +44,7 @@ export class SupabaseTasksRepository implements TasksRepository {
     const { data, error } = await rpcQuery;
 
     if (error) {
-      return Result.error(`Supabase: ${error.message}`);
+      return Result.error(error.message, 'db');
     }
 
     try {
@@ -65,10 +67,10 @@ export class SupabaseTasksRepository implements TasksRepository {
     });
 
     if (error) {
-      return Result.error(`Supabase: ${error.message}`);
+      return Result.error(error.message, 'db');
     }
     if (!data.length) {
-      return Result.error('Supabase: no data');
+      return Result.error('no data', 'db');
     }
 
     try {
@@ -82,7 +84,7 @@ export class SupabaseTasksRepository implements TasksRepository {
   async getMyTasks(): Promise<RepositoryResult<MyTask[]>> {
     const { data, error } = await this.supabase.from('my_tasks').select('*');
     if (error) {
-      return Result.error(`Supabase: ${error.message}`);
+      return Result.error(error.message, 'db');
     }
 
     try {
@@ -101,10 +103,10 @@ export class SupabaseTasksRepository implements TasksRepository {
     });
 
     if (error) {
-      return Result.error(`Supabase: ${error.message}`);
+      return Result.error(error.message, 'db');
     }
     if (!data.length) {
-      return Result.error('Supabase: no data');
+      return Result.error('no data', 'db');
     }
 
     try {
@@ -113,5 +115,38 @@ export class SupabaseTasksRepository implements TasksRepository {
     } catch (error) {
       return Result.fromError(error);
     }
+  }
+
+  async createTask({
+    title,
+    description,
+    type,
+    repeatedDays,
+    lat,
+    lng,
+  }: {
+    title: string;
+    description?: string;
+    type: TaskType;
+    repeatedDays: TaskDay[];
+    lat: number;
+    lng: number;
+  }): Promise<RepositoryResult<null>> {
+    const { error } = await this.supabase
+      .from('tasks')
+      .insert({
+        title,
+        description: description || null,
+        type,
+        repeated_days: repeatedDays,
+        location: `POINT(${lng} ${lat})`,
+      })
+      .select();
+
+    if (error) {
+      return Result.error(error.message, 'db');
+    }
+
+    return Result.ok(null);
   }
 }

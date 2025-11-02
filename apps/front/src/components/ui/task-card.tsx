@@ -1,4 +1,4 @@
-import { TaskType } from '@/types';
+import { TaskDay, TaskType } from '@/types';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { TaskDistance } from './task-distance';
@@ -18,7 +18,7 @@ export function TaskCard({
   title: string;
   description: string | null;
   type: TaskType;
-  repeatedDays: string[];
+  repeatedDays: TaskDay[];
   distanceMeters?: number;
   onPress: (taskId: number) => void;
 }) {
@@ -34,7 +34,7 @@ export function TaskCard({
         <div className="text-md font-medium line-clamp-1">{title}</div>
         <div className="text-sm line-clamp-1 mt-2">{description}</div>
       </CardBody>
-      <CardFooter>
+      <CardFooter className="gap-2">
         <TaskTypeChip type={type} />
 
         {distanceMeters && (
@@ -47,15 +47,11 @@ export function TaskCard({
           </>
         )}
 
-        {!!repeatedDays.length && (
-          <>
-            <Divider
-              orientation="vertical"
-              className="h-4"
-            />
-            <TaskRepeatingInfo repeatedDays={repeatedDays} />
-          </>
-        )}
+        <Divider
+          orientation="vertical"
+          className="h-4"
+        />
+        <TaskRepeatingInfo repeatedDays={repeatedDays} />
       </CardFooter>
     </Card>
   );
