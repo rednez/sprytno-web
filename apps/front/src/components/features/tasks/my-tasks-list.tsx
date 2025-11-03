@@ -6,6 +6,7 @@ import { useMe } from '@/hooks/users';
 import { Button } from '@heroui/button';
 import { Alert } from '@heroui/react';
 import { useRouter } from 'next/navigation';
+import { MdAdd } from 'react-icons/md';
 
 export function MyTasksList() {
   const { data: me } = useMe();
@@ -79,7 +80,7 @@ export function MyTasksList() {
   }
 
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 items-center">
       {tasks.map(({ id, title, description, repeatedDays, type }) => (
         <TaskCard
           key={id}
@@ -87,6 +88,16 @@ export function MyTasksList() {
           onPress={toTaskDetails}
         />
       ))}
+
+      <Button
+        color="primary"
+        variant="flat"
+        className="w-[130]"
+        startContent={<MdAdd size={20} />}
+        onPress={toCreateMyTask}
+      >
+        Add new
+      </Button>
     </div>
   );
 }
