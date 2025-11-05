@@ -2,7 +2,7 @@
 
 import { TaskCard } from '@/components/ui';
 import { useTasks } from '@/hooks/tasks';
-import { Alert, Spinner } from '@heroui/react';
+import { Alert, Button, Spinner } from '@heroui/react';
 
 export function TasksList({
   lat,
@@ -17,7 +17,32 @@ export function TasksList({
   distance: number;
   onTaskPress: (taskId: number) => void;
 }) {
-  const { data, isPending } = useTasks({ lat, lng, type, distance });
+  const { data, isPending, error, refetch } = useTasks({
+    lat,
+    lng,
+    type,
+    distance,
+  });
+
+  if (error) {
+    return (
+      <Alert
+        title="Failed request"
+        description={error.message}
+        variant="faded"
+        color="danger"
+        endContent={
+          <Button
+            variant="flat"
+            color="danger"
+            onPress={() => refetch()}
+          >
+            Try Again
+          </Button>
+        }
+      />
+    );
+  }
 
   const loadedData = () =>
     data?.length ? (

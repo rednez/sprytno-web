@@ -14,7 +14,7 @@ import NavbarLinks from './navbar-top-links';
 const pages = [
   { name: 'Explore', href: '/explore' },
   { name: 'My Tasks', href: '/my-tasks' },
-  { name: 'Favorites', href: '/favorites' },
+  { name: 'Interested Tasks', href: '/interested-tasks' },
 ];
 
 export function Navbar() {

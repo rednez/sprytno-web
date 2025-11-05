@@ -31,15 +31,15 @@ export default function Profile() {
     setSubmitted(true);
 
     if (!!nickname && !!avatarUrl) {
-      const { errors } = await completeProfile({ nickname, avatarUrl });
-      if (errors) {
-        setFormErrors(errors);
-
-        if (!errors.nickname) {
+      const { error } = await completeProfile({ nickname, avatarUrl });
+      if (error) {
+        if (error.details.hasFields) {
+          setFormErrors(error.details.fields);
+        } else {
           addToast({
             title: 'Failed operation',
-            description: errors.message,
-            color: 'warning',
+            description: error.message,
+            color: 'danger',
           });
         }
       } else {

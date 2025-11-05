@@ -1,7 +1,8 @@
 import { createTasksRepository } from '@/lib/repositories/tasks';
-import { TasksValidator } from '@/lib/validators';
+import { ErrorParser, UnexpectedError } from '@/lib/utils/errors';
+import { createTasksParamsValidator } from '@/lib/validators/tasks';
+
 import { NextRequest } from 'next/server';
-import * as z from 'zod';
 
 export async function GET(
   request: NextRequest,
@@ -11,29 +12,38 @@ export async function GET(
   const repository = await createTasksRepository();
 
   try {
-    const params = TasksValidator.validatePublicTasksDetailsParams(
+    const validator = createTasksParamsValidator();
+    const validatedParams = validator.validatePublicTasksDetailsParams(
       request.nextUrl.searchParams,
     );
-    const result = await repository.getPublicTaskDetails({
-      taskId: parseInt(id),
-      ...params,
-    });
 
-    if (!result.ok) {
-      return Response.json({ error: result.error }, { status: 400 });
-    }
+    if (validatedParams.ok) {
+      const result = await repository.getPublicTaskDetails({
+        taskId: parseInt(id),
+        ...validatedParams.data,
+      });
 
-    return Response.json(result.data);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return Response.json({ error: error.issues }, { status: 400 });
+      if (result.ok) {
+        return Response.json(result.data);
+      } else {
+        return Response.json(ErrorParser.fromError(result.error).parse(), {
+          status: 400,
+        });
+      }
     } else {
       return Response.json(
+        ErrorParser.fromError(validatedParams.error).parse(),
         {
-          error: error instanceof Error ? error.message : 'Unexpected error',
+          status: 400,
         },
-        { status: 500 },
       );
     }
+  } catch (error) {
+    return Response.json(
+      ErrorParser.fromError(new UnexpectedError(error)).parse(),
+      {
+        status: 500,
+      },
+    );
   }
 }

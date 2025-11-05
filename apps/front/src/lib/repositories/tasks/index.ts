@@ -1,2 +1,2 @@
 export * from './factory';
-export * from './tasks.repository.interface';
+export * from './tasks-repository.interface';

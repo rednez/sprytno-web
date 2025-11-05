@@ -56,7 +56,6 @@ schema_paths = [
   "./schemas/friends.sql",
   "./schemas/users_private_details.sql",
   "./schemas/users_public_details.sql",
-  "./schemas/triggers.sql",
   "./schemas/*.sql",
 ]
 

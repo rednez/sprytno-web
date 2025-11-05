@@ -1,2 +1,2 @@
 export * from './factory';
-export * from './users.repository.interface';
+export * from './users-repository.interface';

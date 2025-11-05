@@ -1,7 +1,7 @@
 import {
   MyTask,
   MyTaskDetails,
-  RepositoryResult,
+  Result,
   Task,
   TaskDay,
   TaskDetails,
@@ -14,24 +14,25 @@ export interface TasksRepository {
     lng: number;
     type: 'offers' | 'requests' | 'all';
     distance: number;
-  }): Promise<RepositoryResult<Task[]>>;
+  }): Promise<Result<Task[]>>;
 
   getPublicTaskDetails(params: {
     taskId: number;
     currentLat: number;
     currentLng: number;
-  }): Promise<RepositoryResult<TaskDetails>>;
+  }): Promise<Result<TaskDetails>>;
 
-  getMyTasks(): Promise<RepositoryResult<MyTask[]>>;
+  getMyTasks(): Promise<Result<MyTask[]>>;
 
-  getMyTaskDetails(taskId: number): Promise<RepositoryResult<MyTaskDetails>>;
+  getMyTaskDetails(taskId: number): Promise<Result<MyTaskDetails>>;
 
   createTask(params: {
     title: string;
     description?: string;
     type: TaskType;
     repeatedDays: TaskDay[];
-    lat: number;
-    lng: number;
-  }): Promise<RepositoryResult<null>>;
+    location: { lat: number; lng: number };
+  }): Promise<Result<null>>;
+
+  markTaskAsInterested(taskId: number): Promise<Result<null>>;
 }

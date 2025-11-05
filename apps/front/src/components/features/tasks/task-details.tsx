@@ -8,11 +8,12 @@ import {
   TaskTypeChip,
 } from '@/components/ui';
 import { usePublicTaskDetails } from '@/hooks/tasks';
-import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
+import { Card, CardBody, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { Alert } from '@heroui/react';
 import { User } from '@heroui/user';
 import { use } from 'react';
+import { TaskInterestStatus } from './task-interest-status';
 
 export function TaskDetails(params: {
   taskId: Promise<string>;
@@ -65,29 +66,35 @@ export function TaskDetails(params: {
             initPosition={{ lat: data.lat, lng: data.lng }}
           />
         </div>
-      </CardBody>
 
-      <CardFooter className="gap-2">
-        <TaskTypeChip type={data.type} />
-        <Divider
-          orientation="vertical"
-          className="h-4"
+        <div className="flex flex-row gap-2 items-center mt-5">
+          <TaskTypeChip type={data.type} />
+          <Divider
+            orientation="vertical"
+            className="h-4"
+          />
+          <TaskDistance meters={data.distanceMeters} />
+
+          {!!data.repeatedDays.length && (
+            <>
+              <Divider
+                orientation="vertical"
+                className="h-4"
+              />
+              <TaskRepeatingInfo
+                repeatedDays={data.repeatedDays}
+                isFull
+              />
+            </>
+          )}
+        </div>
+
+        <TaskInterestStatus
+          taskId={parseInt(taskId)}
+          status={data.interest?.status}
+          updatedAt={data.interest?.updatedAt}
         />
-        <TaskDistance meters={data.distanceMeters} />
-
-        {!!data.repeatedDays.length && (
-          <>
-            <Divider
-              orientation="vertical"
-              className="h-4"
-            />
-            <TaskRepeatingInfo
-              repeatedDays={data.repeatedDays}
-              isFull
-            />
-          </>
-        )}
-      </CardFooter>
+      </CardBody>
     </Card>
   );
 }

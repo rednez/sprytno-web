@@ -8,10 +8,10 @@ export function useMe() {
     queryKey: ['me'],
     queryFn: async () => {
       const response = await fetch('/api/users/me');
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
       return data as Me;
     },
     staleTime: Infinity,

@@ -1,19 +1,20 @@
-import { Me, RepositoryResult } from '@/types';
+import { FormDataValidationError } from '@/lib/utils/errors';
+import { resultError, resultOk } from '@/lib/utils/result';
+import { Me, Result } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { Result } from '../result';
-import { UsersRepository } from './users.repository.interface';
+import { UsersRepository } from './users-repository.interface';
 
 export class SupabaseUsersRepository implements UsersRepository {
   constructor(private supabase: SupabaseClient) {}
 
-  async getMe(): Promise<RepositoryResult<Me>> {
+  async getMe(): Promise<Result<Me>> {
     const { data, error } = await this.supabase.from('my_details').select('*');
 
     if (error) {
-      return Result.error(error.message, 'db');
+      return resultError(error);
     }
-    if (!data || data.length === 0) {
-      return Result.error('User not found', 'user_not_found');
+    if (!data?.length) {
+      return resultError(new Error('User not found'));
     }
 
     const {
@@ -24,7 +25,7 @@ export class SupabaseUsersRepository implements UsersRepository {
       phone,
     } = data[0];
 
-    return Result.ok({
+    return resultOk({
       id,
       isProfileCompleted: !!nickname && !!avatarUrl,
       publicDetails: {
@@ -45,7 +46,7 @@ export class SupabaseUsersRepository implements UsersRepository {
   }: {
     nickname: string;
     avatarUrl: string;
-  }): Promise<RepositoryResult<Me>> {
+  }): Promise<Result<Me>> {
     const { error } = await this.supabase
       .from('users_public_details')
       .insert({ nickname, avatar_url: avatarUrl })
@@ -53,9 +54,13 @@ export class SupabaseUsersRepository implements UsersRepository {
 
     if (error) {
       if (error.code === '23505') {
-        return Result.error('The nickname is already taken', 'nickname');
+        return resultError(
+          new FormDataValidationError({
+            nickname: ['The nickname is already taken'],
+          }),
+        );
       } else {
-        return Result.error(error.message, 'db');
+        return resultError(error);
       }
     }
 

@@ -1,4 +1,5 @@
 import { createTasksRepository } from '@/lib/repositories/tasks';
+import { ErrorParser } from '@/lib/utils/errors';
 
 export async function GET(
   _: Request,
@@ -6,11 +7,13 @@ export async function GET(
 ) {
   const { id } = await params;
   const repository = await createTasksRepository();
-  const result = await repository.getMyTaskDetails(parseInt(id));
+  const { error, data, ok } = await repository.getMyTaskDetails(parseInt(id));
 
-  if (!result.ok) {
-    return Response.json({ error: result.error }, { status: 400 });
+  if (!ok) {
+    return Response.json(ErrorParser.fromError(error).parse(), {
+      status: 400,
+    });
   }
 
-  return Response.json(result.data);
+  return Response.json(data);
 }

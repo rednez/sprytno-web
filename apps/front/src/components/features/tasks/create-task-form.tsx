@@ -34,6 +34,7 @@ export function CreateTaskForm({
   googleMapsApiKey: string;
   googleMapsMapId: string;
 }) {
+  const [counter, setCounter] = useState(0);
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [type, setType] = useState<'request' | 'offer' | null>(null);
@@ -52,23 +53,24 @@ export function CreateTaskForm({
     setSubmitted(true);
 
     if (position) {
-      const { errors } = await createTask({
+      const { error } = await createTask({
         title,
         description: description,
         type: type!,
         repeatedDays: repeatedDays as TaskDay[],
-        lat: position.lat,
-        lng: position.lng,
+        location: { lat: position.lat, lng: position.lng },
       });
 
-      if (errors) {
-        setFormErrors(errors);
-
-        addToast({
-          title: 'Failed operation',
-          description: errors.message,
-          color: 'warning',
-        });
+      if (error) {
+        if (error.details.hasFields) {
+          setFormErrors(error.details.fields);
+        } else {
+          addToast({
+            title: 'Failed operation',
+            description: error.message,
+            color: 'warning',
+          });
+        }
       } else {
         await refetch();
 
@@ -89,6 +91,10 @@ export function CreateTaskForm({
     }
   };
 
+  function click() {
+    setCounter(counter + 1);
+  }
+
   return (
     <Form
       className="flex flex-col gap-7"
@@ -98,23 +104,23 @@ export function CreateTaskForm({
       <div className="w-full flex flex-col gap-4">
         <Input
           value={title}
+          name="title"
           isRequired
           label="Title"
           labelPlacement="outside"
           placeholder="Enter task title"
           minLength={5}
           maxLength={200}
-          name="title"
           type="text"
           onValueChange={setTitle}
         />
 
         <Textarea
           value={description}
+          name="description"
           label="Description"
           labelPlacement="outside"
           placeholder="Enter task description"
-          name="description"
           type="text"
           minLength={10}
           maxLength={1000}
@@ -124,6 +130,7 @@ export function CreateTaskForm({
 
       <RadioGroup
         value={type}
+        name="type"
         isRequired
         label="Select task type"
         description="Set Request if you need help, or Offer if you can help others"
@@ -136,6 +143,7 @@ export function CreateTaskForm({
 
       <CheckboxGroup
         value={repeatedDays}
+        name="repeatedDays"
         label="Select days the task will repeat"
         description="Don't select anything for daily repetition"
         orientation="horizontal"
@@ -157,7 +165,7 @@ export function CreateTaskForm({
       >
         <div className="flex gap-0.5">
           <div
-            className={`text-base text-foreground-500  
+            className={`text-base text-foreground-500
             ${!position && submitted ? 'text-rose-500' : ''}`}
           >
             Select task location
@@ -165,7 +173,7 @@ export function CreateTaskForm({
           <div className="text-rose-600">*</div>
         </div>
         <div
-          className={`text-sm text-foreground-400 mb-2  
+          className={`text-sm text-foreground-400 mb-2
             ${!position && submitted ? 'text-rose-500' : ''}`}
         >
           Click on the map to a location. The task location will be used on

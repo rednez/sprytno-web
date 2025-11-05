@@ -33,7 +33,7 @@ create policy "Enable insert for users based on user_id"
   on "public"."tasks"
   as PERMISSIVE
   for INSERT
-  to public
+  to authenticated
   with check ((select auth.uid()) = user_id);
 
 create or replace function get_nearby_tasks (

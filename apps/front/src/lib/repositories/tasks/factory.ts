@@ -1,7 +1,7 @@
 import { ZodTasksParser } from '@/lib/parsers/tasks';
 import { createClient } from '@/lib/utils/supabase/server';
-import { SupabaseTasksRepository } from './supabase-tasks.repository';
-import { TasksRepository } from './tasks.repository.interface';
+import { SupabaseTasksRepository } from './supabase-tasks-repository';
+import { TasksRepository } from './tasks-repository.interface';
 
 export async function createTasksRepository(): Promise<TasksRepository> {
   const supabase = await createClient();

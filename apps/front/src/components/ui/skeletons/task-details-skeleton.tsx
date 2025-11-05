@@ -11,6 +11,7 @@ export function TaskDetailsSkeleton() {
         <div className="w-full flex flex-col gap-2">
           <Skeleton className="h-5 w-3/5 rounded-lg" />
           <Skeleton className="h-3 w-4/5 rounded-lg mt-2" />
+          <Skeleton className="h-80 w-full rounded-2xl mt-2" />
           <div className="mt-2 flex gap-2">
             <Skeleton className="h-3 w-8 rounded-lg" />
             <Skeleton className="h-3 w-8 rounded-lg" />

@@ -1,16 +1,16 @@
 import { TasksParser } from '@/lib/parsers/tasks';
+import { resultError, resultOk } from '@/lib/utils/result';
 import {
   MyTask,
   MyTaskDetails,
-  RepositoryResult,
+  Result,
   Task,
   TaskDay,
   TaskDetails,
   TaskType,
 } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { Result } from '../result';
-import { TasksRepository } from './tasks.repository.interface';
+import { TasksRepository } from './tasks-repository.interface';
 
 export class SupabaseTasksRepository implements TasksRepository {
   constructor(
@@ -28,7 +28,7 @@ export class SupabaseTasksRepository implements TasksRepository {
     lng: number;
     type: 'offers' | 'requests' | 'all';
     distance: number;
-  }): Promise<RepositoryResult<Task[]>> {
+  }): Promise<Result<Task[]>> {
     let rpcQuery = this.supabase.rpc('get_nearby_tasks', {
       user_lat: lat,
       user_lng: lng,
@@ -44,77 +44,70 @@ export class SupabaseTasksRepository implements TasksRepository {
     const { data, error } = await rpcQuery;
 
     if (error) {
-      return Result.error(error.message, 'db');
+      return resultError(error);
     }
 
-    try {
-      const parsedData = this.tasksParser.parsePublicTasks(data);
-      return Result.ok(parsedData);
-    } catch (error) {
-      return Result.fromError(error);
-    }
+    return this.tasksParser.parsePublicTasks(data);
   }
 
   async getPublicTaskDetails(params: {
     taskId: number;
     currentLat: number;
     currentLng: number;
-  }): Promise<RepositoryResult<TaskDetails>> {
-    const { data, error } = await this.supabase.rpc('get_task_details', {
+  }): Promise<Result<TaskDetails>> {
+    const detailsQuery = this.supabase.rpc('get_task_details', {
       task_id: params.taskId,
       current_lat: params.currentLat,
       current_lng: params.currentLng,
     });
 
-    if (error) {
-      return Result.error(error.message, 'db');
+    const interestQuery = this.supabase
+      .from('tasks_interests')
+      .select('status, updated_at')
+      .eq('task_id', params.taskId);
+
+    const [
+      { data: detailsData, error: detailsError },
+      { data: interestData, error: interestError },
+    ] = await Promise.all([detailsQuery, interestQuery]);
+
+    if (detailsError) {
+      return resultError(detailsError);
     }
-    if (!data.length) {
-      return Result.error('no data', 'db');
+    if (interestError) {
+      return resultError(interestError);
+    }
+    if (!detailsData?.length) {
+      return resultError(new Error('Task not found'));
     }
 
-    try {
-      const parsedData = this.tasksParser.parsePublicTaskDetails(data[0]);
-      return Result.ok(parsedData);
-    } catch (error) {
-      return Result.fromError(error);
-    }
+    return this.tasksParser.parsePublicTaskDetails({
+      ...detailsData[0],
+      interest: !!interestData.length ? interestData[0] : null,
+    });
   }
 
-  async getMyTasks(): Promise<RepositoryResult<MyTask[]>> {
+  async getMyTasks(): Promise<Result<MyTask[]>> {
     const { data, error } = await this.supabase.from('my_tasks').select('*');
     if (error) {
-      return Result.error(error.message, 'db');
+      return resultError(error);
     }
-
-    try {
-      const parsedData = this.tasksParser.parseMyTasks(data);
-      return Result.ok(parsedData);
-    } catch (error) {
-      return Result.fromError(error);
-    }
+    return this.tasksParser.parseMyTasks(data);
   }
 
-  async getMyTaskDetails(
-    taskId: number,
-  ): Promise<RepositoryResult<MyTaskDetails>> {
+  async getMyTaskDetails(taskId: number): Promise<Result<MyTaskDetails>> {
     const { data, error } = await this.supabase.rpc('get_my_task_details', {
       task_id: taskId,
     });
 
     if (error) {
-      return Result.error(error.message, 'db');
+      return resultError(error);
     }
-    if (!data.length) {
-      return Result.error('no data', 'db');
+    if (!data?.length) {
+      return resultError(new Error('Item not found'));
     }
 
-    try {
-      const parsedData = this.tasksParser.parseMyTaskDetails(data[0]);
-      return Result.ok(parsedData);
-    } catch (error) {
-      return Result.fromError(error);
-    }
+    return this.tasksParser.parseMyTaskDetails(data[0]);
   }
 
   async createTask({
@@ -122,16 +115,14 @@ export class SupabaseTasksRepository implements TasksRepository {
     description,
     type,
     repeatedDays,
-    lat,
-    lng,
+    location: { lat, lng },
   }: {
     title: string;
     description?: string;
     type: TaskType;
     repeatedDays: TaskDay[];
-    lat: number;
-    lng: number;
-  }): Promise<RepositoryResult<null>> {
+    location: { lat: number; lng: number };
+  }): Promise<Result<null>> {
     const { error } = await this.supabase
       .from('tasks')
       .insert({
@@ -144,9 +135,22 @@ export class SupabaseTasksRepository implements TasksRepository {
       .select();
 
     if (error) {
-      return Result.error(error.message, 'db');
+      return resultError(error);
     }
 
-    return Result.ok(null);
+    return resultOk(null);
+  }
+
+  async markTaskAsInterested(taskId: number): Promise<Result<null>> {
+    const { error } = await this.supabase
+      .from('tasks_interests')
+      .insert({ task_id: taskId })
+      .select();
+
+    if (error) {
+      return resultError(error);
+    }
+
+    return resultOk(null);
   }
 }

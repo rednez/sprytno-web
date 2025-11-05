@@ -24,7 +24,7 @@ create policy "Enable insert for users based on user_id"
 on "public"."users_public_details"
 as PERMISSIVE
 for INSERT
-to public
+to authenticated
 with check (
   (select auth.uid()) = user_id
 );

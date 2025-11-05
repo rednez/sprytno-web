@@ -28,10 +28,10 @@ export function useTasks({
       }).toString();
 
       const response = await fetch(`/api/tasks?${queryString}`);
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
       return data as Task[];
     },
   });
@@ -54,10 +54,10 @@ export function usePublicTaskDetails({
         currentLng: String(currentLng),
       }).toString();
       const response = await fetch(`/api/tasks/${taskId}?${queryString}`);
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
       return data as TaskDetails;
     },
   });
@@ -68,10 +68,10 @@ export function useMyTasks() {
     queryKey: ['myTasks'],
     queryFn: async () => {
       const response = await fetch(`/api/my-tasks`);
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
       return data as MyTask[];
     },
   });
@@ -82,10 +82,10 @@ export function useMyTaskDetails(taskId: number) {
     queryKey: ['myTaskDetails', taskId],
     queryFn: async () => {
       const response = await fetch(`/api/my-tasks/${taskId}`);
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
       return data as MyTaskDetails;
     },
   });

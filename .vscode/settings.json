@@ -5,5 +5,5 @@
     }
   ],
   "npm.exclude": "**/apps/**",
-  "cSpell.words": ["Pressable", "uidotdev", "usehooks"]
+  "cSpell.words": ["Postgrest", "Pressable", "uidotdev", "usehooks"]
 }
