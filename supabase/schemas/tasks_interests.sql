@@ -11,16 +11,18 @@ create table public.tasks_interests (
   constraint tasks_interests_task_user_unique unique (task_id, user_id),
   constraint tasks_interests_task_id_fkey foreign KEY (task_id) references tasks (id) on update CASCADE on delete CASCADE,
   constraint tasks_interests_user_id_fkey foreign KEY (user_id) references auth.users (id) on update CASCADE on delete CASCADE
-)
+);
 
-alter policy "Enable users to view their own data only"
+ALTER TABLE tasks_interests ENABLE ROW LEVEL SECURITY;
+
+create policy "Enable users to view their own data only"
 on "public"."tasks_interests"
 to authenticated
 using (
   (( SELECT auth.uid() AS uid) = user_id)
 );
 
-alter policy "Enable insert for users based on user_id"
+create policy "Enable insert for users based on user_id"
 on "public"."tasks_interests"
 to authenticated
 with check (
