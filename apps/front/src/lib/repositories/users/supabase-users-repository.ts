@@ -23,11 +23,12 @@ export class SupabaseUsersRepository implements UsersRepository {
       avatar_url: avatarUrl,
       email,
       phone,
+      is_profile_completed: isProfileCompleted,
     } = data[0];
 
     return resultOk({
       id,
-      isProfileCompleted: !!nickname && !!avatarUrl,
+      isProfileCompleted,
       publicDetails: {
         avatarUrl,
         nickname,
