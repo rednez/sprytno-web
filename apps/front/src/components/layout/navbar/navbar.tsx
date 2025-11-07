@@ -54,7 +54,9 @@ export function Navbar() {
         className="hidden sm:flex gap-4"
         justify="center"
       >
-        <NavbarLinks pages={pages} />
+        <Suspense>
+          <NavbarLinks pages={pages} />
+        </Suspense>
       </NavbarContent>
 
       <NavbarContent justify="end">
