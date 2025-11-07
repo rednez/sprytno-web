@@ -1,6 +1,6 @@
 import { Navbar } from '@/components/layout/navbar';
 
-export default function AuthorizedLayout({
+export default function PrivateLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
