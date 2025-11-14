@@ -8,12 +8,14 @@ import {
   TaskTypeChip,
 } from '@/components/ui';
 import { usePublicTaskDetails } from '@/hooks/tasks';
+import { useMe } from '@/hooks/users';
 import { Card, CardBody, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
-import { Alert } from '@heroui/react';
+import { Alert, Button } from '@heroui/react';
 import { User } from '@heroui/user';
 import { use } from 'react';
-import { TaskInterestStatus } from './task-interest-status';
+import { TaskParticipationStatus } from './task-participation-status';
+import { useRouter } from 'next/navigation';
 
 export function TaskDetails(params: {
   taskId: Promise<string>;
@@ -28,6 +30,8 @@ export function TaskDetails(params: {
     currentLat: parseFloat(currentCoords.lat),
     currentLng: parseFloat(currentCoords.lng),
   });
+  const { data: me } = useMe();
+  const router = useRouter();
 
   if (isPending) {
     return <TaskDetailsSkeleton />;
@@ -41,6 +45,10 @@ export function TaskDetails(params: {
         color="danger"
       />
     );
+  }
+
+  function toCompleteProfile() {
+    router.push('/complete-profile');
   }
 
   return (
@@ -75,25 +83,40 @@ export function TaskDetails(params: {
           />
           <TaskDistance meters={data.distanceMeters} />
 
-          {!!data.repeatedDays.length && (
-            <>
-              <Divider
-                orientation="vertical"
-                className="h-4"
-              />
-              <TaskRepeatingInfo
-                repeatedDays={data.repeatedDays}
-                isFull
-              />
-            </>
-          )}
+          <Divider
+            orientation="vertical"
+            className="h-4"
+          />
+          <TaskRepeatingInfo
+            repeatedDays={data.repeatedDays}
+            isFull
+          />
         </div>
 
-        <TaskInterestStatus
-          taskId={parseInt(taskId)}
-          status={data.interest?.status}
-          updatedAt={data.interest?.updatedAt}
-        />
+        {me?.isProfileCompleted ? (
+          <TaskParticipationStatus
+            taskId={parseInt(taskId)}
+            status={data.participation?.status}
+            updatedAt={data.participation?.updatedAt}
+          />
+        ) : (
+          <Alert
+            color="warning"
+            title="Your profile is incomplete"
+            description="To participate in tasks, please complete your profile."
+            variant="faded"
+            className="mt-4"
+            endContent={
+              <Button
+                color="warning"
+                variant="flat"
+                onPress={toCompleteProfile}
+              >
+                Complete profile
+              </Button>
+            }
+          />
+        )}
       </CardBody>
     </Card>
   );

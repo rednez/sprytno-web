@@ -5,6 +5,8 @@ import {
   Task,
   TaskDay,
   TaskDetails,
+  TaskParticipation,
+  TaskParticipationMessage,
   TaskType,
 } from '@/types';
 
@@ -34,5 +36,14 @@ export interface TasksRepository {
     location: { lat: number; lng: number };
   }): Promise<Result<null>>;
 
-  markTaskAsInterested(taskId: number): Promise<Result<null>>;
+  sendParticipationRequest(
+    taskId: number,
+    message?: string,
+  ): Promise<Result<null>>;
+
+  getMyTaskParticipations(taskId: number): Promise<Result<TaskParticipation[]>>;
+
+  getMyTaskParticipationMessages(
+    participationId: number,
+  ): Promise<Result<TaskParticipationMessage[]>>;
 }

@@ -34,9 +34,8 @@ export function CreateTaskForm({
   googleMapsApiKey: string;
   googleMapsMapId: string;
 }) {
-  const [counter, setCounter] = useState(0);
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [type, setType] = useState<'request' | 'offer' | null>(null);
   const [repeatedDays, setRepeatedDays] = useState<string[]>([]);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(
@@ -55,7 +54,7 @@ export function CreateTaskForm({
     if (position) {
       const { error } = await createTask({
         title,
-        description: description,
+        description: description || undefined,
         type: type!,
         repeatedDays: repeatedDays as TaskDay[],
         location: { lat: position.lat, lng: position.lng },
@@ -90,10 +89,6 @@ export function CreateTaskForm({
       }
     }
   };
-
-  function click() {
-    setCounter(counter + 1);
-  }
 
   return (
     <Form

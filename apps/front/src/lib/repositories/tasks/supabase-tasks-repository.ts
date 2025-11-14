@@ -7,6 +7,8 @@ import {
   Task,
   TaskDay,
   TaskDetails,
+  TaskParticipation,
+  TaskParticipationMessage,
   TaskType,
 } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -55,36 +57,20 @@ export class SupabaseTasksRepository implements TasksRepository {
     currentLat: number;
     currentLng: number;
   }): Promise<Result<TaskDetails>> {
-    const detailsQuery = this.supabase.rpc('get_task_details', {
-      task_id: params.taskId,
+    const { data, error } = await this.supabase.rpc('get_task_details', {
+      input_task_id: params.taskId,
       current_lat: params.currentLat,
       current_lng: params.currentLng,
     });
 
-    const interestQuery = this.supabase
-      .from('tasks_interests')
-      .select('status, updated_at')
-      .eq('task_id', params.taskId);
-
-    const [
-      { data: detailsData, error: detailsError },
-      { data: interestData, error: interestError },
-    ] = await Promise.all([detailsQuery, interestQuery]);
-
-    if (detailsError) {
-      return resultError(detailsError);
+    if (error) {
+      return resultError(error);
     }
-    if (interestError) {
-      return resultError(interestError);
-    }
-    if (!detailsData?.length) {
+    if (!data?.length) {
       return resultError(new Error('Task not found'));
     }
 
-    return this.tasksParser.parsePublicTaskDetails({
-      ...detailsData[0],
-      interest: !!interestData.length ? interestData[0] : null,
-    });
+    return this.tasksParser.parsePublicTaskDetails(data[0]);
   }
 
   async getMyTasks(): Promise<Result<MyTask[]>> {
@@ -97,7 +83,7 @@ export class SupabaseTasksRepository implements TasksRepository {
 
   async getMyTaskDetails(taskId: number): Promise<Result<MyTaskDetails>> {
     const { data, error } = await this.supabase.rpc('get_my_task_details', {
-      task_id: taskId,
+      input_task_id: taskId,
     });
 
     if (error) {
@@ -141,16 +127,63 @@ export class SupabaseTasksRepository implements TasksRepository {
     return resultOk(null);
   }
 
-  async markTaskAsInterested(taskId: number): Promise<Result<null>> {
-    const { error } = await this.supabase
-      .from('tasks_interests')
+  async sendParticipationRequest(
+    taskId: number,
+    message?: string,
+  ): Promise<Result<null>> {
+    const participation = await this.supabase
+      .from('participations')
       .insert({ task_id: taskId })
+      .select();
+
+    if (participation.error) {
+      return resultError(participation.error);
+    }
+
+    if (message) {
+      const participationMessage = await this.supabase.rpc(
+        'create_participation_message',
+        {
+          p_participation_id: participation.data[0].id,
+          p_message: message,
+        },
+      );
+
+      if (participationMessage.error) {
+        return resultError(participationMessage.error);
+      }
+    }
+
+    return resultOk(null);
+  }
+
+  async getMyTaskParticipations(
+    taskId: number,
+  ): Promise<Result<TaskParticipation[]>> {
+    const { data, error } = await this.supabase
+      .rpc('get_my_task_participations', { p_task_id: taskId })
       .select();
 
     if (error) {
       return resultError(error);
     }
 
-    return resultOk(null);
+    return this.tasksParser.parseMyTaskParticipations(data);
+  }
+
+  async getMyTaskParticipationMessages(
+    participationId: number,
+  ): Promise<Result<TaskParticipationMessage[]>> {
+    const { data, error } = await this.supabase
+      .rpc('get_participation_messages', {
+        p_participation_id: participationId,
+      })
+      .select();
+
+    if (error) {
+      return resultError(error);
+    }
+
+    return this.tasksParser.parseMyTaskParticipationMessages(data);
   }
 }

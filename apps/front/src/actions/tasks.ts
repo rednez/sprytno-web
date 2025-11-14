@@ -4,7 +4,6 @@ import { createTasksRepository } from '@/lib/repositories/tasks';
 import { ErrorParser } from '@/lib/utils/errors';
 import { createTasksParamsValidator } from '@/lib/validators/tasks';
 import { TaskDay, TaskType } from '@/types';
-import { refresh } from 'next/cache';
 
 export async function createTask(params: {
   title: string;
@@ -28,12 +27,12 @@ export async function createTask(params: {
     : { error: null };
 }
 
-export async function markTaskAsInterested(taskId: number) {
+export async function sendParticipationRequest(
+  taskId: number,
+  message?: string,
+) {
   const repository = await createTasksRepository();
-  const { error } = await repository.markTaskAsInterested(taskId);
-  if (!error) {
-    refresh();
-  }
+  const { error } = await repository.sendParticipationRequest(taskId, message);
   return error
     ? { error: ErrorParser.fromError(error).parse() }
     : { error: null };

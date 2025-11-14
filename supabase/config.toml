@@ -56,6 +56,11 @@ schema_paths = [
   "./schemas/friends.sql",
   "./schemas/users_private_details.sql",
   "./schemas/users_public_details.sql",
+  "./schemas/tasks.sql",
+  "./schemas/participations.sql",
+  "./schemas/tasks_functions.sql",
+  "./schemas/participations_messages.sql",
+  "./schemas/participations_messages_functions.sql",
   "./schemas/*.sql",
 ]
 

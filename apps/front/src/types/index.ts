@@ -4,6 +4,7 @@ export * from './my-task-details';
 export * from './result';
 export * from './task';
 export * from './task-details';
+export * from './task-participation';
 export * from './user';
 export * from './user-private-details';
 export * from './user-public-details';

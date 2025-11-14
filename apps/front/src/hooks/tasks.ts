@@ -1,7 +1,15 @@
 'use client';
 
-import { MyTask, MyTaskDetails, Task, TaskDetails } from '@/types';
-import { useQuery } from '@tanstack/react-query';
+import { sendParticipationRequest } from '@/actions/tasks';
+import {
+  MyTask,
+  MyTaskDetails,
+  Task,
+  TaskDetails,
+  TaskParticipation,
+  TaskParticipationMessage,
+} from '@/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
 export function useTasks({
@@ -60,6 +68,7 @@ export function usePublicTaskDetails({
       }
       return data as TaskDetails;
     },
+    refetchInterval: 60 * 1000,
   });
 }
 
@@ -87,6 +96,53 @@ export function useMyTaskDetails(taskId: number) {
         throw new Error(data.message || 'Failed request');
       }
       return data as MyTaskDetails;
+    },
+  });
+}
+
+export function useSendTaskParticipationRequest(taskId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (message?: string) => {
+      return sendParticipationRequest(taskId, message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['publicTaskDetails', taskId],
+      });
+    },
+  });
+}
+
+export function useMyTaskParticipations(taskId: number) {
+  return useQuery({
+    queryKey: ['myTaskParticipations', taskId],
+    queryFn: async () => {
+      const response = await fetch(`/api/my-tasks/${taskId}/participations`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
+      return data as TaskParticipation[];
+    },
+  });
+}
+
+export function useMyTaskParticipationMessages(
+  taskId: number,
+  participationId: number,
+) {
+  return useQuery({
+    queryKey: ['myTaskParticipationMessages', participationId],
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/my-tasks/${taskId}/participations/${participationId}/messages`,
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed request');
+      }
+      return data as TaskParticipationMessage[];
     },
   });
 }

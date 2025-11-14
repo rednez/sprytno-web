@@ -63,6 +63,7 @@ export class ZodTasksParamsValidator implements TasksParamsValidator {
     repeatedDays: TaskDay[];
     location: { lat: number; lng: number };
   }> {
+    console.log('Validating new task params:', raw);
     const { data, error, success } = NewTaskParamsSchema.safeParse(raw);
 
     if (success) {

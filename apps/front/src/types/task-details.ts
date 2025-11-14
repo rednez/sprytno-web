@@ -1,14 +1,13 @@
 import { Task } from './task';
+import { TaskParticipationStatus } from './task-participation';
 import { User } from './user';
-
-export type TaskInterestStatus = 'pending' | 'accepted' | 'declined';
 
 export interface TaskDetails extends Task {
   user: User;
   lat: number;
   lng: number;
-  interest: {
-    status: TaskInterestStatus;
+  participation: {
+    status: TaskParticipationStatus;
     updatedAt: Date;
   } | null;
 }
