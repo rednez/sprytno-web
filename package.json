@@ -13,7 +13,7 @@
   "devDependencies": {
     "@postgrestools/postgrestools": "^0.17.2",
     "prettier": "^3.6.2",
-    "turbo": "^2.6.0",
+    "turbo": "^2.6.1",
     "typescript": "5.9.2"
   },
   "packageManager": "pnpm@10.22.0",
