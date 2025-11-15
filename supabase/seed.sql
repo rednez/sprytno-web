@@ -1,12 +1,12 @@
 insert into auth.users 
   (id, email, aud, role, raw_user_meta_data, created_at) 
 values 
-  (uuid_generate_v4(), 'user1@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
-  (uuid_generate_v4(), 'user2@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
-  (uuid_generate_v4(), 'user3@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
-  (uuid_generate_v4(), 'user4@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
-  (uuid_generate_v4(), 'user5@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
-  (uuid_generate_v4(), 'user6@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now());
+  (extensions.uuid_generate_v4(), 'user1@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
+  (extensions.uuid_generate_v4(), 'user2@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
+  (extensions.uuid_generate_v4(), 'user3@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
+  (extensions.uuid_generate_v4(), 'user4@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
+  (extensions.uuid_generate_v4(), 'user5@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now()),
+  (extensions.uuid_generate_v4(), 'user6@mail.com', 'authenticated', 'authenticated', '{"email_verified": true}', now());
 
 
 insert into tasks 
