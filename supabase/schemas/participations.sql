@@ -22,6 +22,15 @@ using (
   is_my_task(participations.task_id) OR (user_id = (SELECT auth.uid() as uid))
 );
 
+create policy "Enable update for task owner or participation owner only"
+on "public"."participations"
+as PERMISSIVE
+for UPDATE
+to authenticated
+using (
+  is_my_task(participations.task_id) OR (user_id = (SELECT auth.uid() as uid))
+);
+
 create policy "Enable insert for users based on user_id"
 on "public"."participations"
 as PERMISSIVE

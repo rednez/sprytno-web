@@ -41,9 +41,18 @@ export interface TasksRepository {
     message?: string,
   ): Promise<Result<null>>;
 
+  acceptParticipation(participationId: number): Promise<Result<null>>;
+
+  declineParticipation(participationId: number): Promise<Result<null>>;
+
   getMyTaskParticipations(taskId: number): Promise<Result<TaskParticipation[]>>;
 
   getMyTaskParticipationMessages(
     participationId: number,
   ): Promise<Result<TaskParticipationMessage[]>>;
+
+  sentParticipationMessage(
+    participationId: number,
+    message: string,
+  ): Promise<Result<null>>;
 }

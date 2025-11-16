@@ -26,14 +26,3 @@ export async function createTask(params: {
     ? { error: ErrorParser.fromError(error).parse() }
     : { error: null };
 }
-
-export async function sendParticipationRequest(
-  taskId: number,
-  message?: string,
-) {
-  const repository = await createTasksRepository();
-  const { error } = await repository.sendParticipationRequest(taskId, message);
-  return error
-    ? { error: ErrorParser.fromError(error).parse() }
-    : { error: null };
-}

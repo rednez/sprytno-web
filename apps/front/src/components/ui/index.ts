@@ -1,9 +1,7 @@
 export { AvatarSelector } from './avatar-selector';
 export { CustomCheckbox } from './custom-checkbox';
 export { LocationAlert } from './location-alert';
-export { TaskCardSkeleton } from './skeletons/task-card-skeleton';
-export { TaskDetailsSkeleton } from './skeletons/task-details-skeleton';
-export { UserAvatarSkeleton } from './skeletons/user-avatar-skeleton';
+export * from './skeletons';
 export { SprytnoLogo } from './sprytno-logo';
 export { TaskCard } from './task-card';
 export { TaskDistance } from './task-distance';

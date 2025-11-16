@@ -1,6 +1,11 @@
 'use client';
 
-import { sendParticipationRequest } from '@/actions/tasks';
+import {
+  acceptParticipation,
+  declineParticipation,
+  sendParticipationMessage,
+  sendParticipationRequest,
+} from '@/actions/participations';
 import {
   MyTask,
   MyTaskDetails,
@@ -9,8 +14,10 @@ import {
   TaskParticipation,
   TaskParticipationMessage,
 } from '@/types';
+import { addToast } from '@heroui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
+import { refresh } from 'next/cache';
 
 export function useTasks({
   lat,
@@ -143,6 +150,78 @@ export function useMyTaskParticipationMessages(
         throw new Error(data.message || 'Failed request');
       }
       return data as TaskParticipationMessage[];
+    },
+  });
+}
+
+export function useAcceptTaskParticipation(
+  taskId: number,
+  participationId: number,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => {
+      return acceptParticipation(participationId);
+    },
+    onSuccess: (data) => {
+      if (data.error) {
+        addToast({
+          title: 'Failed operation',
+          description: data.error.message,
+          color: 'warning',
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ['myTaskParticipations', taskId],
+        });
+      }
+    },
+  });
+}
+
+export function useDeclineTaskParticipation(
+  taskId: number,
+  participationId: number,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => {
+      return declineParticipation(participationId);
+    },
+    onSuccess: (data) => {
+      if (data.error) {
+        addToast({
+          title: 'Failed operation',
+          description: data.error.message,
+          color: 'warning',
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ['myTaskParticipations', taskId],
+        });
+      }
+    },
+  });
+}
+
+export function useSendTaskParticipationMessage(participationId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (message: string) => {
+      return sendParticipationMessage({ participationId, message });
+    },
+    onSuccess: (data) => {
+      if (data.error) {
+        addToast({
+          title: 'Failed operation',
+          description: data.error.message,
+          color: 'warning',
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ['myTaskParticipationMessages', participationId],
+        });
+      }
     },
   });
 }
