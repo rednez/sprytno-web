@@ -1,4 +1,4 @@
-import { createTasksRepository } from '@/lib/repositories/tasks';
+import { createParticipationsRepository } from '@/lib/repositories/participations';
 import { ErrorParser } from '@/lib/utils/errors';
 
 export async function GET(
@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: Promise<{ participationId: string }> },
 ) {
   const { participationId } = await params;
-  const repository = await createTasksRepository();
+  const repository = await createParticipationsRepository();
   const { error, data, ok } = await repository.getMyTaskParticipationMessages(
     parseInt(participationId),
   );

@@ -4,7 +4,7 @@ import {
   useAcceptTaskParticipation,
   useDeclineTaskParticipation,
 } from '@/hooks/tasks';
-import { TaskParticipationStatus } from '@/types';
+import { ParticipationStatus } from '@/types';
 import { fullDate } from '@/utils/formatters/full-date';
 import { Button, User } from '@heroui/react';
 import { MdClose, MdDone } from 'react-icons/md';
@@ -22,7 +22,7 @@ export function MyTaskParticipationDetails({
   nickname: string;
   avatarUrl: string | null;
   updatedAt: Date;
-  status: TaskParticipationStatus;
+  status: ParticipationStatus;
 }) {
   const { mutate: acceptParticipation, isPending: isAccepting } =
     useAcceptTaskParticipation(taskId, participationId);

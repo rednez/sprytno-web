@@ -1,4 +1,6 @@
-export type TaskParticipationStatus =
+import { TaskDay, TaskType } from './task';
+
+export type ParticipationStatus =
   | 'pending'
   | 'accepted'
   | 'declined'
@@ -6,7 +8,7 @@ export type TaskParticipationStatus =
 
 export interface TaskParticipation {
   id: number;
-  status: TaskParticipationStatus;
+  status: ParticipationStatus;
   updatedAt: Date;
   user: {
     nickname: string;
@@ -14,7 +16,7 @@ export interface TaskParticipation {
   };
 }
 
-export interface TaskParticipationMessage {
+export interface ParticipationMessage {
   id: number;
   message: string;
   sender: {
@@ -27,4 +29,15 @@ export interface TaskParticipationMessage {
   };
   createdAt: Date;
   sentByMe: boolean;
+}
+
+export interface MyParticipation {
+  id: number;
+  status: ParticipationStatus;
+  task: {
+    title: string;
+    description: string | null;
+    type: TaskType;
+    repeatedDays: TaskDay[];
+  };
 }

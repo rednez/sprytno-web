@@ -9,15 +9,14 @@ import {
 import {
   MyTask,
   MyTaskDetails,
+  ParticipationMessage,
   Task,
   TaskDetails,
   TaskParticipation,
-  TaskParticipationMessage,
 } from '@/types';
 import { addToast } from '@heroui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
-import { refresh } from 'next/cache';
 
 export function useTasks({
   lat,
@@ -149,7 +148,7 @@ export function useMyTaskParticipationMessages(
       if (!response.ok) {
         throw new Error(data.message || 'Failed request');
       }
-      return data as TaskParticipationMessage[];
+      return data as ParticipationMessage[];
     },
   });
 }

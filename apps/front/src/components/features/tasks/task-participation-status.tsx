@@ -1,7 +1,7 @@
 'use client';
 
 import { useSendTaskParticipationRequest } from '@/hooks/tasks';
-import { TaskParticipationStatus as Status } from '@/types';
+import { ParticipationStatus as Status } from '@/types';
 import { fullDate } from '@/utils/formatters/full-date';
 import { Alert } from '@heroui/alert';
 import { Button, Form, Input } from '@heroui/react';

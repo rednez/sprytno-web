@@ -1,5 +1,5 @@
 import { Task } from './task';
-import { TaskParticipationStatus } from './task-participation';
+import { ParticipationStatus } from './participations';
 import { User } from './user';
 
 export interface TaskDetails extends Task {
@@ -7,7 +7,7 @@ export interface TaskDetails extends Task {
   lat: number;
   lng: number;
   participation: {
-    status: TaskParticipationStatus;
+    status: ParticipationStatus;
     updatedAt: Date;
   } | null;
 }

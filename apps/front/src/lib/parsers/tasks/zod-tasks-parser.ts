@@ -7,15 +7,13 @@ import {
   TaskDay,
   TaskDetails,
   TaskParticipation,
-  TaskParticipationMessage,
 } from '@/types';
 import * as z from 'zod';
-import { TasksParser } from './tasks.parser.interface';
+import { TasksParser } from './tasks-parser.interface';
 import {
   ServerMyTaskDetailsSchema,
   ServerMyTaskParticipationSchema,
   ServerMyTaskSchema,
-  ServerParticipationMessageSchema,
   ServerPublicTaskDetailsSchema,
   ServerPublicTaskSchema,
 } from './zod-schemas';
@@ -131,27 +129,6 @@ export class ZodTasksParser implements TasksParser {
     }
   }
 
-  parseMyTaskParticipationMessages(
-    raw: unknown,
-  ): Result<TaskParticipationMessage[]> {
-    try {
-      const parsed = Array.isArray(raw)
-        ? raw.map(this.parseMyTaskParticipationMessage)
-        : [];
-      return resultOk(parsed);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return resultError(error);
-      } else {
-        return resultError(
-          new Error(
-            'Unknown error occurred during parsing task participation messages',
-          ),
-        );
-      }
-    }
-  }
-
   private parsePublicTask(raw: unknown): Task {
     const data = ServerPublicTaskSchema.parse(raw);
     return {
@@ -185,26 +162,6 @@ export class ZodTasksParser implements TasksParser {
         nickname: data.user_nickname,
         avatarUrl: data.user_avatar_url,
       },
-    };
-  }
-
-  private parseMyTaskParticipationMessage(
-    raw: unknown,
-  ): TaskParticipationMessage {
-    const data = ServerParticipationMessageSchema.parse(raw);
-    return {
-      id: data.id,
-      createdAt: data.created_at,
-      message: data.message,
-      sender: {
-        nickname: data.sender_nickname,
-        avatarUrl: data.sender_avatar_url,
-      },
-      recipient: {
-        nickname: data.recipient_nickname,
-        avatarUrl: data.recipient_avatar_url,
-      },
-      sentByMe: data.sent_by_me,
     };
   }
 }

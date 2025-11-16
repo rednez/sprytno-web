@@ -5,7 +5,6 @@ import {
   Task,
   TaskDetails,
   TaskParticipation,
-  TaskParticipationMessage,
 } from '@/types';
 
 export interface TasksParser {
@@ -14,7 +13,4 @@ export interface TasksParser {
   parseMyTaskDetails(row: unknown): Result<MyTaskDetails>;
   parsePublicTaskDetails(row: unknown): Result<TaskDetails>;
   parseMyTaskParticipations(row: unknown): Result<TaskParticipation[]>;
-  parseMyTaskParticipationMessages(
-    row: unknown,
-  ): Result<TaskParticipationMessage[]>;
 }

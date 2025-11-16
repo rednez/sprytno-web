@@ -8,7 +8,6 @@ import {
   TaskDay,
   TaskDetails,
   TaskParticipation,
-  TaskParticipationMessage,
   TaskType,
 } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -169,67 +168,5 @@ export class SupabaseTasksRepository implements TasksRepository {
     }
 
     return this.tasksParser.parseMyTaskParticipations(data);
-  }
-
-  async getMyTaskParticipationMessages(
-    participationId: number,
-  ): Promise<Result<TaskParticipationMessage[]>> {
-    const { data, error } = await this.supabase
-      .rpc('get_participation_messages', {
-        p_participation_id: participationId,
-      })
-      .select();
-
-    if (error) {
-      return resultError(error);
-    }
-
-    return this.tasksParser.parseMyTaskParticipationMessages(data);
-  }
-
-  async acceptParticipation(participationId: number): Promise<Result<null>> {
-    const { error } = await this.supabase
-      .from('participations')
-      .update({ status: 'accepted' })
-      .eq('id', participationId)
-      .select()
-      .single();
-
-    if (error) {
-      return resultError(error);
-    }
-
-    return resultOk(null);
-  }
-
-  async declineParticipation(participationId: number): Promise<Result<null>> {
-    const participation = await this.supabase
-      .from('participations')
-      .update({ status: 'declined' })
-      .eq('id', participationId)
-      .select()
-      .single();
-
-    if (participation.error) {
-      return resultError(participation.error);
-    }
-
-    return resultOk(null);
-  }
-
-  async sentParticipationMessage(
-    participationId: number,
-    message: string,
-  ): Promise<Result<null>> {
-    const { error } = await this.supabase.rpc('create_participation_message', {
-      p_participation_id: participationId,
-      p_message: message,
-    });
-
-    if (error) {
-      return resultError(error);
-    }
-
-    return resultOk(null);
   }
 }

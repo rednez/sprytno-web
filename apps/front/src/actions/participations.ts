@@ -1,5 +1,6 @@
 'use server';
 
+import { createParticipationsRepository } from '@/lib/repositories/participations';
 import { createTasksRepository } from '@/lib/repositories/tasks';
 import { ErrorParser } from '@/lib/utils/errors';
 import { createParticipationsParamsValidator } from '@/lib/validators/participations';
@@ -16,7 +17,7 @@ export async function sendParticipationRequest(
 }
 
 export async function acceptParticipation(participationId: number) {
-  const repository = await createTasksRepository();
+  const repository = await createParticipationsRepository();
   const { error } = await repository.acceptParticipation(participationId);
 
   return error
@@ -25,7 +26,7 @@ export async function acceptParticipation(participationId: number) {
 }
 
 export async function declineParticipation(participationId: number) {
-  const repository = await createTasksRepository();
+  const repository = await createParticipationsRepository();
   const { error } = await repository.declineParticipation(participationId);
   return error
     ? { error: ErrorParser.fromError(error).parse() }
@@ -43,8 +44,8 @@ export async function sendParticipationMessage(params: {
     return { error: ErrorParser.fromError(validatedParams.error).parse() };
   }
 
-  const repository = await createTasksRepository();
-  const { error } = await repository.sentParticipationMessage(
+  const repository = await createParticipationsRepository();
+  const { error } = await repository.sendParticipationMessage(
     validatedParams.data.participationId,
     validatedParams.data.message,
   );
