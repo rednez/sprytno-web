@@ -101,3 +101,20 @@ create trigger create_secret_key_after_participation_trigger
 after insert on participations
 for each row
 execute function create_secret_key_for_participation();
+
+create or replace view my_participations with (security_invoker = on) as
+  select
+  p.id,
+  p.status,
+  t.title as task_title,
+  t.description as task_description,
+  t.type as task_type,
+  t.repeated_days as task_repeated_days
+from
+  participations p
+  join tasks t on t.id = p.task_id
+where
+  p.user_id = (
+    select
+      auth.uid ()
+  );

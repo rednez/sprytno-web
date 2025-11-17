@@ -151,7 +151,7 @@ export function MyTaskParticipations({ taskId }: { taskId: number }) {
           {declinedList.length > 0 && (
             <div>
               <Chip
-                color="warning"
+                color="danger"
                 variant="light"
                 startContent={<ImCancelCircle />}
               >

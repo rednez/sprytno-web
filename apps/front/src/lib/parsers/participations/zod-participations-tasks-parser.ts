@@ -1,8 +1,11 @@
 import { resultError, resultOk } from '@/lib/utils/result';
-import { ParticipationMessage, Result } from '@/types';
+import { MyParticipation, ParticipationMessage, Result } from '@/types';
 import * as z from 'zod';
 import { ParticipationsParser } from './participations-parser.interface';
-import { ServerParticipationMessageSchema } from './zod-schemas';
+import {
+  ServerMyParticipationSchema,
+  ServerParticipationMessageSchema,
+} from './zod-schemas';
 
 export class ZodParticipationsParser implements ParticipationsParser {
   parseMyTaskParticipationMessages(
@@ -26,6 +29,23 @@ export class ZodParticipationsParser implements ParticipationsParser {
     }
   }
 
+  parseMyParticipations(raw: unknown): Result<MyParticipation[]> {
+    try {
+      const parsed = Array.isArray(raw)
+        ? raw.map(this.parseMyParticipation)
+        : [];
+      return resultOk(parsed);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return resultError(error);
+      } else {
+        return resultError(
+          new Error('Unknown error occurred during parsing my participations'),
+        );
+      }
+    }
+  }
+
   private parseMyTaskParticipationMessage(raw: unknown): ParticipationMessage {
     const data = ServerParticipationMessageSchema.parse(raw);
     return {
@@ -41,6 +61,20 @@ export class ZodParticipationsParser implements ParticipationsParser {
         avatarUrl: data.recipient_avatar_url,
       },
       sentByMe: data.sent_by_me,
+    };
+  }
+
+  private parseMyParticipation(raw: unknown): MyParticipation {
+    const data = ServerMyParticipationSchema.parse(raw);
+    return {
+      id: data.id,
+      status: data.status,
+      task: {
+        title: data.task_title,
+        description: data.task_description,
+        type: data.task_type,
+        repeatedDays: data.task_repeated_days || [],
+      },
     };
   }
 }

@@ -46,7 +46,7 @@ export function TaskParticipationStatus({
           description={`Accepted at ${fullDate(updatedAt)}`}
           variant="faded"
           className="mt-6"
-          color="success"
+          color="secondary"
         />
       );
     }

@@ -1,6 +1,6 @@
 import { ParticipationsParser } from '@/lib/parsers/participations';
 import { resultError, resultOk } from '@/lib/utils/result';
-import { ParticipationMessage, Result } from '@/types';
+import { MyParticipation, ParticipationMessage, Result } from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { ParticipationsRepository } from './participations-repository.interface';
 
@@ -72,5 +72,16 @@ export class SupabaseParticipationsRepository
     }
 
     return resultOk(null);
+  }
+
+  async getMyParticipations(): Promise<Result<MyParticipation[]>> {
+    const { data, error } = await this.supabase
+      .from('my_participations')
+      .select('*');
+    if (error) {
+      return resultError(error);
+    }
+
+    return this.participationsParser.parseMyParticipations(data);
   }
 }
