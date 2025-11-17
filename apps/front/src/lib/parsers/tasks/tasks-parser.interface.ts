@@ -8,9 +8,9 @@ import {
 } from '@/types';
 
 export interface TasksParser {
-  parsePublicTasks(row: unknown): Result<Task[]>;
-  parseMyTasks(row: unknown): Result<MyTask[]>;
-  parseMyTaskDetails(row: unknown): Result<MyTaskDetails>;
-  parsePublicTaskDetails(row: unknown): Result<TaskDetails>;
-  parseMyTaskParticipations(row: unknown): Result<TaskParticipation[]>;
+  parsePublicTasks(raw: unknown): Result<Task[]>;
+  parseMyTasks(raw: unknown): Result<MyTask[]>;
+  parseMyTaskDetails(raw: unknown): Result<MyTaskDetails>;
+  parsePublicTaskDetails(raw: unknown): Result<TaskDetails>;
+  parseMyTaskParticipations(raw: unknown): Result<TaskParticipation[]>;
 }

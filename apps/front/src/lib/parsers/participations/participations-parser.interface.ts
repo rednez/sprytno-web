@@ -5,5 +5,5 @@ export interface ParticipationsParser {
     row: unknown,
   ): Result<ParticipationMessage[]>;
 
-  parseMyParticipations(row: unknown): Result<MyParticipation[]>;
+  parseMyParticipations(raw: unknown): Result<MyParticipation[]>;
 }
