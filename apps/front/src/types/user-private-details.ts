@@ -1,5 +1,5 @@
 export interface UserPrivateDetails {
-  email: string;
+  email: string | null;
   fullName: string | null;
   phone: string | null;
 }

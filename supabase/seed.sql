@@ -115,7 +115,4 @@ values
     'https://i.pravatar.cc/150?img=9'
   );
 
-UPDATE users_private_details SET phone = '+380671235454' WHERE email = 'user1@mail.com';
-UPDATE users_private_details SET phone = '+380989875645' WHERE email = 'user2@mail.com';
-UPDATE users_private_details SET phone = '+380502413567' WHERE email = 'user5@mail.com';
   

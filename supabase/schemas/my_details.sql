@@ -2,7 +2,7 @@ create or replace view public.my_details with (security_invoker = on) as
  SELECT private_details.user_id,
     public_details.nickname,
     public_details.avatar_url,
-    private_details.email,
+    auth.email() AS email,
     private_details.phone,
     public_details.nickname IS NOT NULL AND public_details.avatar_url IS NOT NULL AS is_profile_completed
    FROM users_private_details private_details

@@ -8,12 +8,15 @@ export class SupabaseUsersRepository implements UsersRepository {
   constructor(private supabase: SupabaseClient) {}
 
   async getMe(): Promise<Result<Me>> {
-    const { data, error } = await this.supabase.from('my_details').select('*');
+    const { data, error } = await this.supabase
+      .from('my_details')
+      .select('*')
+      .single();
 
     if (error) {
       return resultError(error);
     }
-    if (!data?.length) {
+    if (!data) {
       return resultError(new Error('User not found'));
     }
 
@@ -24,7 +27,7 @@ export class SupabaseUsersRepository implements UsersRepository {
       email,
       phone,
       is_profile_completed: isProfileCompleted,
-    } = data[0];
+    } = data;
 
     return resultOk({
       id,
