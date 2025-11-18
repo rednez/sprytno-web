@@ -1,6 +1,14 @@
 {
-  "name": "sprytno-web-preview",
+  "name": "sprytno-web",
   "private": true,
+  "author": {
+    "name": "Vasyl Yefimenko",
+    "email": "rednez@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rednez/sprytno-web.git"
+  },
   "scripts": {
     "dev:front": "pnpm supabase && turbo run front#dev",
     "build": "turbo run build",

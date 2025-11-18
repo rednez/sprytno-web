@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend (`apps/front`)
+
+Next.js 16 app (App Router) for the Sprytno web preview.
+
+Main stacks:
+
+- Next.js 16 + React 19 (App Router)
+- Tailwind CSS 4 + HeroUI
+- TanStack Query 5 for data fetching/cache
+- Supabase
+
+---
 
 ## Getting Started
 
-First, run the development server:
+From the monorepo root:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev --filter front
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+By default the app runs on `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The main entry is `app/page.tsx`; authenticated/private areas live under `app/(private)`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Local backend (Supabase)
 
-To learn more about Next.js, take a look at the following resources:
+The frontend expects the local Supabase instance defined under `supabase/`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Basic flow:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+supabase start
+pnpm dev --filter front
+```
 
-## Deploy on Vercel
+Stop services with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+supabase stop
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Database schema and functions are managed through the SQL files in `supabase/schemas` and migrations in `supabase/migrations`.
+
+---
+
+## Project Structure (frontend)
+
+Key directories in `apps/front/src`:
+
+- `app/` – App Router pages, layouts and API routes
+	- `app/(private)` – authenticated area (tasks, participations, profile)
+	- `app/login` – login flow and callback handling
+- `actions/` – server actions for auth, tasks, users, participations
+- `components/` – reusable UI components and feature modules
+- `hooks/` – React hooks for tasks, users, participations, geolocation
+- `lib/` – parsers, repositories, validators and utils
+- `providers/` – app-level providers (React Query, themes)
+- `styles/` – global styles and Tailwind setup
+- `types/` – shared TypeScript types for tasks, users, participations
+- `utils/` – generic utilities (coords, formatting, regexps)
+
+---
+
+## Useful Scripts
+
+Run from the monorepo root unless stated otherwise:
+
+```bash
+pnpm dev --filter front      # start Next.js dev server (Turbopack)
+pnpm build --filter front    # production build
+pnpm start --filter front    # start built app
+pnpm lint --filter front     # run ESLint
+```
+
+---
+
+## Conventions
+
+- Use Zod schemas from `lib/validation-schemas` for validating API data.
+- Keep data access in `lib/repositories` and UI in `components`.
+- Prefer React Query hooks from `hooks/` instead of calling `fetch` directly.
+- Use shared types from `types/` when adding new features.
