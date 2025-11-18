@@ -79,7 +79,7 @@ To create migration:
 
 ```bash
 supabase stop
-supabase db diff -f MIGRATION_NAME
+supabase db diff -f MIGRATION_FILE_NAME
 ```
 
 To reset the local database and apply all migrations:
