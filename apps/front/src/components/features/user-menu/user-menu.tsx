@@ -51,7 +51,7 @@ export function UserMenu() {
           radius="full"
         >
           <Avatar
-            name={nickname || email}
+            name={nickname || email || undefined}
             src={avatarUrl || ''}
             showFallback
           />
@@ -77,7 +77,7 @@ export function UserMenu() {
                 size: 'sm',
                 src: avatarUrl || '',
                 showFallback: true,
-                name: nickname || email,
+                name: nickname || email || undefined,
               }}
               classNames={{
                 name: 'text-default-600',
