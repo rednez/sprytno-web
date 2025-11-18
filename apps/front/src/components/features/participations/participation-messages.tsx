@@ -1,9 +1,7 @@
 'use client';
 
-import {
-  useMyTaskParticipationMessages,
-  useSendTaskParticipationMessage,
-} from '@/hooks/tasks';
+import { useParticipationMessages } from '@/hooks/participations';
+import { useSendTaskParticipationMessage } from '@/hooks/tasks';
 import { fullDate } from '@/utils/formatters/full-date';
 import { Alert, Button, Form, ScrollShadow, Textarea } from '@heroui/react';
 import { useState } from 'react';
@@ -11,12 +9,10 @@ import { MdSend } from 'react-icons/md';
 
 const maxMessageLength = 1000;
 
-export function MyTaskParticipationMessages({
-  taskId,
+export function ParticipationMessages({
   participationId,
   readOnly,
 }: {
-  taskId: number;
   participationId: number;
   readOnly: boolean;
 }) {
@@ -25,7 +21,7 @@ export function MyTaskParticipationMessages({
     data,
     error: messagesError,
     isError: isErrorMessages,
-  } = useMyTaskParticipationMessages(taskId, participationId);
+  } = useParticipationMessages(participationId);
 
   const { mutate: sendMessage, isPending: isMessageSending } =
     useSendTaskParticipationMessage(participationId);

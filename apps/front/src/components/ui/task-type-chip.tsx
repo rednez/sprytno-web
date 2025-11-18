@@ -1,4 +1,4 @@
-import { TaskType } from '@/types/task';
+import { TaskType } from '@/types/tasks';
 import { Chip } from '@heroui/chip';
 
 export function TaskTypeChip({ type }: { type: TaskType }) {

@@ -2,9 +2,9 @@ import { ParticipationCard } from '@/components/ui';
 import { createParticipationsRepository } from '@/lib/repositories/participations';
 import { Alert } from '@heroui/alert';
 
-export default async function MyParticipationsList() {
+export default async function ParticipationsList() {
   const repository = await createParticipationsRepository();
-  const { data, error, ok } = await repository.getMyParticipations();
+  const { data, error, ok } = await repository.getParticipations();
 
   if (!ok) {
     return (

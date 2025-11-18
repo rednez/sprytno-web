@@ -16,16 +16,7 @@ export default function ExploreTasks() {
   const router = useRouter();
 
   const handleTaskPress = (id: number) => {
-    if (!coords) {
-      return;
-    }
-
-    const params = new URLSearchParams({
-      currentLat: String(coords.lat),
-      currentLng: String(coords.lng),
-    });
-
-    router.push(`explore/${id}?${params.toString()}`);
+    router.push(`explore/${id}`);
   };
 
   const nearbyTasks = () =>

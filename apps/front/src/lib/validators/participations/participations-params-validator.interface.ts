@@ -5,4 +5,9 @@ export interface ParticipationsParamsValidator {
     participationId: number;
     message: string;
   }>;
+
+  validateParticipationDetailsParams(params: URLSearchParams): Result<{
+    currentLat: number;
+    currentLng: number;
+  }>;
 }

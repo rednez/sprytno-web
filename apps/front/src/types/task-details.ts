@@ -1,4 +1,4 @@
-import { Task } from './task';
+import { Task } from './tasks';
 import { ParticipationStatus } from './participations';
 import { User } from './user';
 

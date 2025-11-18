@@ -1,8 +1,8 @@
-import { TaskDetails } from '@/components/features/tasks';
+import { ParticipationDetails } from '@/components/features/participations';
 import { TaskDetailsSkeleton } from '@/components/ui';
 import { Suspense } from 'react';
 
-export default async function TaskDetailsPage({
+export default async function ParticipationDetailsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -12,8 +12,8 @@ export default async function TaskDetailsPage({
 
   return (
     <Suspense fallback={<TaskDetailsSkeleton />}>
-      <TaskDetails
-        taskId={params.then((i) => i.id)}
+      <ParticipationDetails
+        participationId={params.then((i) => i.id)}
         googleMapsApiKey={googleMapsApiKey}
         googleMapsMapId={googleMapsMapId}
       />

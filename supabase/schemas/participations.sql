@@ -118,3 +118,50 @@ where
     select
       auth.uid ()
   );
+
+create or replace function get_participation_details (
+  p_participation_id bigint,
+  p_current_lat double precision default null,
+  p_current_lng double precision default null
+) returns table (
+  id participations.id % type,
+  status participations.status % type,
+  updated_at participations.updated_at % type,
+  task_user_id tasks.user_id % type,
+  task_user_nickname users_public_details.nickname % type,
+  task_user_avatar_url users_public_details.avatar_url % type,
+  task_type tasks.type % type,
+  task_title tasks.title % type,
+  task_description tasks.description % type,
+  task_repeated_days tasks.repeated_days % type,
+  task_distance_meters integer,
+  task_lat double precision,
+  task_lng double precision
+) language sql
+set
+  search_path = public as $$
+select
+  p.id,
+  p.status,
+  p.updated_at,
+  t.user_id as task_user_id,
+  pud.nickname as task_user_nickname,
+  pud.avatar_url as task_user_avatar_url,
+  t.type as task_type, 
+  t.title as task_title, 
+  t.description as task_description, 
+  t.repeated_days as task_repeated_days,
+  CASE 
+    WHEN p_current_lat IS NOT NULL AND p_current_lng IS NOT NULL THEN
+      round(gis.st_distance(t.location, gis.st_point(p_current_lng, p_current_lat)::gis.geography))::int
+    ELSE 
+      NULL 
+  END AS task_distance_meters,
+  gis.st_y(t.location::gis.geometry) as task_lat,
+  gis.st_x(t.location::gis.geometry) as task_lng
+FROM participations p
+LEFT JOIN tasks t on t.id = p.task_id
+LEFT JOIN users_public_details pud
+  ON pud.user_id = t.user_id
+WHERE p.id = p_participation_id
+$$;

@@ -1,4 +1,4 @@
-import { TaskDay, TaskType } from './task';
+import { TaskDay, TaskType } from './tasks';
 
 export interface MyTask {
   id: number;

@@ -9,8 +9,8 @@ import { FaRegCheckCircle } from 'react-icons/fa';
 import { GrCircleQuestion } from 'react-icons/gr';
 import { ImCancelCircle } from 'react-icons/im';
 import { RiProgress2Line } from 'react-icons/ri';
+import { ParticipationMessages } from '../participations/participation-messages';
 import { MyTaskParticipationDetails } from './my-task-participation-details';
-import { MyTaskParticipationMessages } from './my-task-participation-messages';
 
 export function MyTaskParticipations({ taskId }: { taskId: number }) {
   const [selectedParticipationId, setSelectedParticipationId] = useState<
@@ -185,8 +185,7 @@ export function MyTaskParticipations({ taskId }: { taskId: number }) {
               status={selectedParticipation.status}
               updatedAt={selectedParticipation.updatedAt}
             />
-            <MyTaskParticipationMessages
-              taskId={taskId}
+            <ParticipationMessages
               participationId={selectedParticipation.id}
               readOnly={
                 selectedParticipation.status === 'completed' ||

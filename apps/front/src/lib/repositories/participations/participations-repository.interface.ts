@@ -1,4 +1,9 @@
-import { MyParticipation, ParticipationMessage, Result } from '@/types';
+import {
+  Participation,
+  ParticipationDetails,
+  ParticipationMessage,
+  Result,
+} from '@/types';
 
 export interface ParticipationsRepository {
   acceptParticipation(participationId: number): Promise<Result<null>>;
@@ -14,5 +19,11 @@ export interface ParticipationsRepository {
     message: string,
   ): Promise<Result<null>>;
 
-  getMyParticipations(): Promise<Result<MyParticipation[]>>;
+  getParticipations(): Promise<Result<Participation[]>>;
+
+  getParticipationDetails(params: {
+    participationId: number;
+    currentLat: number;
+    currentLng: number;
+  }): Promise<Result<ParticipationDetails>>;
 }

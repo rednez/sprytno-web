@@ -9,7 +9,6 @@ import {
 import {
   MyTask,
   MyTaskDetails,
-  ParticipationMessage,
   Task,
   TaskDetails,
   TaskParticipation,
@@ -57,9 +56,11 @@ export function usePublicTaskDetails({
   currentLng,
 }: {
   taskId: number;
-  currentLat: number;
-  currentLng: number;
+  currentLat?: number;
+  currentLng?: number;
 }) {
+  const hasCoords = !!currentLat && !!currentLng;
+
   return useQuery({
     queryKey: ['publicTaskDetails', taskId, currentLat, currentLng],
     queryFn: async () => {
@@ -74,6 +75,7 @@ export function usePublicTaskDetails({
       }
       return data as TaskDetails;
     },
+    enabled: hasCoords,
     refetchInterval: 60 * 1000,
   });
 }
@@ -130,25 +132,6 @@ export function useMyTaskParticipations(taskId: number) {
         throw new Error(data.message || 'Failed request');
       }
       return data as TaskParticipation[];
-    },
-  });
-}
-
-export function useMyTaskParticipationMessages(
-  taskId: number,
-  participationId: number,
-) {
-  return useQuery({
-    queryKey: ['myTaskParticipationMessages', participationId],
-    queryFn: async () => {
-      const response = await fetch(
-        `/api/my-tasks/${taskId}/participations/${participationId}/messages`,
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed request');
-      }
-      return data as ParticipationMessage[];
     },
   });
 }

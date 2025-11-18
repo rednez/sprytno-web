@@ -1,20 +1,10 @@
-import { TaskDay, TaskType } from './task';
+import { TaskDay, TaskType } from './tasks';
 
 export type ParticipationStatus =
   | 'pending'
   | 'accepted'
   | 'declined'
   | 'completed';
-
-export interface TaskParticipation {
-  id: number;
-  status: ParticipationStatus;
-  updatedAt: Date;
-  user: {
-    nickname: string;
-    avatarUrl: string | null;
-  };
-}
 
 export interface ParticipationMessage {
   id: number;
@@ -31,7 +21,7 @@ export interface ParticipationMessage {
   sentByMe: boolean;
 }
 
-export interface MyParticipation {
+export interface Participation {
   id: number;
   status: ParticipationStatus;
   task: {
@@ -39,5 +29,25 @@ export interface MyParticipation {
     description: string | null;
     type: TaskType;
     repeatedDays: TaskDay[];
+  };
+}
+
+export interface ParticipationDetails {
+  id: number;
+  status: ParticipationStatus;
+  updatedAt: Date;
+  task: {
+    title: string;
+    description: string | null;
+    type: TaskType;
+    repeatedDays: TaskDay[];
+    distanceMeters: number;
+    lat: number;
+    lng: number;
+    user: {
+      id: string;
+      nickname: string;
+      avatarUrl: string | null;
+    };
   };
 }

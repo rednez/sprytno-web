@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  LocationAlert,
   TaskDetailsSkeleton,
   TaskDistance,
   TaskMap,
@@ -16,19 +17,20 @@ import { User } from '@heroui/user';
 import { use } from 'react';
 import { TaskParticipationStatus } from './task-participation-status';
 import { useRouter } from 'next/navigation';
+import useCoords from '@/hooks/coords';
 
 export function TaskDetails(params: {
   taskId: Promise<string>;
-  currentCoords: Promise<{ lat: string; lng: string }>;
   googleMapsApiKey: string;
   googleMapsMapId: string;
 }) {
   const taskId = use(params.taskId);
-  const currentCoords = use(params.currentCoords);
+  const { coords } = useCoords();
+
   const { data, isPending, isError } = usePublicTaskDetails({
     taskId: parseInt(taskId),
-    currentLat: parseFloat(currentCoords.lat),
-    currentLng: parseFloat(currentCoords.lng),
+    currentLat: coords?.lat,
+    currentLng: coords?.lng,
   });
   const { data: me } = useMe();
   const router = useRouter();

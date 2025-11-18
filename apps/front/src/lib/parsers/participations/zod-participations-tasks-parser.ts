@@ -1,9 +1,15 @@
 import { resultError, resultOk } from '@/lib/utils/result';
-import { MyParticipation, ParticipationMessage, Result } from '@/types';
+import {
+  Participation,
+  ParticipationDetails,
+  ParticipationMessage,
+  Result,
+} from '@/types';
 import * as z from 'zod';
 import { ParticipationsParser } from './participations-parser.interface';
 import {
-  ServerMyParticipationSchema,
+  ServerParticipationDetailsSchema,
+  ServerParticipationSchema,
   ServerParticipationMessageSchema,
 } from './zod-schemas';
 
@@ -29,11 +35,9 @@ export class ZodParticipationsParser implements ParticipationsParser {
     }
   }
 
-  parseMyParticipations(raw: unknown): Result<MyParticipation[]> {
+  parseParticipations(raw: unknown): Result<Participation[]> {
     try {
-      const parsed = Array.isArray(raw)
-        ? raw.map(this.parseMyParticipation)
-        : [];
+      const parsed = Array.isArray(raw) ? raw.map(this.parseParticipation) : [];
       return resultOk(parsed);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -44,6 +48,35 @@ export class ZodParticipationsParser implements ParticipationsParser {
         );
       }
     }
+  }
+
+  parseParticipationDetails(raw: unknown): Result<ParticipationDetails> {
+    const { data, error, success } =
+      ServerParticipationDetailsSchema.safeParse(raw);
+
+    if (!success) {
+      return resultError(error);
+    }
+
+    return resultOk({
+      id: data.id,
+      status: data.status,
+      updatedAt: data.updated_at,
+      task: {
+        title: data.task_title,
+        description: data.task_description,
+        type: data.task_type,
+        repeatedDays: data.task_repeated_days || [],
+        distanceMeters: data.task_distance_meters,
+        lat: data.task_lat,
+        lng: data.task_lng,
+        user: {
+          id: data.task_user_id,
+          nickname: data.task_user_nickname,
+          avatarUrl: data.task_user_avatar_url,
+        },
+      },
+    });
   }
 
   private parseMyTaskParticipationMessage(raw: unknown): ParticipationMessage {
@@ -64,8 +97,8 @@ export class ZodParticipationsParser implements ParticipationsParser {
     };
   }
 
-  private parseMyParticipation(raw: unknown): MyParticipation {
-    const data = ServerMyParticipationSchema.parse(raw);
+  private parseParticipation(raw: unknown): Participation {
+    const data = ServerParticipationSchema.parse(raw);
     return {
       id: data.id,
       status: data.status,

@@ -1,6 +1,11 @@
 import { ParticipationsParser } from '@/lib/parsers/participations';
 import { resultError, resultOk } from '@/lib/utils/result';
-import { MyParticipation, ParticipationMessage, Result } from '@/types';
+import {
+  Participation,
+  ParticipationDetails,
+  ParticipationMessage,
+  Result,
+} from '@/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { ParticipationsRepository } from './participations-repository.interface';
 
@@ -74,7 +79,7 @@ export class SupabaseParticipationsRepository
     return resultOk(null);
   }
 
-  async getMyParticipations(): Promise<Result<MyParticipation[]>> {
+  async getParticipations(): Promise<Result<Participation[]>> {
     const { data, error } = await this.supabase
       .from('my_participations')
       .select('*');
@@ -82,6 +87,34 @@ export class SupabaseParticipationsRepository
       return resultError(error);
     }
 
-    return this.participationsParser.parseMyParticipations(data);
+    return this.participationsParser.parseParticipations(data);
+  }
+
+  async getParticipationDetails({
+    participationId,
+    currentLat,
+    currentLng,
+  }: {
+    participationId: number;
+    currentLat: number;
+    currentLng: number;
+  }): Promise<Result<ParticipationDetails>> {
+    const { data, error } = await this.supabase
+      .rpc('get_participation_details', {
+        p_participation_id: participationId,
+        p_current_lat: currentLat,
+        p_current_lng: currentLng,
+      })
+      .single();
+
+    if (error) {
+      return resultError(error);
+    }
+
+    if (!data) {
+      return resultError(new Error('Task not found'));
+    }
+
+    return this.participationsParser.parseParticipationDetails(data);
   }
 }

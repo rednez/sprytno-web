@@ -1,9 +1,16 @@
-import { MyParticipation, ParticipationMessage, Result } from '@/types';
+import {
+  Participation,
+  ParticipationDetails,
+  ParticipationMessage,
+  Result,
+} from '@/types';
 
 export interface ParticipationsParser {
   parseMyTaskParticipationMessages(
     row: unknown,
   ): Result<ParticipationMessage[]>;
 
-  parseMyParticipations(raw: unknown): Result<MyParticipation[]>;
+  parseParticipations(raw: unknown): Result<Participation[]>;
+
+  parseParticipationDetails(raw: unknown): Result<ParticipationDetails>;
 }
