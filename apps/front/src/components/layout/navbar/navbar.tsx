@@ -1,3 +1,5 @@
+'use client';
+
 import { UserMenu } from '@/components/features/user-menu';
 import { SprytnoLogo } from '@/components/ui';
 import {
@@ -8,8 +10,9 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
 } from '@heroui/navbar';
-import { Suspense } from 'react';
-import NavbarLinks from './navbar-top-links';
+import { Suspense, useState } from 'react';
+import NavbarMenuLinks from './navbar-menu-links';
+import NavbarTopLinks from './navbar-top-links';
 
 const pages = [
   { name: 'Explore', href: '/explore' },
@@ -18,8 +21,13 @@ const pages = [
 ];
 
 export function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuItemSelect = () => setIsMenuOpen(false);
+
   return (
     <HeroNavbar
+      isMenuOpen={isMenuOpen}
       classNames={{
         item: [
           'data-[active=true]:bg-gray-100',
@@ -36,9 +44,13 @@ export function Navbar() {
           'data-[active=true]:font-normal',
         ],
       }}
+      onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarContent>
-        <NavbarMenuToggle className="sm:hidden" />
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          className="sm:hidden"
+        />
         <NavbarBrand className="hidden sm:block">
           <SprytnoLogo />
         </NavbarBrand>
@@ -55,7 +67,7 @@ export function Navbar() {
         justify="center"
       >
         <Suspense>
-          <NavbarLinks pages={pages} />
+          <NavbarMenuLinks pages={pages} />
         </Suspense>
       </NavbarContent>
 
@@ -66,7 +78,10 @@ export function Navbar() {
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarLinks pages={pages} />
+        <NavbarTopLinks
+          pages={pages}
+          onItemSelect={handleMenuItemSelect}
+        />
       </NavbarMenu>
     </HeroNavbar>
   );

@@ -6,8 +6,10 @@ import { usePathname } from 'next/navigation';
 
 export default function NavbarTopLinks({
   pages,
+  onItemSelect,
 }: {
   pages: Array<{ name: string; href: string }>;
+  onItemSelect?: () => void;
 }) {
   const pathname = usePathname();
 
@@ -19,6 +21,7 @@ export default function NavbarTopLinks({
       <Link
         href={item.href}
         className="text-gray-700 dark:text-gray-400"
+        onClick={onItemSelect}
       >
         {item.name}
       </Link>
