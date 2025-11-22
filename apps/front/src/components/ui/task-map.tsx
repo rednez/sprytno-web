@@ -21,7 +21,7 @@ export function TaskMap({
   initPosition?: { lat: number; lng: number };
   onSetPosition?: (position: { lat: number; lng: number }) => void;
 }) {
-  const { coords, isError, isProgress } = useCoords();
+  const { coords, isError, isProgress, getLocation } = useCoords();
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(
     initPosition || null,
   );
@@ -31,7 +31,7 @@ export function TaskMap({
   }
 
   if (!coords || isError) {
-    return <LocationAlert />;
+    return <LocationAlert onGetLocation={getLocation} />;
   }
 
   function handleClick(event: MapMouseEvent) {
