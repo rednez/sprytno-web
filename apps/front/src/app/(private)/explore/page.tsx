@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function ExploreTasks() {
-  const { coords, isProgress, isError } = useCoords();
+  const { coords, isProgress, isError, getLocation } = useCoords();
   const [taskType, setTaskType] = useState<'all' | 'offers' | 'requests'>(
     'all',
   );
@@ -29,7 +29,7 @@ export default function ExploreTasks() {
         onTaskPress={handleTaskPress}
       />
     ) : (
-      <LocationAlert />
+      <LocationAlert onGetLocation={getLocation} />
     );
 
   return (

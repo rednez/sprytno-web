@@ -1,11 +1,12 @@
 'use client';
 
-import useCoords from '@/hooks/coords';
 import { Alert, Button } from '@heroui/react';
 
-export function LocationAlert() {
-  const { getLocation } = useCoords();
-
+export function LocationAlert({
+  onGetLocation,
+}: {
+  onGetLocation: () => void;
+}) {
   return (
     <Alert
       title="Enable Location"
@@ -16,7 +17,7 @@ export function LocationAlert() {
         <Button
           variant="flat"
           color="warning"
-          onPress={getLocation}
+          onPress={onGetLocation}
         >
           Enable
         </Button>
