@@ -14,7 +14,12 @@ import {
   TaskParticipation,
 } from '@/types';
 import { addToast } from '@heroui/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
 
 export function useTasks({
@@ -23,12 +28,13 @@ export function useTasks({
   type,
   distance,
 }: {
-  lat: number;
-  lng: number;
+  lat?: number;
+  lng?: number;
   type: 'offers' | 'requests' | 'all';
   distance: number;
 }) {
   const debounce = useDebounce(distance, 500);
+  const hasCoords = !!lat && !!lng;
 
   return useQuery({
     queryKey: ['tasks', lat, lng, type, debounce],
@@ -47,6 +53,8 @@ export function useTasks({
       }
       return data as Task[];
     },
+    enabled: hasCoords,
+    placeholderData: keepPreviousData,
   });
 }
 
