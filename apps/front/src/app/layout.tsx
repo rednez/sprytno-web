@@ -1,6 +1,7 @@
 import Providers from '@/providers/providers';
 import ThemeProviders from '@/providers/theme-providers';
 import '@/styles/globals.css';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Providers>
           <ThemeProviders>{children}</ThemeProviders>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );

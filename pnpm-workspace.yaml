@@ -4,5 +4,6 @@ packages:
 
 onlyBuiltDependencies:
   - '@heroui/shared-utils'
+  - '@vercel/speed-insights'
   - sharp
   - unrs-resolver
