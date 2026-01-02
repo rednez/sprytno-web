@@ -16,7 +16,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "supabase": "supabase start"
+    "supabase": "supabase start",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@postgrestools/postgrestools": "^0.17.2",
@@ -24,7 +25,7 @@
     "turbo": "^2.6.1",
     "typescript": "5.9.2"
   },
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.26.2",
   "engines": {
     "node": ">=18"
   }
